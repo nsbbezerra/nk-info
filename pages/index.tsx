@@ -5,6 +5,10 @@ import HeadApp from "../components/Head";
 import Header from "../components/Header";
 import Panel from "../components/Panel";
 import { BiEdit, BiChevronRight } from "react-icons/bi";
+import Lottie from "../components/Lottie";
+import * as maitenence from "../assets/maintenance.json";
+import * as marketing from "../assets/marketing.json";
+import * as webDeveloper from "../assets/web.json";
 
 const Home: NextPage = () => {
   const Card = () => (
@@ -13,8 +17,8 @@ const Home: NextPage = () => {
 
       <div className="w-3/4 relative my-5">
         <div className="bg-blue-200 rounded-md h-14 -rotate-6" />
-        <div className="bg-blue-500 rounded-md h-14 z-20 absolute w-full top-0 right-0 left-0 bottom-0 flex items-center justify-center font-bold text-2xl text-white">
-          R$ 20,00/mês
+        <div className="bg-blue-500 rounded-md h-14 z-20 absolute w-full top-0 right-0 left-0 bottom-0 flex items-center justify-center font-bold text-xl text-white text-center">
+          R$ 200,00/mês
         </div>
       </div>
 
@@ -60,18 +64,10 @@ const Home: NextPage = () => {
           <p className="font-semibold mt-5">Confira nossas áreas de atuação:</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-10">
-          <div className="rounded-md border shadow-sm p-4  flex flex-col justify-center items-center transition-all duration-200 ease-in-out hover:scale-105">
-            <div className="h-32 w-32">
-              <Image
-                draggable={false}
-                src={"/img/maintence.svg"}
-                width={130}
-                height={120}
-                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
-                layout="responsive"
-                objectFit="cover"
-              />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-10">
+          <div className="rounded-md shadow-lg p-4  flex flex-col justify-center items-center">
+            <div className="h-32 flex justify-center">
+              <Lottie width={"120%"} animation={maitenence} height={"100%"} />
             </div>
             <span className="text-gray-600 text-center text-sm mt-3">
               Montagem e Manutenção em Redes, Computadores, Sistemas PDV,
@@ -79,53 +75,19 @@ const Home: NextPage = () => {
             </span>
           </div>
 
-          <div className="rounded-md border shadow-sm p-4  flex flex-col justify-center items-center transition-all duration-200 ease-in-out hover:scale-105">
-            <div className="h-32 w-40">
-              <Image
-                draggable={false}
-                src={"/img/marketing.svg"}
-                width={190}
-                height={120}
-                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
-                layout="responsive"
-                objectFit="cover"
-              />
+          <div className="rounded-md shadow-lg p-4  flex flex-col justify-center items-center">
+            <div className="h-32">
+              <Lottie width={"100%"} animation={marketing} height={"100%"} />
             </div>
-
             <span className="text-gray-600 text-center text-sm mt-3">
               Marketing Digital, Gestão de Tráfego Pago, Publicidades
-              Áudio-Visual
+              Áudio-Visual, Gestão de Redes Sociais, Estratégias de Crescimento
             </span>
           </div>
 
-          <div className="rounded-md border shadow-sm p-4  flex flex-col justify-center items-center transition-all duration-200 ease-in-out hover:scale-105">
-            <div className="h-32 w-32">
-              <Image
-                draggable={false}
-                src={"/img/social.svg"}
-                width={195}
-                height={155}
-                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
-                layout="responsive"
-                objectFit="cover"
-              />
-            </div>
-            <span className="text-gray-600 text-center text-sm mt-3">
-              Gestão de Redes Sociais, Estratégias de Crescimento
-            </span>
-          </div>
-
-          <div className="rounded-md border shadow-sm p-4  flex flex-col justify-center items-center transition-all duration-200 ease-in-out hover:scale-105">
-            <div className="h-28 w-40">
-              <Image
-                draggable={false}
-                src={"/img/dev.svg"}
-                width={212}
-                height={120}
-                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
-                layout="responsive"
-                objectFit="cover"
-              />
+          <div className="rounded-md shadow-lg p-4  flex flex-col justify-center items-center">
+            <div className="h-32">
+              <Lottie width={"100%"} animation={webDeveloper} height={"130%"} />
             </div>
             <span className="text-gray-600 text-center text-sm mt-3">
               Desenvolvimento de Web Sites, Sistemas de Gestão, Aplicativos
@@ -401,7 +363,7 @@ const Home: NextPage = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             <Card />
             <Card />
             <Card />

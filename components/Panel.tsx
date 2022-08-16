@@ -1,10 +1,21 @@
 import Image from "next/image";
 import { Fragment } from "react";
+import Lottie from "react-lottie";
+import * as animationData from "../assets/animation.json";
 
 export default function Panel() {
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
   return (
     <Fragment>
-      <section className="w-full relative bg-blue-100 rounded-br-[70px] lg:rounded-br-[150px]">
+      <section className="w-full relative bg-blue-200 rounded-br-[70px] lg:rounded-br-[150px] py-10">
         <div className="grid grid-cols-1 gap-3 w-full container mx-auto items-center justify-items-center lg:justify-items-end lg:grid-cols-2 px-10 lg:px-20">
           <div className="w-full flex flex-col gap-3 order-2 lg:order-1 -mt-10 py-10">
             <span className="text-gray-500 font-semibold z-10">
@@ -24,15 +35,11 @@ export default function Panel() {
               Seja nosso Cliente!
             </button>
           </div>
-          <div className="w-60 sm:w-96 order-1 lg:order-2 py-10 lg:w-[400px]">
-            <Image
-              draggable={false}
-              src={"/img/system-dev.svg"}
-              width={130}
-              height={120}
-              alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
-              layout="responsive"
-              objectFit="cover"
+          <div className="w-full sm:w-3/4 order-1 lg:order-2 py-10 lg:w-full">
+            <Lottie
+              options={defaultOptions}
+              width="100%"
+              isClickToPauseDisabled
             />
           </div>
         </div>

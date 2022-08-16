@@ -50,7 +50,7 @@ export default function Header() {
 
   return (
     <Fragment>
-      <header className="w-full h-16 border-b border-b-gray-50 flex items-center justify-center sticky top-0 z-20 bg-white backdrop-blur-sm bg-opacity-90 shadow-sm">
+      <header className="w-full h-16 border-b border-b-gray-50 flex items-center justify-center sticky top-0 z-30 bg-white backdrop-blur-sm bg-opacity-90 shadow-sm">
         <nav className="container mx-auto px-10 lg:px-20 flex items-center justify-between">
           <div className="w-16">
             <Image
@@ -84,7 +84,7 @@ export default function Header() {
           open ? "ml-0" : "-ml-[100%]"
         } right-0 left-0 bottom-0 w-full h-full z-50 transition-all delay-100`}
       >
-        <div className="h-full w-[60%] bg-white shadow-xl border-r">
+        <div className="h-full w-[70%] bg-white shadow-xl border-r">
           <div className="flex justify-between h-14 border-b items-center px-5 mb-5">
             <span>MENU</span>
 
