@@ -4,15 +4,25 @@ import { Fragment } from "react";
 import HeadApp from "../components/Head";
 import Header from "../components/Header";
 import Panel from "../components/Panel";
-import { BiEdit, BiChevronRight } from "react-icons/bi";
+import {
+  BiEdit,
+  BiChevronRight,
+  BiMapPin,
+  BiPhone,
+  BiMailSend,
+  BiCalendar,
+  BiSend,
+} from "react-icons/bi";
 import Lottie from "../components/Lottie";
 import * as maitenence from "../assets/maintenance.json";
 import * as marketing from "../assets/marketing.json";
 import * as webDeveloper from "../assets/web.json";
+import * as webSite from "../assets/website.json";
+import * as ecommerce from "../assets/ecommerce.json";
 
 const Home: NextPage = () => {
   const Card = () => (
-    <div className="rounded-md shadow-lg border p-5 w-full flex flex-col items-center transition-all duration-200 ease-in-out hover:scale-105">
+    <div className="rounded-md shadow-lg border p-5 w-full flex flex-col items-center transition-all duration-200 ease-in-out hover:scale-105 bg-white">
       <span className="text-gray-500">PLANO BÁSICO</span>
 
       <div className="w-3/4 relative my-5">
@@ -23,12 +33,12 @@ const Home: NextPage = () => {
       </div>
 
       <div className="grid grid-cols-1 divide-y w-full my-5">
-        <p className="py-3 text-center">Customizad Plans</p>
-        <p className="py-3 text-center">Billing Report</p>
-        <p className="py-3 text-center">Access to Asana</p>
+        <p className="py-2 text-center">Customizad Plans</p>
+        <p className="py-2 text-center">Billing Report</p>
+        <p className="py-2 text-center">Access to Asana</p>
       </div>
 
-      <button className="mt-3 bg-blue-600 rounded-md px-10 py-2 flex items-center gap-2 text-white hover:bg-blue-700 active:bg-blue-600">
+      <button className="mt-3 bg-blue-600 rounded-md px-10 py-3 flex items-center gap-2 text-white hover:bg-blue-700 active:bg-blue-600">
         <BiEdit />
         CONTRATAR
       </button>
@@ -65,7 +75,7 @@ const Home: NextPage = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-10">
-          <div className="rounded-md shadow-lg p-4  flex flex-col justify-center items-center">
+          <div className="rounded-md shadow-lg p-4  flex flex-col justify-center items-center border">
             <div className="h-32 flex justify-center">
               <Lottie width={"120%"} animation={maitenence} height={"100%"} />
             </div>
@@ -75,7 +85,7 @@ const Home: NextPage = () => {
             </span>
           </div>
 
-          <div className="rounded-md shadow-lg p-4  flex flex-col justify-center items-center">
+          <div className="rounded-md shadow-lg p-4  flex flex-col justify-center items-center border">
             <div className="h-32">
               <Lottie width={"100%"} animation={marketing} height={"100%"} />
             </div>
@@ -85,7 +95,7 @@ const Home: NextPage = () => {
             </span>
           </div>
 
-          <div className="rounded-md shadow-lg p-4  flex flex-col justify-center items-center">
+          <div className="rounded-md shadow-lg p-4  flex flex-col justify-center items-center border">
             <div className="h-32">
               <Lottie width={"100%"} animation={webDeveloper} height={"130%"} />
             </div>
@@ -369,11 +379,35 @@ const Home: NextPage = () => {
             <Card />
             <Card />
           </div>
+        </div>
+      </section>
 
-          <div className="flex justify-center">
+      {/** SEÇAO DE PASSO A PASSO DE PROCESSOS */}
+
+      <section className="w-full mt-16 bg-gray-100 rounded-br-[70px] lg:rounded-br-[150px] py-10 lg:py-14">
+        <div className="container mx-auto px-10 lg:px-20">
+          <div className="text-center w-full flex items-center flex-col gap-2 mb-10">
+            <span className="text-gray-600">PARA TODOS</span>
+            <h2 className="text-4xl font-bold">Pacotes de Marketing Digital</h2>
+            <div className="w-32 bg-gradient-to-r from-blue-400 to-blue-600 h-1 rounded-[50%]" />
+            <p className="text-gray-600 text-sm max-w-screen-md">
+              Dê um boom nas suas redes sociais, turbine sua loja virtual venda
+              muito mais com nossos pacotes de marketing digial e gestão de
+              tráfego pago.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            <Card />
+            <Card />
+            <Card />
+            <Card />
+          </div>
+
+          <div className="flex justify-center mt-10">
             <a
               href="#"
-              className="flex items-center text-lg mt-5 font-semibold text-blue-600 hover:underline w-fit"
+              className="font-semibold text-blue-600 flex items-center gap-2 hover:underline"
             >
               Veja Mais <BiChevronRight />
             </a>
@@ -381,7 +415,292 @@ const Home: NextPage = () => {
         </div>
       </section>
 
-      {/** SEÇAO DE PASSO A PASSO DE PROCESSOS */}
+      {/** SEÇÕES DE SITES POR ASSINATURA */}
+
+      <section className="mt-16 w-full">
+        <div className="container mx-auto px-10 lg:px-20">
+          <div className="grid grid-cols-1 gap-10 items-center justify-items-center lg:grid-cols-2">
+            <div className="w-full sm:w-3/4 lg:w-full">
+              <Lottie animation={webSite} width="100%" height={"100%"} />
+            </div>
+            <div className="w-full flex flex-col gap-2">
+              <h2 className="text-4xl font-bold text-blue-600">
+                Site por Assinatura
+              </h2>
+              <p className="text-justify mt-4 text-sm md:text-base">
+                Para você ser encontrado na internet é de suma importância ter
+                um website. Então estamos aqui pra te ajudar com o nosso plano{" "}
+                <strong>Site Por Assinatura</strong>, tenha o seu site com
+                layout exclusivo, atual, e pagando muito pouco por isso.
+              </p>
+
+              <a className="bg-blue-600 flex px-10 py-3 w-fit font-semibold text-white rounded-md mt-4 hover:bg-blue-700 active:bg-blue-600 select-none cursor-pointer transition-all delay-75">
+                Quero conhecer mais!
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-16 w-full">
+        <div className="container mx-auto px-10 lg:px-20">
+          <div className="grid grid-cols-1 gap-10 items-center justify-items-center lg:grid-cols-2">
+            <div className="w-full sm:w-3/4 lg:w-full">
+              <Lottie animation={ecommerce} width="100%" height={"100%"} />
+            </div>
+            <div className="w-full flex flex-col gap-2">
+              <h2 className="text-4xl font-bold text-blue-600">
+                Ecommerce por Assinatura
+              </h2>
+              <p className="text-justify mt-4 text-sm md:text-base">
+                Tenha sua própria loja virtual, com um layout próprio, com suas
+                cores, sua marca, e com um sistema de gestão completo para você
+                ficar tranquilo em todos os passos da sua venda, veja o que o{" "}
+                <strong>Nosso Ecommerce</strong> pode te oferecer:
+              </p>
+
+              <ul className="list-disc list-inside text-sm text-gray-600">
+                <li>Gestão de Clientes</li>
+                <li>Gestão de Produtos</li>
+                <li>Gestão de Vendas, caixa, PDV</li>
+                <li>
+                  Pagamentos Automatizados: PIX, Cartão, Boleto, Duplicata
+                </li>
+                <li>Emissão de Nota Fiscal</li>
+                <li>Suporte e consultoria Contábil</li>
+                <li>
+                  Gestão e impulsionamento de vendas online, pelas melhores
+                  plataformas e redes sociais
+                </li>
+              </ul>
+
+              <a className="bg-blue-600 flex px-10 py-3 w-fit font-semibold text-white rounded-md mt-4 hover:bg-blue-700 active:bg-blue-600 select-none cursor-pointer transition-all delay-75">
+                Quero conhecer mais!
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/** SEÇÃO DE CLIENTES */}
+
+      <section className="w-full mt-16 bg-gray-100 rounded-br-[70px] lg:rounded-br-[150px] py-10 lg:py-14">
+        <div className="container mx-auto px-10 lg:px-20">
+          <div className="text-center w-full flex items-center flex-col gap-2 mb-10">
+            <h2 className="text-4xl font-bold">Nossos Clientes</h2>
+            <div className="w-32 bg-gradient-to-r from-blue-400 to-blue-600 h-1 rounded-[50%]" />
+          </div>
+
+          <div className="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-8 justify-items-center gap-2">
+            <div className="w-full rounded-md shadow-lg overflow-hidden bg-white p-2 border">
+              <Image
+                draggable={false}
+                src={"/img/coca.svg"}
+                width={70}
+                height={70}
+                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                layout="responsive"
+                objectFit="cover"
+              />
+            </div>
+            <div className="w-full rounded-md shadow-lg overflow-hidden bg-white p-2 border">
+              <Image
+                draggable={false}
+                src={"/img/coca.svg"}
+                width={70}
+                height={70}
+                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                layout="responsive"
+                objectFit="cover"
+              />
+            </div>
+            <div className="w-full rounded-md shadow-lg overflow-hidden bg-white p-2 border">
+              <Image
+                draggable={false}
+                src={"/img/coca.svg"}
+                width={70}
+                height={70}
+                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                layout="responsive"
+                objectFit="cover"
+              />
+            </div>
+            <div className="w-full rounded-md shadow-lg overflow-hidden bg-white p-2 border">
+              <Image
+                draggable={false}
+                src={"/img/coca.svg"}
+                width={70}
+                height={70}
+                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                layout="responsive"
+                objectFit="cover"
+              />
+            </div>
+            <div className="w-full rounded-md shadow-lg overflow-hidden bg-white p-2 border">
+              <Image
+                draggable={false}
+                src={"/img/coca.svg"}
+                width={70}
+                height={70}
+                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                layout="responsive"
+                objectFit="cover"
+              />
+            </div>
+            <div className="w-full rounded-md shadow-lg overflow-hidden bg-white p-2 border">
+              <Image
+                draggable={false}
+                src={"/img/coca.svg"}
+                width={70}
+                height={70}
+                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                layout="responsive"
+                objectFit="cover"
+              />
+            </div>
+            <div className="w-full rounded-md shadow-lg overflow-hidden bg-white p-2 border">
+              <Image
+                draggable={false}
+                src={"/img/coca.svg"}
+                width={70}
+                height={70}
+                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                layout="responsive"
+                objectFit="cover"
+              />
+            </div>
+            <div className="w-full rounded-md shadow-lg overflow-hidden bg-white p-2 border">
+              <Image
+                draggable={false}
+                src={"/img/coca.svg"}
+                width={70}
+                height={70}
+                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                layout="responsive"
+                objectFit="cover"
+              />
+            </div>
+            <div className="w-full rounded-md shadow-lg overflow-hidden bg-white p-2 border">
+              <Image
+                draggable={false}
+                src={"/img/coca.svg"}
+                width={70}
+                height={70}
+                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                layout="responsive"
+                objectFit="cover"
+              />
+            </div>
+            <div className="w-full rounded-md shadow-lg overflow-hidden bg-white p-2 border">
+              <Image
+                draggable={false}
+                src={"/img/coca.svg"}
+                width={70}
+                height={70}
+                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                layout="responsive"
+                objectFit="cover"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/** SEÇÃO DE CONTATO */}
+
+      <section className="mt-16 w-full">
+        <div className="container mx-auto px-10 lg:px-20">
+          <div className="text-center w-full flex items-center flex-col gap-2 mb-10">
+            <span className="text-gray-600">CONTATO</span>
+            <h2 className="text-4xl font-bold">Fale Conosco</h2>
+            <div className="w-32 bg-gradient-to-r from-blue-400 to-blue-600 h-1 rounded-[50%]" />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 justify-items-center items-start">
+            <div className="flex flex-col items-center justify-center gap-2 text-center">
+              <div className="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center text-3xl text-white ring-4 ring-blue-300">
+                <BiMapPin />
+              </div>
+              <span className="font-semibold">Endereço</span>
+              <span className="text-sm text-gray-600">
+                Rua 34, Qd 16 Lt 15, Setor Canavieiras, CEP: 77.710-000, Pedro
+                Afonso - TO
+              </span>
+            </div>
+
+            <div className="flex flex-col items-center justify-center gap-2 text-center">
+              <div className="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center text-3xl text-white ring-4 ring-blue-300">
+                <BiMailSend />
+              </div>
+              <span className="font-semibold">Email</span>
+              <span className="text-sm text-gray-600">
+                contato.nk.info@gmail.com
+              </span>
+            </div>
+
+            <div className="flex flex-col items-center justify-center gap-2 text-center">
+              <div className="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center text-3xl text-white ring-4 ring-blue-300">
+                <BiPhone />
+              </div>
+              <span className="font-semibold">Telefone</span>
+              <span className="text-sm text-gray-600">+55 (63) 99971-1716</span>
+            </div>
+
+            <div className="flex flex-col items-center justify-center gap-2 text-center">
+              <div className="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center text-3xl text-white ring-4 ring-blue-300">
+                <BiCalendar />
+              </div>
+              <span className="font-semibold">Horários de Atendimento</span>
+              <span className="text-sm text-gray-600">
+                De Segunda a Sexta, das 08:00 às 11:30 e das 13:30 às 17:30
+              </span>
+            </div>
+          </div>
+
+          <div className="w-full max-w-4xl mx-auto mt-10">
+            <label htmlFor="name">Nome</label>
+            <input
+              className="w-full p-2 border rounded-md focus:border-blue-600"
+              placeholder="Seu nome aqui"
+              id="name"
+            />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3 mb-3">
+              <div>
+                <label htmlFor="email">Email</label>
+                <input
+                  className="w-full p-2 border rounded-md focus:border-blue-600"
+                  placeholder="Seu email aqui"
+                  id="email"
+                  type="email"
+                />
+              </div>
+              <div>
+                <label htmlFor="phone">Telefone</label>
+                <input
+                  className="w-full p-2 border rounded-md focus:border-blue-600"
+                  placeholder="Seu telefone aqui"
+                  id="phone"
+                  type="phone"
+                />
+              </div>
+            </div>
+
+            <label htmlFor="message">Mensagem</label>
+            <textarea
+              className="w-full p-2 border rounded-md focus:border-blue-600 resize-none"
+              placeholder="Sua mensagem aqui"
+              id="message"
+              rows={6}
+            />
+
+            <button className="bg-blue-600 flex items-center gap-3 px-10 py-3 w-fit text-white rounded-md mt-4 hover:bg-blue-700 active:bg-blue-600 select-none cursor-pointer transition-all delay-75">
+              <BiSend />
+              Enviar Mensagem
+            </button>
+          </div>
+        </div>
+      </section>
     </Fragment>
   );
 };
