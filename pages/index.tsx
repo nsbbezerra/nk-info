@@ -28,7 +28,7 @@ const Home: NextPage = () => {
       <span className="text-gray-500">PLANO BÁSICO</span>
 
       <div className="w-3/4 relative my-5">
-        <div className="bg-blue-600 rounded-md h-14 -rotate-6" />
+        <div className="bg-blue-300 rounded-md h-14 -rotate-6" />
         <div className="bg-blue-900 rounded-md h-14 z-20 absolute w-full top-0 right-0 left-0 bottom-0 flex items-center justify-center font-bold text-xl text-white text-center">
           R$ 200,00/mês
         </div>
