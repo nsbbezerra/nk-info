@@ -10,6 +10,7 @@ export default function HeadApp({ title }: Props) {
     <Fragment>
       <Head>
         <title>{title}</title>
+        <link rel="icon" href="/img/logo.svg" type="image/svg" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
           name="description"

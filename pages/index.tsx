@@ -20,15 +20,16 @@ import * as webDeveloper from "../assets/web.json";
 import * as webSite from "../assets/website.json";
 import * as ecommerce from "../assets/ecommerce.json";
 import Footer from "../components/Footer";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   const Card = () => (
-    <div className="rounded-md shadow-lg border p-5 w-full flex flex-col items-center transition-all duration-200 ease-in-out hover:scale-105 bg-white">
+    <div className="rounded-md shadow-lg border p-5 w-full flex flex-col items-center bg-white">
       <span className="text-gray-500">PLANO BÁSICO</span>
 
       <div className="w-3/4 relative my-5">
-        <div className="bg-blue-200 rounded-md h-14 -rotate-6" />
-        <div className="bg-blue-500 rounded-md h-14 z-20 absolute w-full top-0 right-0 left-0 bottom-0 flex items-center justify-center font-bold text-xl text-white text-center">
+        <div className="bg-blue-600 rounded-md h-14 -rotate-6" />
+        <div className="bg-blue-900 rounded-md h-14 z-20 absolute w-full top-0 right-0 left-0 bottom-0 flex items-center justify-center font-bold text-xl text-white text-center">
           R$ 200,00/mês
         </div>
       </div>
@@ -54,7 +55,7 @@ const Home: NextPage = () => {
 
       {/** SEÇÃO SOBRE NÓS */}
 
-      <section className="container mx-auto mt-16 px-10 lg:px-20">
+      <section className="container mx-auto mt-16 px-10 lg:px-20" id="sobre">
         <div className="text-center w-full flex items-center flex-col gap-2">
           <h2 className="text-4xl font-bold">Sobre Nós!</h2>
           <div className="w-32 bg-gradient-to-r from-blue-400 to-blue-600 h-1 rounded-[50%]" />
@@ -112,7 +113,7 @@ const Home: NextPage = () => {
 
       <section className="w-full mt-16 bg-gray-100 rounded-br-[70px] lg:rounded-br-[150px] p-10 lg:p-14">
         <div className="container mx-auto w-full h-full flex justify-end relative items-center flex-col lg:flex-row">
-          <div className="w-[95%] lg:w-[58%] rounded-md bg-white shadow-xl lg:absolute h-fit z-10 left-0 p-7 flex flex-col gap-2 transition-all duration-200 ease-in-out hover:scale-105">
+          <div className="w-[95%] lg:w-[58%] rounded-md bg-white shadow-xl lg:absolute h-fit z-10 left-0 p-7 flex flex-col gap-2">
             <h3 className="text-2xl sm:text-3xl font-bold">
               Somos especialistas em soluções de{" "}
               <span className="text-blue-600">negócios e serviços!</span>
@@ -345,7 +346,7 @@ const Home: NextPage = () => {
               </div>
             </div>
           </div>
-          <div className="-mt-28 w-full lg:w-[45vw] rounded-md overflow-hidden sm:h-[450px] lg:h-fit lg:mt-0 xl:max-h-[500px]">
+          <div className="-mt-10 w-full lg:w-[45vw] rounded-md overflow-hidden sm:h-[450px] lg:h-fit lg:mt-0 xl:max-h-[500px]">
             <Image
               draggable={false}
               src={"/img/office.jpg"}
@@ -361,7 +362,7 @@ const Home: NextPage = () => {
 
       {/** SEÇÃO PACOTES DE MANUTENÇÃO */}
 
-      <section className="mt-16 w-full">
+      <section className="mt-16 w-full" id="manutencao">
         <div className="container mx-auto px-10 lg:px-20">
           <div className="text-center w-full flex items-center flex-col gap-2 mb-10">
             <span className="text-gray-600">PARA EMPRESAS</span>
@@ -385,7 +386,10 @@ const Home: NextPage = () => {
 
       {/** SEÇAO DE PASSO A PASSO DE PROCESSOS */}
 
-      <section className="w-full mt-16 bg-gray-100 rounded-br-[70px] lg:rounded-br-[150px] py-10 lg:py-14">
+      <section
+        className="w-full mt-16 bg-gray-100 rounded-br-[70px] lg:rounded-br-[150px] py-10 lg:py-14"
+        id="marketing"
+      >
         <div className="container mx-auto px-10 lg:px-20">
           <div className="text-center w-full flex items-center flex-col gap-2 mb-10">
             <span className="text-gray-600">PARA TODOS</span>
@@ -418,7 +422,7 @@ const Home: NextPage = () => {
 
       {/** SEÇÕES DE SITES POR ASSINATURA */}
 
-      <section className="mt-16 w-full">
+      <section className="mt-16 w-full" id="sites">
         <div className="container mx-auto px-10 lg:px-20">
           <div className="grid grid-cols-1 gap-10 items-center justify-items-center lg:grid-cols-2">
             <div className="w-full sm:w-3/4 lg:w-full">
@@ -435,24 +439,24 @@ const Home: NextPage = () => {
                 layout exclusivo, atual, e pagando muito pouco por isso.
               </p>
 
-              <a className="bg-blue-600 flex px-10 py-3 w-fit font-semibold text-white rounded-md mt-4 hover:bg-blue-700 active:bg-blue-600 select-none cursor-pointer transition-all delay-75">
-                Quero conhecer mais!
-              </a>
+              <Link href="/sites-por-assinatura" passHref>
+                <a className="bg-blue-600 flex px-10 py-3 w-fit font-semibold text-white rounded-md mt-4 hover:bg-blue-700 active:bg-blue-600 select-none cursor-pointer transition-all delay-75">
+                  Quero conhecer mais!
+                </a>
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="mt-16 w-full">
+      <section className="mt-16 w-full" id="ecommerce">
         <div className="container mx-auto px-10 lg:px-20">
           <div className="grid grid-cols-1 gap-10 items-center justify-items-center lg:grid-cols-2">
             <div className="w-full sm:w-3/4 lg:w-full">
               <Lottie animation={ecommerce} width="100%" height={"100%"} />
             </div>
             <div className="w-full flex flex-col gap-2">
-              <h2 className="text-4xl font-bold text-blue-600">
-                Ecommerce por Assinatura
-              </h2>
+              <h2 className="text-4xl font-bold text-blue-600">Loja Online</h2>
               <p className="text-justify mt-4 text-sm md:text-base">
                 Tenha sua própria loja virtual, com um layout próprio, com suas
                 cores, sua marca, e com um sistema de gestão completo para você
@@ -468,7 +472,7 @@ const Home: NextPage = () => {
                   Pagamentos Automatizados: PIX, Cartão, Boleto, Duplicata
                 </li>
                 <li>Emissão de Nota Fiscal</li>
-                <li>Suporte e consultoria Contábil</li>
+                <li>Suporte e Consultoria Contábil</li>
                 <li>
                   Gestão e impulsionamento de vendas online, pelas melhores
                   plataformas e redes sociais
@@ -609,7 +613,7 @@ const Home: NextPage = () => {
 
       {/** SEÇÃO DE CONTATO */}
 
-      <section className="mt-16 w-full">
+      <section className="mt-16 w-full" id="contato">
         <div className="container mx-auto px-10 lg:px-20">
           <div className="text-center w-full flex items-center flex-col gap-2 mb-10">
             <span className="text-gray-600">CONTATO</span>

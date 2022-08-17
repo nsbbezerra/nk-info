@@ -15,7 +15,7 @@ export default function Panel() {
 
   return (
     <Fragment>
-      <section className="w-full relative bg-blue-200 rounded-br-[70px] lg:rounded-br-[150px] py-10">
+      <section className="w-full relative bg-blue-300 rounded-br-[70px] lg:rounded-br-[150px] py-10">
         <div className="grid grid-cols-1 gap-3 w-full container mx-auto items-center justify-items-center lg:justify-items-end lg:grid-cols-2 px-10 lg:px-20">
           <div className="w-full flex flex-col gap-3 order-2 lg:order-1 -mt-10 py-10">
             <span className="text-gray-500 font-semibold z-10">

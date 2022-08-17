@@ -12,38 +12,105 @@ export default function Footer() {
     <Fragment>
       <footer className="bg-gray-900 w-full py-10 mt-16">
         <div className="container mx-auto px-10 lg:px-20">
-          <div className="flex flex-col justify-center items-center gap-4">
-            <div className="w-16">
-              <Image
-                draggable={false}
-                src={"/img/logo-white.svg"}
-                width={70}
-                height={40}
-                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
-                layout="responsive"
-                objectFit="contain"
-              />
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-3 lg:gap-20">
+            <div className="flex flex-col justify-center gap-4">
+              <div className="w-16">
+                <Image
+                  draggable={false}
+                  src={"/img/logo-white.svg"}
+                  width={70}
+                  height={40}
+                  alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                  layout="responsive"
+                  objectFit="contain"
+                />
+              </div>
+
+              <span className="text-gray-400 max-w-3xl">
+                NK Informática, aqui tem tecnologias de ponta, serviços de
+                qualidade, preço justo e a maior satisfação é em fazer do nosso
+                cliente um destaque!
+              </span>
+
+              <div className="w-fit flex gap-4 items-center">
+                <button className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-400 hover:bg-blue-500 active:bg-blue-400 transition-all delay-75">
+                  <AiOutlineWhatsApp />
+                </button>
+                <button className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-400 hover:bg-blue-500 active:bg-blue-400 transition-all delay-75">
+                  <AiOutlineFacebook />
+                </button>
+                <button className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-400 hover:bg-blue-500 active:bg-blue-400 transition-all delay-75">
+                  <AiOutlineLinkedin />
+                </button>
+                <button className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-400 hover:bg-blue-500 active:bg-blue-400 transition-all delay-75">
+                  <AiOutlineInstagram />
+                </button>
+              </div>
             </div>
 
-            <span className="text-center text-gray-400 max-w-3xl">
-              NK Informática, aqui tem tecnologias de ponta, serviços de
-              qualidade, preço justo e a maior satisfação é em fazer do nosso
-              cliente um destaque!
-            </span>
+            <div className="w-full lg:col-span-2">
+              <h3 className="text-3xl font-semibold text-white mb-3">
+                NK INFORMÁTICA
+              </h3>
+              <p className="text-gray-400">
+                Rua 34, Qd 16 Lt 15, 173, Setor Canavieiras, CEP: 77.710-000,
+                Pedro Afonso - TO
+              </p>
+              <p className="text-gray-400">CNPJ: 40.526.622/0001-72</p>
+              <p className="text-gray-400 flex gap-2 items-center">
+                Whatsapp: (63) 99971-1716{" "}
+                <a className="bg-green-400 p-1 rounded-full text-gray-900 cursor-pointer hover:bg-green-500 active:bg-green-400 transition-all delay-75">
+                  <AiOutlineWhatsApp />
+                </a>
+              </p>
+              <p className="text-gray-400">contato.nk.info@gmail.com</p>
 
-            <div className="w-fit flex gap-4 items-center">
-              <button className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-400 hover:bg-blue-500 active:bg-blue-400 transition-all delay-75">
-                <AiOutlineWhatsApp />
-              </button>
-              <button className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-400 hover:bg-blue-500 active:bg-blue-400 transition-all delay-75">
-                <AiOutlineFacebook />
-              </button>
-              <button className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-400 hover:bg-blue-500 active:bg-blue-400 transition-all delay-75">
-                <AiOutlineLinkedin />
-              </button>
-              <button className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-400 hover:bg-blue-500 active:bg-blue-400 transition-all delay-75">
-                <AiOutlineInstagram />
-              </button>
+              <div className="flex items-center gap-3 mt-5">
+                <div className="w-16 h-10 bg-white rounded-md overflow-hidden p-1">
+                  <Image
+                    draggable={false}
+                    src={"/img/visa.svg"}
+                    width={70}
+                    height={40}
+                    alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                    layout="responsive"
+                    objectFit="cover"
+                  />
+                </div>
+                <div className="w-16 h-10 bg-white rounded-md overflow-hidden p-1">
+                  <Image
+                    draggable={false}
+                    src={"/img/mastercard.svg"}
+                    width={70}
+                    height={40}
+                    alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                    layout="responsive"
+                    objectFit="cover"
+                  />
+                </div>
+                <div className="w-16 h-10 bg-white rounded-md overflow-hidden p-1">
+                  <Image
+                    draggable={false}
+                    src={"/img/elo.svg"}
+                    width={73}
+                    height={40}
+                    alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                    layout="responsive"
+                    objectFit="cover"
+                  />
+                </div>
+                <div className="w-16 h-10 bg-white rounded-md overflow-hidden">
+                  <Image
+                    draggable={false}
+                    src={"/img/barcode.svg"}
+                    width={77}
+                    height={45}
+                    alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                    layout="responsive"
+                    objectFit="contain"
+                  />
+                </div>
+              </div>
             </div>
           </div>
 

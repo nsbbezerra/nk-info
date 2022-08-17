@@ -3,43 +3,92 @@ import Image from "next/image";
 import {
   BiHome,
   BiInfoSquare,
-  BiTag,
   BiCog,
   BiPhone,
   BiUser,
   BiX,
   BiMenu,
+  BiArrowToTop,
+  BiNetworkChart,
+  BiShoppingBag,
 } from "react-icons/bi";
+import Link from "next/link";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { BsTools } from "react-icons/bs";
+import { CgWebsite } from "react-icons/cg";
 
 export default function Header() {
   const [open, setOpen] = useState<boolean>(false);
+  const [showScroll, setShowScroll] = useState<boolean>(false);
+
+  const checkScroll = () => {
+    if (!showScroll && window.pageYOffset > 400) {
+      setShowScroll(true);
+    } else if (showScroll && window.pageYOffset <= 400) {
+      setShowScroll(false);
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  window.addEventListener("scroll", checkScroll);
 
   const NavMenu = () => (
     <div className="flex lg:items-center gap-7 flex-col lg:flex-row px-5 lg:px-0">
-      <a className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-blue-600 font-semibold">
-        <BiHome />
-        Início
-      </a>
+      <Link href={"/"} passHref>
+        <a className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-blue-600 font-semibold">
+          <BiHome />
+          Início
+        </a>
+      </Link>
 
-      <a className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-blue-600 ">
-        <BiInfoSquare />
-        Sobre Nós
-      </a>
+      <Link passHref href={"#sobre"}>
+        <a className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-blue-600 ">
+          <BiInfoSquare />
+          Sobre Nós
+        </a>
+      </Link>
 
-      <a className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-blue-600 ">
-        <BiTag />
-        Produtos
-      </a>
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-blue-600 ">
+          <BiCog />
+          Serviços
+        </DropdownMenu.Trigger>
 
-      <a className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-blue-600 ">
-        <BiCog />
-        Serviços
-      </a>
+        <DropdownMenu.Portal>
+          <DropdownMenu.Content className="bg-white backdrop-blur-sm bg-opacity-90 rounded-md z-50 py-2 px-2 border shadow-lg mt-3">
+            <DropdownMenu.Group>
+              <Link href={"#manutencao"} passHref>
+                <DropdownMenu.Item className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-blue-600 cursor-pointer hover:text-white active:bg-blue-500 transition-all delay-75">
+                  <BsTools />
+                  Pacotes de Serviços
+                </DropdownMenu.Item>
+              </Link>
+              <Link href={"/sites-por-assinatura"}>
+                <DropdownMenu.Item className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-blue-600 cursor-pointer hover:text-white active:bg-blue-500 transition-all delay-75">
+                  <CgWebsite />
+                  Site por Assinatura
+                </DropdownMenu.Item>
+              </Link>
+              <Link href={"#ecommerce"}>
+                <DropdownMenu.Item className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-blue-600 cursor-pointer hover:text-white active:bg-blue-500 transition-all delay-75">
+                  <BiShoppingBag />
+                  Sua Loja Online
+                </DropdownMenu.Item>
+              </Link>
+            </DropdownMenu.Group>
+          </DropdownMenu.Content>
+        </DropdownMenu.Portal>
+      </DropdownMenu.Root>
 
-      <a className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-blue-600 ">
-        <BiPhone />
-        Contato
-      </a>
+      <Link href={"#contato"} passHref>
+        <a className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-blue-600 ">
+          <BiPhone />
+          Contato
+        </a>
+      </Link>
 
       <button className="bg-blue-600 px-4 py-3 text-white rounded-md flex items-center gap-2 hover:bg-blue-700 transition-all delay-75 active:bg-blue-600 w-fit lg:py-2 select-none">
         <BiUser />
@@ -98,6 +147,15 @@ export default function Header() {
           <NavMenu />
         </div>
       </div>
+
+      {showScroll && (
+        <button
+          className="fixed bottom-5 right-5 rounded-full h-14 w-14 flex items-center justify-center bg-blue-600 drop-shadow-lg z-50 text-white text-3xl bg-opacity-95 backdrop-blur-sm hover:bg-blue-700 active:bg-blue-600 transition-all delay-75"
+          onClick={scrollToTop}
+        >
+          <BiArrowToTop />
+        </button>
+      )}
     </Fragment>
   );
 }
