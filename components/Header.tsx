@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Image from "next/image";
 import {
   BiHome,
@@ -33,7 +33,9 @@ export default function Header() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  window.addEventListener("scroll", checkScroll);
+  useEffect(() => {
+    window.addEventListener("scroll", checkScroll);
+  });
 
   const NavMenu = () => (
     <div className="flex lg:items-center gap-7 flex-col lg:flex-row px-5 lg:px-0">
