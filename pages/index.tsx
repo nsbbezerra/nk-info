@@ -19,6 +19,7 @@ import * as marketing from "../assets/marketing.json";
 import * as webDeveloper from "../assets/web.json";
 import * as webSite from "../assets/website.json";
 import * as ecommerce from "../assets/ecommerce.json";
+import Footer from "../components/Footer";
 
 const Home: NextPage = () => {
   const Card = () => (
@@ -701,6 +702,8 @@ const Home: NextPage = () => {
           </div>
         </div>
       </section>
+
+      <Footer />
     </Fragment>
   );
 };
