@@ -17,17 +17,12 @@ import {
 } from "react-icons/bi";
 import Link from "next/link";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import ReactInputMask from "react-input-mask";
-import * as Dialog from "@radix-ui/react-dialog";
 import { BsTools } from "react-icons/bs";
 import { CgWebsite } from "react-icons/cg";
 
 export default function Header() {
   const [open, setOpen] = useState<boolean>(false);
   const [showScroll, setShowScroll] = useState<boolean>(false);
-  const [isRegisterModalOpen, setIsRegisterModalOpen] =
-    useState<boolean>(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   const checkScroll = () => {
     if (!showScroll && window.pageYOffset > 400) {
@@ -116,20 +111,18 @@ export default function Header() {
             </div>
             <DropdownMenu.Separator className="border-gray-300 border my-2" />
             <DropdownMenu.Group>
-              <DropdownMenu.Item
-                className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-blue-600 cursor-pointer hover:text-white active:bg-blue-500 transition-all delay-75"
-                onClick={() => setIsRegisterModalOpen(true)}
-              >
-                <BiSave />
-                Cadastre-se
-              </DropdownMenu.Item>
-              <DropdownMenu.Item
-                className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-blue-600 cursor-pointer hover:text-white active:bg-blue-500 transition-all delay-75"
-                onClick={() => setIsLoginModalOpen(true)}
-              >
-                <BiLogIn />
-                Login
-              </DropdownMenu.Item>
+              <Link href="/cadastro" passHref>
+                <DropdownMenu.Item className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-blue-600 cursor-pointer hover:text-white active:bg-blue-500 transition-all delay-75">
+                  <BiSave />
+                  Cadastre-se
+                </DropdownMenu.Item>
+              </Link>
+              <Link href="/login" passHref>
+                <DropdownMenu.Item className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-blue-600 cursor-pointer hover:text-white active:bg-blue-500 transition-all delay-75">
+                  <BiLogIn />
+                  Login
+                </DropdownMenu.Item>
+              </Link>
               <DropdownMenu.Item className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-blue-600 cursor-pointer hover:text-white active:bg-blue-500 transition-all delay-75">
                 <BiListCheck />
                 Meus Dados
@@ -204,178 +197,6 @@ export default function Header() {
           <BiArrowToTop />
         </button>
       )}
-
-      <Dialog.Root
-        open={isRegisterModalOpen}
-        onOpenChange={() => setIsRegisterModalOpen(!isRegisterModalOpen)}
-      >
-        <Dialog.Trigger asChild />
-        <Dialog.Portal>
-          <Dialog.Overlay className="w-full h-full bg-black bg-opacity-50 fixed z-50 top-0 left-0 right-0 bottom-0 flex items-center justify-center inset-0" />
-          <Dialog.Content className="fixed bg-white shadow-xl top-[2%] left-[10%] w-[80%] md:top-[15%] md:left-[15%] md:w-[70%] lg:top-[10%] lg:left-[20%] lg:w-[60%] z-50 rounded-md py-3 px-4 max-h-screen overflow-auto">
-            <Dialog.Title className="font-bold text-xl">
-              Cadastro de Cliente
-            </Dialog.Title>
-            <Dialog.Description className="text-sm text-gray-500">
-              Cadastre-se para ter acesso aos nossos planos
-            </Dialog.Description>
-            <Dialog.Close
-              className="top-3 right-3 absolute bg-gray-200 h-7 w-7 rounded-full hover:bg-gray-400 active:bg-gray-300 transition-all delay-75 cursor-pointer"
-              asChild
-            >
-              <BiX />
-            </Dialog.Close>
-
-            <div className="w-full mt-5">
-              <label>
-                Nome <span className="text-red-600">*</span>
-              </label>
-              <input
-                type="text"
-                className="w-full p-2 border rounded-md focus:border-blue-600"
-                placeholder="Nome"
-              />
-
-              <div className="grid grid-cols-1 md:grid-cols-2 mt-2 gap-2">
-                <div>
-                  <label>
-                    Email <span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full p-2 border rounded-md focus:border-blue-600"
-                    placeholder="Email"
-                  />
-                </div>
-                <div>
-                  <label>
-                    Whatsapp <span className="text-red-600">*</span>
-                  </label>
-                  <ReactInputMask
-                    mask={"99 99999-9999"}
-                    className="w-full p-2 border rounded-md focus:border-blue-600"
-                    placeholder="Whatsapp"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 mt-2 gap-2">
-                <div className="md:col-span-2">
-                  <label>
-                    Logradouro <span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full p-2 border rounded-md focus:border-blue-600"
-                    placeholder="Logradouro"
-                  />
-                </div>
-                <div>
-                  <label>
-                    Número <span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full p-2 border rounded-md focus:border-blue-600"
-                    placeholder="Número"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-5 mt-2 gap-2">
-                <div className="md:col-span-1">
-                  <label>
-                    CEP <span className="text-red-600">*</span>
-                  </label>
-                  <ReactInputMask
-                    mask={"99.999-999"}
-                    className="w-full p-2 border rounded-md focus:border-blue-600"
-                    placeholder="CEP"
-                  />
-                </div>
-                <div className="md:col-span-3">
-                  <label>
-                    Cidade <span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full p-2 border rounded-md focus:border-blue-600"
-                    placeholder="Cidade"
-                  />
-                </div>
-                <div>
-                  <label>
-                    UF <span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full p-2 border rounded-md focus:border-blue-600"
-                    placeholder="UF"
-                    maxLength={2}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="flex w-full justify-end mt-5">
-              <button className="bg-blue-600 px-4 py-3 text-white rounded-md flex items-center gap-2 hover:bg-blue-700 transition-all delay-75 active:bg-blue-600 w-fit lg:py-2 select-none">
-                <BiSave />
-                Salvar
-              </button>
-            </div>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog.Root>
-
-      <Dialog.Root
-        open={isLoginModalOpen}
-        onOpenChange={() => setIsLoginModalOpen(!isLoginModalOpen)}
-      >
-        <Dialog.Trigger asChild />
-        <Dialog.Portal>
-          <Dialog.Overlay className="w-full h-full bg-black bg-opacity-50 fixed z-50 top-0 left-0 right-0 bottom-0 flex items-center justify-center inset-0" />
-          <Dialog.Content className="fixed bg-white shadow-xl top-[2%] left-[10%] w-[80%] md:top-[10%] md:left-[25%] md:w-[50%] lg:top-[10%] lg:left-[35%] lg:w-[30%] z-50 rounded-md py-3 px-4 max-h-screen overflow-auto">
-            <Dialog.Title className="font-bold text-xl">Login</Dialog.Title>
-            <Dialog.Description className="text-sm text-gray-500">
-              Entre e tenha acesso aos seus dados
-            </Dialog.Description>
-            <Dialog.Close
-              className="top-3 right-3 absolute bg-gray-200 h-7 w-7 rounded-full hover:bg-gray-400 active:bg-gray-300 transition-all delay-75 cursor-pointer"
-              asChild
-            >
-              <BiX />
-            </Dialog.Close>
-
-            <div className="w-full mt-5">
-              <label>
-                Whatsapp <span className="text-red-600">*</span>
-              </label>
-              <ReactInputMask
-                mask={"99 99999-9999"}
-                className="w-full p-2 border rounded-md focus:border-blue-600"
-                placeholder="Whatsapp"
-              />
-            </div>
-            <div className="w-full mt-2">
-              <label>
-                Email <span className="text-red-600">*</span>
-              </label>
-              <input
-                type="text"
-                className="w-full p-2 border rounded-md focus:border-blue-600"
-                placeholder="Email"
-              />
-            </div>
-
-            <div className="flex w-full justify-end mt-5">
-              <button className="bg-blue-600 px-4 py-3 text-white rounded-md flex items-center gap-2 hover:bg-blue-700 transition-all delay-75 active:bg-blue-600 w-fit lg:py-2 select-none">
-                <BiLogIn />
-                Entrar
-              </button>
-            </div>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog.Root>
     </Fragment>
   );
 }
