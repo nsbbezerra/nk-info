@@ -64,53 +64,6 @@ export default function Footer() {
                 </a>
               </p>
               <p className="text-gray-400">contato.nk.info@gmail.com</p>
-
-              <div className="flex items-center gap-3 mt-5">
-                <div className="w-16 h-10 bg-white rounded-md overflow-hidden p-1">
-                  <Image
-                    draggable={false}
-                    src={"/img/visa.svg"}
-                    width={70}
-                    height={40}
-                    alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
-                    layout="responsive"
-                    objectFit="cover"
-                  />
-                </div>
-                <div className="w-16 h-10 bg-white rounded-md overflow-hidden p-1">
-                  <Image
-                    draggable={false}
-                    src={"/img/mastercard.svg"}
-                    width={70}
-                    height={40}
-                    alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
-                    layout="responsive"
-                    objectFit="cover"
-                  />
-                </div>
-                <div className="w-16 h-10 bg-white rounded-md overflow-hidden p-1">
-                  <Image
-                    draggable={false}
-                    src={"/img/elo.svg"}
-                    width={73}
-                    height={40}
-                    alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
-                    layout="responsive"
-                    objectFit="cover"
-                  />
-                </div>
-                <div className="w-16 h-10 bg-white rounded-md overflow-hidden">
-                  <Image
-                    draggable={false}
-                    src={"/img/barcode.svg"}
-                    width={77}
-                    height={45}
-                    alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
-                    layout="responsive"
-                    objectFit="contain"
-                  />
-                </div>
-              </div>
             </div>
           </div>
 
