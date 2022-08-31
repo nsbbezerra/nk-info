@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import Image from "next/image";
 import { Fragment } from "react";
 import HeadApp from "../components/Head";
@@ -21,31 +21,23 @@ import * as webSite from "../assets/website.json";
 import * as ecommerce from "../assets/ecommerce.json";
 import Footer from "../components/Footer";
 import Link from "next/link";
+import Stripe from "stripe";
+import { configs } from "../configs/indext";
 
-const Home: NextPage = () => {
-  const Card = () => (
-    <div className="rounded-md shadow-lg border p-5 w-full flex flex-col items-center bg-white">
-      <span className="text-gray-500">PLANO BÁSICO</span>
+const stripe = new Stripe(configs.stripe_pk, {
+  apiVersion: "2022-08-01",
+});
 
-      <div className="w-3/4 relative my-5">
-        <div className="bg-blue-300 rounded-md h-14 -rotate-6" />
-        <div className="bg-blue-900 rounded-md h-14 z-20 absolute w-full top-0 right-0 left-0 bottom-0 flex items-center justify-center font-bold text-xl text-white text-center">
-          R$ 200,00/mês
-        </div>
-      </div>
+interface Props {
+  packs: Stripe.Product[];
+  prices: Stripe.Price[];
+}
 
-      <div className="grid grid-cols-1 divide-y w-full my-5">
-        <p className="py-2 text-center">Customizad Plans</p>
-        <p className="py-2 text-center">Billing Report</p>
-        <p className="py-2 text-center">Access to Asana</p>
-      </div>
-
-      <button className="mt-3 bg-blue-600 rounded-md px-10 py-3 flex items-center gap-2 text-white hover:bg-blue-700 active:bg-blue-600">
-        <BiEdit />
-        CONTRATAR
-      </button>
-    </div>
-  );
+const Home: NextPage<Props> = ({ packs, prices }) => {
+  const calcReal = (amount: number) => {
+    let calc = amount / 100;
+    return calc.toLocaleString("pt-br", { style: "currency", currency: "BRL" });
+  };
 
   return (
     <Fragment>
@@ -116,7 +108,7 @@ const Home: NextPage = () => {
           <div className="w-[95%] lg:w-[58%] rounded-md bg-white shadow-xl lg:absolute h-fit z-10 left-0 p-7 flex flex-col gap-2">
             <h3 className="text-2xl sm:text-3xl font-bold">
               Somos especialistas em soluções de{" "}
-              <span className="text-blue-600">negócios e serviços!</span>
+              <span className="text-sky-700">negócios e serviços!</span>
             </h3>
             <p className="text-sm text-gray-600">
               Quando surge uma boa ideia, nosso trabalho é transformar em
@@ -376,10 +368,56 @@ const Home: NextPage = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            <Card />
-            <Card />
-            <Card />
-            <Card />
+            {packs
+              .filter((obj) => obj.metadata.category === "ti")
+              .sort(
+                (a, b) =>
+                  parseInt(a.metadata.order) - parseInt(b.metadata.order)
+              )
+              .map((prod) => (
+                <div
+                  className="rounded-md shadow-lg border p-5 w-full flex flex-col items-center bg-white h-fit"
+                  key={prod.id}
+                >
+                  <span className="text-gray-700 text-lg text-center font-bold">
+                    {prod.name}
+                  </span>
+
+                  <div className="w-3/4 relative my-5">
+                    <div className="bg-blue-300 rounded-md h-14 -rotate-6" />
+                    <div className="bg-blue-900 rounded-md h-14 z-20 absolute w-full top-0 right-0 left-0 bottom-0 flex items-center justify-center font-bold text-xl text-white text-center">
+                      {calcReal(
+                        prices.find((obj) => obj.id === prod.default_price)
+                          ?.unit_amount as number
+                      )}
+                      /mês
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 divide-y w-full my-5">
+                    <p className="py-2 text-center">
+                      {prod.metadata?.details_one || ""}
+                    </p>
+                    <p className="py-2 text-center">
+                      {prod.metadata?.details_two || ""}
+                    </p>
+                    <p className="py-2 text-center">
+                      {prod.metadata?.details_three || ""}
+                    </p>
+                    <p className="py-2 text-center">
+                      {prod.metadata?.details_four || ""}
+                    </p>
+                    <p className="py-2 text-center">
+                      {prod.metadata?.details_five || ""}
+                    </p>
+                  </div>
+
+                  <button className="mt-3 bg-sky-700 rounded-md px-10 py-3 flex items-center gap-2 text-white hover:bg-sky-800 active:bg-sky-700">
+                    <BiEdit />
+                    CONTRATAR
+                  </button>
+                </div>
+              ))}
           </div>
         </div>
       </section>
@@ -403,16 +441,62 @@ const Home: NextPage = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            <Card />
-            <Card />
-            <Card />
-            <Card />
+            {packs
+              .filter((obj) => obj.metadata.category === "marketing")
+              .sort(
+                (a, b) =>
+                  parseInt(a.metadata.order) - parseInt(b.metadata.order)
+              )
+              .map((prod) => (
+                <div
+                  className="rounded-md shadow-lg border p-5 w-full flex flex-col items-center bg-white h-fit"
+                  key={prod.id}
+                >
+                  <span className="text-gray-700 text-lg text-center font-bold">
+                    {prod.name}
+                  </span>
+
+                  <div className="w-3/4 relative my-5">
+                    <div className="bg-blue-300 rounded-md h-14 -rotate-6" />
+                    <div className="bg-blue-900 rounded-md h-14 z-20 absolute w-full top-0 right-0 left-0 bottom-0 flex items-center justify-center font-bold text-xl text-white text-center">
+                      {calcReal(
+                        prices.find((obj) => obj.id === prod.default_price)
+                          ?.unit_amount as number
+                      )}
+                      /mês
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 divide-y w-full my-5">
+                    <p className="py-2 text-center">
+                      {prod.metadata?.details_one || ""}
+                    </p>
+                    <p className="py-2 text-center">
+                      {prod.metadata?.details_two || ""}
+                    </p>
+                    <p className="py-2 text-center">
+                      {prod.metadata?.details_three || ""}
+                    </p>
+                    <p className="py-2 text-center">
+                      {prod.metadata?.details_four || ""}
+                    </p>
+                    <p className="py-2 text-center">
+                      {prod.metadata?.details_five || ""}
+                    </p>
+                  </div>
+
+                  <button className="mt-3 bg-sky-700 rounded-md px-10 py-3 flex items-center gap-2 text-white hover:bg-sky-800 active:bg-sky-700">
+                    <BiEdit />
+                    CONTRATAR
+                  </button>
+                </div>
+              ))}
           </div>
 
           <div className="flex justify-center mt-10">
             <a
               href="#"
-              className="font-semibold text-blue-600 flex items-center gap-2 hover:underline"
+              className="font-semibold text-sky-700 flex items-center gap-2 hover:underline"
             >
               Veja Mais <BiChevronRight />
             </a>
@@ -429,7 +513,7 @@ const Home: NextPage = () => {
               <Lottie animation={webSite} width="100%" height={"100%"} />
             </div>
             <div className="w-full flex flex-col gap-2">
-              <h2 className="text-4xl font-bold text-blue-600">
+              <h2 className="text-4xl font-bold text-sky-700">
                 Site por Assinatura
               </h2>
               <p className="text-justify mt-4 text-sm md:text-base">
@@ -440,7 +524,7 @@ const Home: NextPage = () => {
               </p>
 
               <Link href="/sites-por-assinatura" passHref>
-                <a className="bg-blue-600 flex px-10 py-3 w-fit font-semibold text-white rounded-md mt-4 hover:bg-blue-700 active:bg-blue-600 select-none cursor-pointer transition-all delay-75">
+                <a className="bg-sky-700 flex px-10 py-3 w-fit font-semibold text-white rounded-md mt-4 hover:bg-sky-800 active:bg-sky-700 select-none cursor-pointer transition-all delay-75">
                   Quero conhecer mais!
                 </a>
               </Link>
@@ -456,7 +540,7 @@ const Home: NextPage = () => {
               <Lottie animation={ecommerce} width="100%" height={"100%"} />
             </div>
             <div className="w-full flex flex-col gap-2">
-              <h2 className="text-4xl font-bold text-blue-600">Loja Online</h2>
+              <h2 className="text-4xl font-bold text-sky-700">Loja Online</h2>
               <p className="text-justify mt-4 text-sm md:text-base">
                 Tenha sua própria loja virtual, com um layout próprio, com suas
                 cores, sua marca, e com um sistema de gestão completo para você
@@ -479,7 +563,7 @@ const Home: NextPage = () => {
                 </li>
               </ul>
 
-              <a className="bg-blue-600 flex px-10 py-3 w-fit font-semibold text-white rounded-md mt-4 hover:bg-blue-700 active:bg-blue-600 select-none cursor-pointer transition-all delay-75">
+              <a className="bg-sky-700 flex px-10 py-3 w-fit font-semibold text-white rounded-md mt-4 hover:bg-sky-800 active:bg-sky-700 select-none cursor-pointer transition-all delay-75">
                 Quero conhecer mais!
               </a>
             </div>
@@ -623,7 +707,7 @@ const Home: NextPage = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 justify-items-center items-start">
             <div className="flex flex-col items-center justify-center gap-2 text-center">
-              <div className="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center text-3xl text-white ring-4 ring-blue-300">
+              <div className="bg-sky-600 w-16 h-16 rounded-full flex items-center justify-center text-3xl text-white ring-4 ring-sky-300">
                 <BiMapPin />
               </div>
               <span className="font-semibold">Endereço</span>
@@ -634,7 +718,7 @@ const Home: NextPage = () => {
             </div>
 
             <div className="flex flex-col items-center justify-center gap-2 text-center">
-              <div className="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center text-3xl text-white ring-4 ring-blue-300">
+              <div className="bg-sky-600 w-16 h-16 rounded-full flex items-center justify-center text-3xl text-white ring-4 ring-sky-300">
                 <BiMailSend />
               </div>
               <span className="font-semibold">Email</span>
@@ -644,7 +728,7 @@ const Home: NextPage = () => {
             </div>
 
             <div className="flex flex-col items-center justify-center gap-2 text-center">
-              <div className="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center text-3xl text-white ring-4 ring-blue-300">
+              <div className="bg-sky-600 w-16 h-16 rounded-full flex items-center justify-center text-3xl text-white ring-4 ring-sky-300">
                 <BiPhone />
               </div>
               <span className="font-semibold">Telefone</span>
@@ -652,7 +736,7 @@ const Home: NextPage = () => {
             </div>
 
             <div className="flex flex-col items-center justify-center gap-2 text-center">
-              <div className="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center text-3xl text-white ring-4 ring-blue-300">
+              <div className="bg-sky-600 w-16 h-16 rounded-full flex items-center justify-center text-3xl text-white ring-4 ring-sky-300">
                 <BiCalendar />
               </div>
               <span className="font-semibold">Horários de Atendimento</span>
@@ -665,7 +749,7 @@ const Home: NextPage = () => {
           <div className="w-full max-w-4xl mx-auto mt-10">
             <label htmlFor="name">Nome</label>
             <input
-              className="w-full p-2 border rounded-md focus:border-blue-600"
+              className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
               placeholder="Seu nome aqui"
               id="name"
             />
@@ -674,7 +758,7 @@ const Home: NextPage = () => {
               <div>
                 <label htmlFor="email">Email</label>
                 <input
-                  className="w-full p-2 border rounded-md focus:border-blue-600"
+                  className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
                   placeholder="Seu email aqui"
                   id="email"
                   type="email"
@@ -683,7 +767,7 @@ const Home: NextPage = () => {
               <div>
                 <label htmlFor="phone">Telefone</label>
                 <input
-                  className="w-full p-2 border rounded-md focus:border-blue-600"
+                  className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
                   placeholder="Seu telefone aqui"
                   id="phone"
                   type="phone"
@@ -693,13 +777,13 @@ const Home: NextPage = () => {
 
             <label htmlFor="message">Mensagem</label>
             <textarea
-              className="w-full p-2 border rounded-md focus:border-blue-600 resize-none"
+              className="w-full px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75 resize-none"
               placeholder="Sua mensagem aqui"
               id="message"
               rows={6}
             />
 
-            <button className="bg-blue-600 flex items-center gap-3 px-10 py-3 w-fit text-white rounded-md mt-4 hover:bg-blue-700 active:bg-blue-600 select-none cursor-pointer transition-all delay-75">
+            <button className="bg-sky-700 flex items-center gap-3 px-10 py-3 w-fit text-white rounded-md mt-4 hover:bg-sky-800 active:bg-sky-700 select-none cursor-pointer transition-all delay-75">
               <BiSend />
               Enviar Mensagem
             </button>
@@ -713,3 +797,18 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export const getStaticProps: GetStaticProps = async () => {
+  const pack = await stripe.products.list({ limit: 20 });
+  const price = await stripe.prices.list({ limit: 20 });
+
+  const packs = pack.data;
+  const prices = price.data;
+
+  return {
+    props: {
+      packs,
+      prices,
+    },
+  };
+};
