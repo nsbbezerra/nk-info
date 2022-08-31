@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import {
   BiHome,
@@ -19,10 +19,23 @@ import Link from "next/link";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { BsTools } from "react-icons/bs";
 import { CgWebsite } from "react-icons/cg";
+import ClientContext from "../context/client";
+import { useRouter } from "next/router";
 
 export default function Header() {
+  const { push } = useRouter();
   const [open, setOpen] = useState<boolean>(false);
   const [showScroll, setShowScroll] = useState<boolean>(false);
+  const { state: clientState, setState: setClientState } =
+    useContext(ClientContext);
+
+  useEffect(() => {
+    const client = localStorage.getItem("client");
+    if (client) {
+      const parsed = JSON.parse(client);
+      setClientState(parsed);
+    }
+  }, []);
 
   const checkScroll = () => {
     if (!showScroll && window.pageYOffset > 400) {
@@ -40,24 +53,30 @@ export default function Header() {
     window.addEventListener("scroll", checkScroll);
   });
 
+  const logout = () => {
+    localStorage.removeItem("client");
+    setClientState({ id: "", name: "" });
+    push("/");
+  };
+
   const NavMenu = () => (
     <div className="flex lg:items-center gap-7 flex-col lg:flex-row px-5 lg:px-0">
       <Link href={"/"} passHref>
-        <a className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-blue-600 font-semibold">
+        <a className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-sky-700 font-semibold">
           <BiHome />
           Início
         </a>
       </Link>
 
       <Link passHref href={"#sobre"}>
-        <a className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-blue-600 ">
+        <a className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-sky-700 ">
           <BiInfoSquare />
           Sobre Nós
         </a>
       </Link>
 
       <DropdownMenu.Root>
-        <DropdownMenu.Trigger className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-blue-600 ">
+        <DropdownMenu.Trigger className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-sky-700 ">
           <BiCog />
           Serviços
         </DropdownMenu.Trigger>
@@ -66,19 +85,19 @@ export default function Header() {
           <DropdownMenu.Content className="bg-white backdrop-blur-sm bg-opacity-90 rounded-md z-50 py-2 px-2 border shadow-lg mt-3">
             <DropdownMenu.Group>
               <Link href={"#manutencao"} passHref>
-                <DropdownMenu.Item className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-blue-600 cursor-pointer hover:text-white active:bg-blue-500 transition-all delay-75">
+                <DropdownMenu.Item className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500">
                   <BsTools />
                   Pacotes de Serviços
                 </DropdownMenu.Item>
               </Link>
               <Link href={"/sites-por-assinatura"}>
-                <DropdownMenu.Item className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-blue-600 cursor-pointer hover:text-white active:bg-blue-500 transition-all delay-75">
+                <DropdownMenu.Item className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500">
                   <CgWebsite />
                   Site por Assinatura
                 </DropdownMenu.Item>
               </Link>
               <Link href={"#ecommerce"}>
-                <DropdownMenu.Item className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-blue-600 cursor-pointer hover:text-white active:bg-blue-500 transition-all delay-75">
+                <DropdownMenu.Item className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500">
                   <BiShoppingBag />
                   Sua Loja Online
                 </DropdownMenu.Item>
@@ -96,41 +115,62 @@ export default function Header() {
       </Link>
 
       <DropdownMenu.Root>
-        <DropdownMenu.Trigger className="bg-blue-600 px-4 py-3 text-white rounded-md flex items-center gap-2 hover:bg-blue-700 transition-all delay-75 active:bg-blue-600 w-fit lg:py-2 select-none">
+        <DropdownMenu.Trigger className="bg-sky-700 px-4 py-3 text-white rounded-md flex items-center gap-2 hover:bg-sky-800 transition-all delay-75 active:bg-sky-700 w-fit lg:py-2 select-none">
           <BiUser />
           Área do Cliente
         </DropdownMenu.Trigger>
 
         <DropdownMenu.Portal>
-          <DropdownMenu.Content className="bg-white backdrop-blur-sm bg-opacity-90 rounded-md z-50 py-2 px-2 border shadow-lg mt-1">
-            <div className="flex flex-col items-center justify-center">
-              <BiUser className="rounded-full p-1 bg-gray-300 text-4xl" />
-              <span className="text-gray-600 text-sm text-center mt-2">
-                Olá, Natanael dos Santos Bezerra
-              </span>
-            </div>
-            <DropdownMenu.Separator className="border-gray-300 border my-2" />
+          <DropdownMenu.Content className="bg-white backdrop-blur-sm bg-opacity-90 rounded-md z-50 py-2 px-2 border shadow-lg mt-1 min-w-[180px]">
+            {clientState.id !== "" ? (
+              <>
+                <div className="flex flex-col items-center justify-center">
+                  <BiUser className="rounded-full p-1 bg-gray-300 text-4xl" />
+                  <span className="text-gray-600 text-sm text-center mt-2">
+                    Olá, {clientState.name || ""}
+                  </span>
+                </div>
+                <DropdownMenu.Separator className="border-gray-300 border my-2" />
+              </>
+            ) : (
+              ""
+            )}
             <DropdownMenu.Group>
-              <Link href="/cadastro" passHref>
-                <DropdownMenu.Item className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-blue-600 cursor-pointer hover:text-white active:bg-blue-500 transition-all delay-75">
-                  <BiSave />
-                  Cadastre-se
-                </DropdownMenu.Item>
-              </Link>
-              <Link href="/login" passHref>
-                <DropdownMenu.Item className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-blue-600 cursor-pointer hover:text-white active:bg-blue-500 transition-all delay-75">
-                  <BiLogIn />
-                  Login
-                </DropdownMenu.Item>
-              </Link>
-              <DropdownMenu.Item className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-blue-600 cursor-pointer hover:text-white active:bg-blue-500 transition-all delay-75">
-                <BiListCheck />
-                Meus Dados
-              </DropdownMenu.Item>
-              <DropdownMenu.Item className="text-red-600 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-red-600 cursor-pointer hover:text-white active:bg-red-500 transition-all delay-75">
-                <BiLogOut />
-                Sair
-              </DropdownMenu.Item>
+              {clientState.id === "" ? (
+                <>
+                  <Link href="/cadastro" passHref>
+                    <DropdownMenu.Item className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                      <BiSave />
+                      Cadastre-se
+                    </DropdownMenu.Item>
+                  </Link>
+                  <Link href="/login" passHref>
+                    <DropdownMenu.Item className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                      <BiLogIn />
+                      Login
+                    </DropdownMenu.Item>
+                  </Link>
+                </>
+              ) : (
+                ""
+              )}
+              {clientState.id !== "" ? (
+                <>
+                  <DropdownMenu.Item className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                    <BiListCheck />
+                    Meus Dados
+                  </DropdownMenu.Item>
+                  <DropdownMenu.Item
+                    className="text-red-600 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-red-600 cursor-pointer hover:text-white active:bg-red-500 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-red-400"
+                    onClick={() => logout()}
+                  >
+                    <BiLogOut />
+                    Sair
+                  </DropdownMenu.Item>
+                </>
+              ) : (
+                ""
+              )}
             </DropdownMenu.Group>
           </DropdownMenu.Content>
         </DropdownMenu.Portal>

@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { Provider } from "urql";
 import { client, ssrCache } from "../lib/urql";
+import GlobalContext from "../context";
 
 function MyApp({ Component, pageProps }: AppProps) {
   if (pageProps.urqlState) {
@@ -10,7 +11,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <Provider value={client}>
-      <Component {...pageProps} />
+      <GlobalContext>
+        <Component {...pageProps} />
+      </GlobalContext>
     </Provider>
   );
 }

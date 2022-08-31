@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import {
   BiCheck,
   BiChevronLeft,
@@ -19,6 +19,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { client } from "../lib/urql";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import ClientContext from "../context/client";
 
 interface LoginProps {
   document: string;
@@ -35,6 +36,7 @@ export default function Login() {
 
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isDialogErrorOpen, setIsDialogErrorOpen] = useState<boolean>(false);
+  const { setState: setClientState } = useContext(ClientContext);
 
   useEffect(() => {
     registerMode === "" && setRegisterMode("cpf");
@@ -54,7 +56,7 @@ export default function Login() {
       const { clients } = data;
 
       if (clients.length !== 0) {
-        console.log(clients);
+        setClientState(clients[0]);
         const user = JSON.stringify(clients[0]);
         localStorage.setItem("client", user);
         setIsDialogOpen(true);
