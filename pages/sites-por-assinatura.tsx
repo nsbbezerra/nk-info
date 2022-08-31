@@ -13,31 +13,24 @@ import {
 } from "react-icons/bi";
 import { RiPagesLine } from "react-icons/ri";
 import { AiOutlineCloudServer } from "react-icons/ai";
+import Stripe from "stripe";
+import { configs } from "../configs/indext";
+import { GetStaticProps, NextPage } from "next";
 
-export default function Sites() {
-  const Card = () => (
-    <div className="rounded-md shadow-lg border p-5 w-full flex flex-col items-center bg-white">
-      <span className="text-gray-500">PLANO BÁSICO</span>
+const stripe = new Stripe(configs.stripe_pk, {
+  apiVersion: "2022-08-01",
+});
 
-      <div className="w-3/4 relative my-5">
-        <div className="bg-blue-300 rounded-md h-14 -rotate-6" />
-        <div className="bg-blue-900 rounded-md h-14 z-20 absolute w-full top-0 right-0 left-0 bottom-0 flex items-center justify-center font-bold text-xl text-white text-center">
-          R$ 200,00/mês
-        </div>
-      </div>
+interface Props {
+  packs: Stripe.Product[];
+  prices: Stripe.Price[];
+}
 
-      <div className="grid grid-cols-1 divide-y w-full my-5">
-        <p className="py-2 text-center">Customizad Plans</p>
-        <p className="py-2 text-center">Billing Report</p>
-        <p className="py-2 text-center">Access to Asana</p>
-      </div>
-
-      <button className="mt-3 bg-blue-600 rounded-md px-10 py-3 flex items-center gap-2 text-white hover:bg-blue-700 active:bg-blue-600">
-        <BiEdit />
-        CONTRATAR
-      </button>
-    </div>
-  );
+const Sites: NextPage<Props> = ({ packs, prices }) => {
+  const calcReal = (amount: number) => {
+    let calc = amount / 100;
+    return calc.toLocaleString("pt-br", { style: "currency", currency: "BRL" });
+  };
 
   return (
     <Fragment>
@@ -49,7 +42,7 @@ export default function Sites() {
           <div className="w-1/2 md:w-72 lg:w-80">
             <Lottie animation={webSite} width="100%" height={"100%"} />
           </div>
-          <h1 className="text-blue-900 text-lg sm:text-2xl md:text-3xl font-bold text-center max-w-5xl">
+          <h1 className="text-sky-900 text-lg sm:text-2xl md:text-3xl font-bold text-center max-w-5xl">
             CRIAÇÃO DE SITES POR ASSINATURA COM LAYOUTS PROFISSIONAIS, MODERNOS
             E COM UM VALOR QUE CABE NO SEU BOLSO
           </h1>
@@ -75,7 +68,7 @@ export default function Sites() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-10 items-start">
               <div className="flex flex-col items-center justify-center gap-2">
-                <BiLayout className="bg-blue-600 rounded-full h-16 w-16 p-2 text-white ring-4 ring-blue-300" />
+                <BiLayout className="bg-sky-700 rounded-full h-16 w-16 p-2 text-white ring-4 ring-blue-300" />
                 <span className="font-semibold text-gray-700 text-lg text-center">
                   DESIGN MODERNO
                 </span>
@@ -86,7 +79,7 @@ export default function Sites() {
               </div>
 
               <div className="flex flex-col items-center justify-center gap-2">
-                <BiDesktop className="bg-blue-600 rounded-full h-16 w-16 p-2 text-white ring-4 ring-blue-300" />
+                <BiDesktop className="bg-sky-700 rounded-full h-16 w-16 p-2 text-white ring-4 ring-blue-300" />
                 <span className="font-semibold text-gray-700 text-lg text-center">
                   TODOS OS NAVEGADORES
                 </span>
@@ -98,7 +91,7 @@ export default function Sites() {
               </div>
 
               <div className="flex flex-col items-center justify-center gap-2">
-                <BiMobile className="bg-blue-600 rounded-full h-16 w-16 p-2 text-white ring-4 ring-blue-300" />
+                <BiMobile className="bg-sky-700 rounded-full h-16 w-16 p-2 text-white ring-4 ring-blue-300" />
                 <span className="font-semibold text-gray-700 text-lg text-center">
                   SITE RESPONSIVO
                 </span>
@@ -109,7 +102,7 @@ export default function Sites() {
               </div>
 
               <div className="flex flex-col items-center justify-center gap-2">
-                <RiPagesLine className="bg-blue-600 rounded-full h-16 w-16 p-2 text-white ring-4 ring-blue-300" />
+                <RiPagesLine className="bg-sky-700 rounded-full h-16 w-16 p-2 text-white ring-4 ring-blue-300" />
                 <span className="font-semibold text-gray-700 text-lg text-center">
                   ONE PAGE
                 </span>
@@ -120,7 +113,7 @@ export default function Sites() {
               </div>
 
               <div className="flex flex-col items-center justify-center gap-2">
-                <BiSearch className="bg-blue-600 rounded-full h-16 w-16 p-2 text-white ring-4 ring-blue-300" />
+                <BiSearch className="bg-sky-700 rounded-full h-16 w-16 p-2 text-white ring-4 ring-blue-300" />
                 <span className="text-gray-700 text-lg font-semibold text-center">
                   OTIMIZADO PARA BUSCAS
                 </span>
@@ -131,7 +124,7 @@ export default function Sites() {
               </div>
 
               <div className="flex flex-col items-center justify-center gap-2">
-                <AiOutlineCloudServer className="bg-blue-600 rounded-full h-16 w-16 p-2 text-white ring-4 ring-blue-300" />
+                <AiOutlineCloudServer className="bg-sky-700 rounded-full h-16 w-16 p-2 text-white ring-4 ring-blue-300" />
                 <span className="font-semibold text-gray-700 text-lg text-center">
                   HOSPEDAGEM E DOMÍNIO
                 </span>
@@ -154,7 +147,7 @@ export default function Sites() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 items-start">
             <div className="flex flex-col items-center justify-center gap-3">
-              <span className="bg-blue-600 rounded-full h-16 w-16 p-2 text-white ring-4 ring-blue-300 flex items-center justify-center text-3xl font-semibold">
+              <span className="bg-sky-700 rounded-full h-16 w-16 p-2 text-white ring-4 ring-blue-300 flex items-center justify-center text-3xl font-semibold">
                 1
               </span>
               <span className="text-center text-gray-700">
@@ -164,7 +157,7 @@ export default function Sites() {
             </div>
 
             <div className="flex flex-col items-center justify-center gap-3">
-              <span className="bg-blue-600 rounded-full h-16 w-16 p-2 text-white ring-4 ring-blue-300 flex items-center justify-center text-3xl font-semibold">
+              <span className="bg-sky-700 rounded-full h-16 w-16 p-2 text-white ring-4 ring-blue-300 flex items-center justify-center text-3xl font-semibold">
                 2
               </span>
               <span className="text-center text-gray-700">
@@ -174,7 +167,7 @@ export default function Sites() {
             </div>
 
             <div className="flex flex-col items-center justify-center gap-3">
-              <span className="bg-blue-600 rounded-full h-16 w-16 p-2 text-white ring-4 ring-blue-300 flex items-center justify-center text-3xl font-semibold">
+              <span className="bg-sky-700 rounded-full h-16 w-16 p-2 text-white ring-4 ring-blue-300 flex items-center justify-center text-3xl font-semibold">
                 3
               </span>
               <span className="text-center text-gray-700">
@@ -184,7 +177,7 @@ export default function Sites() {
             </div>
 
             <div className="flex flex-col items-center justify-center gap-3">
-              <span className="bg-blue-600 rounded-full h-16 w-16 p-2 text-white ring-4 ring-blue-300 flex items-center justify-center text-3xl font-semibold">
+              <span className="bg-sky-700 rounded-full h-16 w-16 p-2 text-white ring-4 ring-blue-300 flex items-center justify-center text-3xl font-semibold">
                 4
               </span>
               <span className="text-center text-gray-700">
@@ -198,19 +191,77 @@ export default function Sites() {
       <section className="container mx-auto px-10 lg:px-20 mt-16">
         <div className="text-center w-full flex items-center flex-col gap-2 mb-10">
           <h2 className="text-4xl font-bold">Planos</h2>
-          <div className="w-32 bg-gradient-to-r from-blue-400 to-blue-600 h-1 rounded-[50%]" />
+          <div className="w-32 bg-gradient-to-r from-blue-400 to-sky-700 h-1 rounded-[50%]" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
+          {packs
+            .filter((obj) => obj.metadata.category === "sites")
+            .map((prod) => (
+              <div
+                className="rounded-md shadow-lg border p-5 w-full flex flex-col items-center bg-white h-fit"
+                key={prod.id}
+              >
+                <span className="text-gray-700 text-lg text-center font-bold">
+                  {prod.name}
+                </span>
+
+                <div className="w-3/4 relative my-5">
+                  <div className="bg-blue-300 rounded-md h-14 -rotate-6" />
+                  <div className="bg-blue-900 rounded-md h-14 z-20 absolute w-full top-0 right-0 left-0 bottom-0 flex items-center justify-center font-bold text-xl text-white text-center">
+                    {calcReal(
+                      prices.find((obj) => obj.id === prod.default_price)
+                        ?.unit_amount as number
+                    )}
+                    /mês
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 divide-y w-full my-5">
+                  <p className="py-2 text-center">
+                    {prod.metadata?.details_one || ""}
+                  </p>
+                  <p className="py-2 text-center">
+                    {prod.metadata?.details_two || ""}
+                  </p>
+                  <p className="py-2 text-center">
+                    {prod.metadata?.details_three || ""}
+                  </p>
+                  <p className="py-2 text-center">
+                    {prod.metadata?.details_four || ""}
+                  </p>
+                  <p className="py-2 text-center">
+                    {prod.metadata?.details_five || ""}
+                  </p>
+                </div>
+
+                <button className="mt-3 bg-sky-700 rounded-md px-10 py-3 flex items-center gap-2 text-white hover:bg-sky-800 active:bg-sky-700 w-full justify-center">
+                  <BiEdit />
+                  CONTRATAR
+                </button>
+              </div>
+            ))}
         </div>
       </section>
       <Footer />
     </Fragment>
   );
-}
+};
+
+export default Sites;
+
+export const getStaticProps: GetStaticProps = async () => {
+  const pack = await stripe.products.list({ limit: 15 });
+  const price = await stripe.prices.list({ limit: 15 });
+
+  const packs = pack.data;
+  const prices = price.data;
+
+  return {
+    props: {
+      packs,
+      prices,
+    },
+    revalidate: 60,
+  };
+};

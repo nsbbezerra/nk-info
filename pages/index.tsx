@@ -412,7 +412,7 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
                     </p>
                   </div>
 
-                  <button className="mt-3 bg-sky-700 rounded-md px-10 py-3 flex items-center gap-2 text-white hover:bg-sky-800 active:bg-sky-700">
+                  <button className="mt-3 bg-sky-700 rounded-md px-10 py-3 flex items-center gap-2 text-white hover:bg-sky-800 active:bg-sky-700 w-full justify-center">
                     <BiEdit />
                     CONTRATAR
                   </button>
@@ -485,7 +485,7 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
                     </p>
                   </div>
 
-                  <button className="mt-3 bg-sky-700 rounded-md px-10 py-3 flex items-center gap-2 text-white hover:bg-sky-800 active:bg-sky-700">
+                  <button className="mt-3 bg-sky-700 rounded-md px-10 py-3 flex items-center gap-2 text-white hover:bg-sky-800 active:bg-sky-700 w-full justify-center">
                     <BiEdit />
                     CONTRATAR
                   </button>
@@ -799,8 +799,8 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
 export default Home;
 
 export const getStaticProps: GetStaticProps = async () => {
-  const pack = await stripe.products.list({ limit: 20 });
-  const price = await stripe.prices.list({ limit: 20 });
+  const pack = await stripe.products.list({ limit: 15 });
+  const price = await stripe.prices.list({ limit: 15 });
 
   const packs = pack.data;
   const prices = price.data;
@@ -810,5 +810,6 @@ export const getStaticProps: GetStaticProps = async () => {
       packs,
       prices,
     },
+    revalidate: 60,
   };
 };
