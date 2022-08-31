@@ -26,6 +26,8 @@ const LoginQuery = gql`
     clients(where: { document: $document, AND: { phone: $phone } }) {
       id
       name
+      phone
+      email
     }
   }
 `;

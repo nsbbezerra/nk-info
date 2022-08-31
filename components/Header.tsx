@@ -200,7 +200,7 @@ export default function Header() {
 
           <div className="block lg:hidden">
             <button
-              className="text-3xl flex items-center justify-center bg-blue-600 rounded-md text-white p-1 hover:bg-blue-700 active:bg-blue-600"
+              className="text-3xl flex items-center justify-center bg-sky-700 rounded-md text-white p-1 hover:bg-sky-800 active:bg-sky-700"
               onClick={() => setOpen(!open)}
             >
               <BiMenu />
@@ -231,7 +231,7 @@ export default function Header() {
 
       {showScroll && (
         <button
-          className="fixed bottom-5 right-5 rounded-full h-14 w-14 flex items-center justify-center bg-blue-600 drop-shadow-lg z-50 text-white text-3xl bg-opacity-95 backdrop-blur-sm hover:bg-blue-700 active:bg-blue-600 transition-all delay-75"
+          className="fixed bottom-5 right-5 rounded-full h-14 w-14 flex items-center justify-center bg-sky-700 drop-shadow-lg z-50 text-white text-3xl bg-opacity-95 backdrop-blur-sm hover:bg-sky-800 active:bg-sky-700 transition-all delay-75"
           onClick={scrollToTop}
         >
           <BiArrowToTop />

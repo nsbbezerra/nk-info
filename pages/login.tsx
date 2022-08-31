@@ -20,6 +20,7 @@ import * as Yup from "yup";
 import { client } from "../lib/urql";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import ClientContext from "../context/client";
+import { useRouter } from "next/router";
 
 interface LoginProps {
   document: string;
@@ -27,6 +28,7 @@ interface LoginProps {
 }
 
 export default function Login() {
+  const { push } = useRouter();
   const [registerMode, setRegisterMode] = useState<string>("cpf");
   const initialValues: LoginProps = { document: "", phone: "" };
   const validationSchema = Yup.object({
@@ -60,6 +62,9 @@ export default function Login() {
         const user = JSON.stringify(clients[0]);
         localStorage.setItem("client", user);
         setIsDialogOpen(true);
+        setTimeout(() => {
+          push("/");
+        }, 2000);
       } else {
         setIsDialogErrorOpen(true);
       }
@@ -95,7 +100,7 @@ export default function Login() {
         <aside className="p-10 flex items-center justify-center w-full h-full col-span-2">
           <div className="w-full max-w-sm border rounded-md shadow-lg mx-auto p-5">
             <Link href="/" passHref>
-              <a className="flex items-center gap-2 text-blue-600 hover:underline mb-3 cursor-pointer w-fit">
+              <a className="flex items-center gap-2 text-sky-700 hover:underline mb-3 cursor-pointer w-fit">
                 <BiChevronLeft />
                 Voltar
               </a>
@@ -109,7 +114,7 @@ export default function Login() {
               <ToggleGroup.Item
                 value="cpf"
                 className={`${
-                  registerMode === "cpf" ? "bg-blue-800" : "bg-blue-600"
+                  registerMode === "cpf" ? "bg-sky-700" : "bg-sky-500"
                 } text-white h-8 px-2 flex items-center border-r`}
               >
                 Pessoa Física
@@ -117,7 +122,7 @@ export default function Login() {
               <ToggleGroup.Item
                 value="cnpj"
                 className={`${
-                  registerMode === "cnpj" ? "bg-blue-800" : "bg-blue-600"
+                  registerMode === "cnpj" ? "bg-sky-700" : "bg-sky-500"
                 } text-white h-8 px-2 flex items-center`}
               >
                 Pessoa Jurídica
@@ -211,13 +216,6 @@ export default function Login() {
               <span className="text-gray-700">
                 Login efetuado com sucesso, aproveite ao máximo!
               </span>
-            </div>
-            <div className="flex items-center w-full">
-              <Link href="/">
-                <AlertDialog.Action className="bg-blue-600 hover:bg-blue-700 active:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 px-4 h-10 text-white rounded-md flex justify-center items-center gap-2 transition-all delay-75 w-full">
-                  <BiHome /> Ir ao início
-                </AlertDialog.Action>
-              </Link>
             </div>
           </AlertDialog.Content>
         </AlertDialog.Portal>

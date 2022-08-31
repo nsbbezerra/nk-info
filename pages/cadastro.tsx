@@ -63,8 +63,8 @@ export default function Cadastro() {
 
   async function publish(id: string) {
     const variables = { id: id };
-    const { data, error } = await publishClient(variables);
-    console.log({ data, error });
+    await publishClient(variables);
+    setIsDialogOpen(true);
   }
 
   const formik = useFormik({
@@ -93,7 +93,6 @@ export default function Cadastro() {
           } else {
             const { id } = result.data.createClient;
             publish(id);
-            setIsDialogOpen(true);
           }
         })
         .catch((err) => {
@@ -132,7 +131,7 @@ export default function Cadastro() {
         <aside className="lg:col-span-2 p-5 md:p-10 flex justify-center items-center w-full h-full">
           <div className="border rounded-md shadow-lg p-5 w-full">
             <Link href="/" passHref>
-              <a className="flex items-center gap-2 text-blue-600 hover:underline mb-3 cursor-pointer w-fit">
+              <a className="flex items-center gap-2 text-sky-700 hover:underline mb-3 cursor-pointer w-fit">
                 <BiChevronLeft />
                 Voltar
               </a>
@@ -147,7 +146,7 @@ export default function Cadastro() {
               <ToggleGroup.Item
                 value="cpf"
                 className={`${
-                  registerMode === "cpf" ? "bg-blue-800" : "bg-blue-600"
+                  registerMode === "cpf" ? "bg-sky-700" : "bg-sky-500"
                 } text-white h-8 px-2 flex items-center border-r`}
               >
                 Pessoa Física
@@ -155,7 +154,7 @@ export default function Cadastro() {
               <ToggleGroup.Item
                 value="cnpj"
                 className={`${
-                  registerMode === "cnpj" ? "bg-blue-800" : "bg-blue-600"
+                  registerMode === "cnpj" ? "bg-sky-700" : "bg-sky-500"
                 } text-white h-8 px-2 flex items-center`}
               >
                 Pessoa Jurídica

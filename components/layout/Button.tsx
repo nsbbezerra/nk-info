@@ -23,29 +23,29 @@ export default function Button({
 
   const xsClass = `${
     isLoading === true || isDisabled === true
-      ? "bg-blue-300 cursor-not-allowed"
-      : "bg-blue-600 hover:bg-blue-700 active:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+      ? "bg-sky-300 cursor-not-allowed"
+      : "bg-sky-700 hover:bg-sky-800 active:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500"
   } px-2 h-7 text-xs text-white rounded-md flex items-center justify-center gap-2 transition-all delay-75 select-none ${
     isFullSize ? "w-full" : "w-fit"
   }`;
   const smClass = `${
     isLoading === true || isDisabled === true
-      ? "bg-blue-300 cursor-not-allowed"
-      : "bg-blue-600 hover:bg-blue-700 active:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+      ? "bg-sky-300 cursor-not-allowed"
+      : "bg-sky-700 hover:bg-sky-800 active:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500"
   } px-3 h-8 text-sm text-white justify-center rounded-md flex items-center gap-2 transition-all delay-75 ${
     isFullSize ? "w-full" : "w-fit"
   } select-none`;
   const mdClass = `${
     isLoading === true || isDisabled === true
-      ? "bg-blue-300 cursor-not-allowed"
-      : "bg-blue-600 hover:bg-blue-700 active:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+      ? "bg-sky-300 cursor-not-allowed"
+      : "bg-sky-700 hover:bg-sky-800 active:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500"
   } px-4 h-10 text-white rounded-md flex justify-center items-center gap-2 transition-all delay-75 ${
     isFullSize ? "w-full" : "w-fit"
   } select-none`;
   const lgClass = `${
     isLoading === true || isDisabled === true
-      ? "bg-blue-300 cursor-not-allowed"
-      : "bg-blue-600 hover:bg-blue-700 active:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+      ? "bg-sky-300 cursor-not-allowed"
+      : "bg-sky-700 hover:bg-sky-800 active:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500"
   } px-5 h-12 text-lg text-white rounded-md flex justify-center items-center gap-2 transition-all delay-75 ${
     isFullSize ? "w-full" : "w-fit"
   } select-none`;
