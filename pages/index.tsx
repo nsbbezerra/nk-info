@@ -16,7 +16,7 @@ import {
 import Lottie from "../components/Lottie";
 import * as maitenence from "../assets/maintenance.json";
 import * as marketing from "../assets/marketing.json";
-import * as webDeveloper from "../assets/web.json";
+import * as webDeveloper from "../assets/development.json";
 import * as webSite from "../assets/website.json";
 import * as ecommerce from "../assets/ecommerce.json";
 import Footer from "../components/Footer";
@@ -76,8 +76,8 @@ const Home: NextPage = () => {
           <p className="font-semibold mt-5">Confira nossas áreas de atuação:</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-10">
-          <div className="rounded-md shadow-lg p-4  flex flex-col justify-center items-center border">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-10 items-start">
+          <div className="flex flex-col justify-center items-center">
             <div className="h-32 flex justify-center">
               <Lottie width={"120%"} animation={maitenence} height={"100%"} />
             </div>
@@ -87,7 +87,7 @@ const Home: NextPage = () => {
             </span>
           </div>
 
-          <div className="rounded-md shadow-lg p-4  flex flex-col justify-center items-center border">
+          <div className="flex flex-col justify-center items-center">
             <div className="h-32">
               <Lottie width={"100%"} animation={marketing} height={"100%"} />
             </div>
@@ -97,9 +97,9 @@ const Home: NextPage = () => {
             </span>
           </div>
 
-          <div className="rounded-md shadow-lg p-4  flex flex-col justify-center items-center border">
+          <div className="flex flex-col justify-center items-center">
             <div className="h-32">
-              <Lottie width={"100%"} animation={webDeveloper} height={"130%"} />
+              <Lottie width={"100%"} animation={webDeveloper} height={"100%"} />
             </div>
             <span className="text-gray-600 text-center text-sm mt-3">
               Desenvolvimento de Web Sites, Sistemas de Gestão, Aplicativos

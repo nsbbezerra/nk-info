@@ -18,7 +18,7 @@ import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useMutation } from "urql";
-import { CreateClient } from "../graphql/clientMutation";
+import { CreateClient, PublishClient } from "../graphql/clientMutation";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 
 export default function Cadastro() {
@@ -40,9 +40,10 @@ export default function Cadastro() {
   };
 
   const [createClientResult, createClient] = useMutation(CreateClient);
+  const [publishClientResult, publishClient] = useMutation(PublishClient);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isDialogErrorOpen, setIsDialogErrorOpen] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { fetching } = createClientResult;
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Insira seu nome"),
@@ -59,6 +60,12 @@ export default function Cadastro() {
   useEffect(() => {
     registerMode === "" && setRegisterMode("cpf");
   }, [registerMode]);
+
+  async function publish(id: string) {
+    const variables = { id: id };
+    const { data, error } = await publishClient(variables);
+    console.log({ data, error });
+  }
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -79,15 +86,18 @@ export default function Cadastro() {
         city: values.city,
         state: values.state,
       };
-      setIsLoading(true);
       createClient(variables)
         .then((result) => {
-          setIsDialogOpen(true);
-          setIsLoading(false);
+          if (!result.data) {
+            setIsDialogErrorOpen(true);
+          } else {
+            const { id } = result.data.createClient;
+            publish(id);
+            setIsDialogOpen(true);
+          }
         })
         .catch((err) => {
           setIsDialogErrorOpen(true);
-          setIsLoading(false);
         });
     },
   });
@@ -438,7 +448,7 @@ export default function Cadastro() {
                 icon={<BiSave />}
                 buttonSize="lg"
                 type="submit"
-                isLoading={isLoading}
+                isLoading={fetching}
               >
                 Cadastrar
               </Button>
