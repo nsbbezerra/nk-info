@@ -563,9 +563,11 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
                 </li>
               </ul>
 
-              <a className="bg-sky-700 flex px-10 py-3 w-fit font-semibold text-white rounded-md mt-4 hover:bg-sky-800 active:bg-sky-700 select-none cursor-pointer transition-all delay-75">
-                Quero conhecer mais!
-              </a>
+              <Link href={"/ecommerce"} passHref>
+                <a className="bg-sky-700 flex px-10 py-3 w-fit font-semibold text-white rounded-md mt-4 hover:bg-sky-800 active:bg-sky-700 select-none cursor-pointer transition-all delay-75">
+                  Quero conhecer mais!
+                </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -799,8 +801,8 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
 export default Home;
 
 export const getStaticProps: GetStaticProps = async () => {
-  const pack = await stripe.products.list({ limit: 15 });
-  const price = await stripe.prices.list({ limit: 17 });
+  const pack = await stripe.products.list({ limit: 20 });
+  const price = await stripe.prices.list({ limit: 25 });
 
   const packs = pack.data;
   const prices = price.data;

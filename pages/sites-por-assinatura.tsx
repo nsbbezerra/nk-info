@@ -251,8 +251,8 @@ const Sites: NextPage<Props> = ({ packs, prices }) => {
 export default Sites;
 
 export const getStaticProps: GetStaticProps = async () => {
-  const pack = await stripe.products.list({ limit: 15 });
-  const price = await stripe.prices.list({ limit: 17 });
+  const pack = await stripe.products.list({ limit: 20 });
+  const price = await stripe.prices.list({ limit: 25 });
 
   const packs = pack.data;
   const prices = price.data;
