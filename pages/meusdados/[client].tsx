@@ -1,12 +1,11 @@
 import { NextPage } from "next";
-import Link from "next/link";
 import { Fragment, useState } from "react";
 import {
+  BiCog,
   BiEdit,
   BiLaptop,
   BiListCheck,
   BiPhoneCall,
-  BiSave,
   BiShoppingBag,
 } from "react-icons/bi";
 import { BsMenuApp } from "react-icons/bs";
@@ -19,9 +18,10 @@ import MySubscriptions from "../../components/dados/MySubsciptions";
 import MyShopping from "../../components/dados/MyShopping";
 import MyCalls from "../../components/dados/MyCalls";
 import MyEquipment from "../../components/dados/MyEquipment";
+import MyAtendimento from "../../components/dados/MyAtendimento";
 
 type SearchProps = {
-  text: "data" | "subscribes" | "buy" | "calls" | "equipment";
+  text: "data" | "subscribes" | "buy" | "calls" | "equipment" | "atendimento";
 };
 
 const MyData: NextPage = () => {
@@ -87,7 +87,7 @@ const MyData: NextPage = () => {
           </DropdownMenu.Portal>
         </DropdownMenu.Root>
 
-        <div className="w-full rounded-md shadow-md overflow-hidden border h-fit hidden xl:block">
+        <div className="w-full rounded-md shadow overflow-hidden border h-fit hidden xl:block">
           <div className="flex items-center gap-3 px-3 py-3 bg-sky-700 text-white font-bold">
             <BsMenuApp />
             Menu
@@ -122,6 +122,13 @@ const MyData: NextPage = () => {
             Meus chamados
           </button>
           <button
+            className="w-full flex items-center gap-3 py-2 px-3 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none"
+            onClick={() => setSearch({ text: "atendimento" })}
+          >
+            <BiCog />
+            Meus atendimentos
+          </button>
+          <button
             className="w-full flex items-center gap-3 py-2 px-3 cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none"
             onClick={() => setSearch({ text: "equipment" })}
           >
@@ -135,6 +142,7 @@ const MyData: NextPage = () => {
             {search.text === "data" && <MyDataComp />}
             {search.text === "buy" && <MyShopping />}
             {search.text === "calls" && <MyCalls />}
+            {search.text === "atendimento" && <MyAtendimento />}
             {search.text === "equipment" && <MyEquipment />}
             {search.text === "subscribes" && <MySubscriptions />}
           </div>

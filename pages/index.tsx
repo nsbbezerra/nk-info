@@ -546,7 +546,7 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
                 layout exclusivo, atual, e pagando muito pouco por isso.
               </p>
 
-              <div className="flex items-center gap-5 mt-5">
+              <div className="flex sm:items-center gap-5 mt-5 flex-col sm:flex-row">
                 <div className="flex flex-col">
                   <span>A partir de:</span>
                   <span className="font-bold text-xl text-sky-700">
@@ -569,6 +569,17 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
       <section className="mt-16 w-full" id="ecommerce">
         <div className="container mx-auto px-10 lg:px-20">
           <div className="grid grid-cols-1 gap-10 items-center justify-items-center lg:grid-cols-2">
+            <div className="w-full sm:w-3/4 lg:w-full">
+              <Image
+                draggable={false}
+                src={"/img/shopping.png"}
+                width={600}
+                height={450}
+                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                layout="responsive"
+                objectFit="contain"
+              />
+            </div>
             <div className="w-full flex flex-col gap-2">
               <h2 className="text-4xl font-bold text-sky-700">Loja Online</h2>
               <p className="text-justify mt-4 text-sm md:text-base">
@@ -593,7 +604,7 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
                 </li>
               </ul>
 
-              <div className="flex items-center gap-5 mt-5">
+              <div className="flex sm:items-center gap-5 mt-5 flex-col sm:flex-row">
                 <div className="flex flex-col">
                   <span>A partir de:</span>
                   <span className="font-bold text-xl text-sky-700">
@@ -602,24 +613,12 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
                 </div>
                 <div>
                   <Link href={"/ecommerce"} passHref>
-                    <a className="bg-sky-700 flex px-10 py-3 w-fit font-semibold text-white rounded-md mt-4 hover:bg-sky-800 active:bg-sky-700 select-none cursor-pointer transition-all delay-75">
+                    <a className="bg-sky-700 flex px-10 py-3 w-fit font-semibold text-white rounded-md  hover:bg-sky-800 active:bg-sky-700 select-none cursor-pointer transition-all delay-75">
                       Quero conhecer mais!
                     </a>
                   </Link>
                 </div>
               </div>
-            </div>
-
-            <div className="w-full sm:w-3/4 lg:w-full">
-              <Image
-                draggable={false}
-                src={"/img/shopping.png"}
-                width={600}
-                height={450}
-                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
-                layout="responsive"
-                objectFit="contain"
-              />
             </div>
           </div>
         </div>
