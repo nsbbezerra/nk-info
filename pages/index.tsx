@@ -13,12 +13,6 @@ import {
   BiCalendar,
   BiSend,
 } from "react-icons/bi";
-import Lottie from "../components/Lottie";
-import * as maitenence from "../assets/maintenance.json";
-import * as marketing from "../assets/marketing.json";
-import * as webDeveloper from "../assets/development.json";
-import * as webSite from "../assets/website.json";
-import * as ecommerce from "../assets/ecommerce.json";
 import Footer from "../components/Footer";
 import Link from "next/link";
 import Stripe from "stripe";
@@ -47,63 +41,84 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
 
       {/** SEÇÃO SOBRE NÓS */}
 
-      <section className="container mx-auto mt-16 px-10 lg:px-20" id="sobre">
-        <div className="text-center w-full flex items-center flex-col gap-2">
-          <h2 className="text-4xl font-bold">Sobre Nós!</h2>
-          <div className="w-32 bg-gradient-to-r from-blue-400 to-blue-600 h-1 rounded-[50%]" />
-        </div>
-        <div className="text-center text-gray-600 mt-10">
-          <p>
-            Somos uma empresa desde 2017 focada em soluções na área de
-            Tecnologia da Informação, estamos sempre em atualização tanto na
-            nossa Stack de Desenvolvimento quanto nos ferramentais necessários
-            para oferecer aos nossos clientes a maior confiabilidade nos nossos
-            produtos e serviços.
-          </p>
-          <p>
-            Temos orgulho em prestar um serviço qualificado, atendendo desde o
-            pequeno até o grande empresário, trabalhamos para colocar sua
-            empresa sempre bem visível, flúida, destravada e automatizada.
-          </p>
-          <p className="font-semibold mt-5">Confira nossas áreas de atuação:</p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-10 items-start">
-          <div className="flex flex-col justify-center items-center">
-            <div className="h-32 flex justify-center">
-              <Lottie width={"120%"} animation={maitenence} height={"100%"} />
-            </div>
-            <span className="text-gray-600 text-center text-sm mt-3">
-              Montagem e Manutenção em Redes, Computadores, Sistemas PDV,
-              Roteadores, Modens, Impressoras, e muito mais!
-            </span>
+      <section className="container mx-auto py-16 px-10 lg:px-20" id="sobre">
+        <div className="w-full">
+          <div className="text-center w-full flex items-center flex-col gap-2">
+            <h2 className="text-4xl font-bold">Sobre Nós!</h2>
+            <div className="w-32 bg-gradient-to-r from-blue-400 to-blue-600 h-1 rounded-[50%]" />
           </div>
-
-          <div className="flex flex-col justify-center items-center">
-            <div className="h-32">
-              <Lottie width={"100%"} animation={marketing} height={"100%"} />
-            </div>
-            <span className="text-gray-600 text-center text-sm mt-3">
-              Marketing Digital, Gestão de Tráfego Pago, Publicidades
-              Áudio-Visual, Gestão de Redes Sociais, Estratégias de Crescimento
-            </span>
+          <div className="text-center text-gray-600 mt-10">
+            <p>
+              Somos uma empresa desde 2017 focada em soluções na área de
+              Tecnologia da Informação, estamos sempre em atualização tanto na
+              nossa Stack de Desenvolvimento quanto nos ferramentais necessários
+              para oferecer aos nossos clientes a maior confiabilidade nos
+              nossos produtos e serviços.
+            </p>
+            <p>
+              Temos orgulho em prestar um serviço qualificado, atendendo desde o
+              pequeno até o grande empresário, trabalhamos para colocar sua
+              empresa sempre bem visível, flúida, destravada e automatizada,
+              nossas áreas de atuação são:
+            </p>
           </div>
+        </div>
 
-          <div className="flex flex-col justify-center items-center">
-            <div className="h-32">
-              <Lottie width={"100%"} animation={webDeveloper} height={"100%"} />
+        <div className="grid grid-cols-1 gap-5 mt-10 md:grid-cols-2 lg:grid-cols-3">
+          <div className="w-full rounded-md shadow-md p-3 grid grid-cols-3 items-center bg-gray-50 gap-3">
+            <div className="w-full">
+              <Image
+                draggable={false}
+                src={"/img/pc.png"}
+                width={600}
+                height={450}
+                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                layout="responsive"
+                objectFit="contain"
+              />
             </div>
-            <span className="text-gray-600 text-center text-sm mt-3">
-              Desenvolvimento de Web Sites, Sistemas de Gestão, Aplicativos
-              Mobile, Automatização de Vendas Online.
-            </span>
+            <div className="col-span-2 text-center font-bold text-sky-700 text-xl">
+              Manutenção preventiva em TI
+            </div>
+          </div>
+          <div className="w-full rounded-md shadow-md p-3 grid grid-cols-3 items-center bg-gray-50 gap-3">
+            <div className="w-full">
+              <Image
+                draggable={false}
+                src={"/img/marketing.png"}
+                width={600}
+                height={450}
+                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                layout="responsive"
+                objectFit="contain"
+              />
+            </div>
+            <div className="col-span-2 text-center font-bold text-sky-700 text-xl">
+              Marketing digital e Gestão de redes sociais
+            </div>
+          </div>
+          <div className="w-full rounded-md shadow-md p-3 grid grid-cols-3 items-center bg-gray-50 gap-3">
+            <div className="w-full">
+              <Image
+                draggable={false}
+                src={"/img/devops.png"}
+                width={600}
+                height={450}
+                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                layout="responsive"
+                objectFit="contain"
+              />
+            </div>
+            <div className="col-span-2 text-center font-bold text-sky-700 text-xl">
+              Desenvolvimento web, mobile e desktop
+            </div>
           </div>
         </div>
       </section>
 
       {/** SEÇÃO DE ESPECIALIDADES */}
 
-      <section className="w-full mt-16 bg-gray-100 rounded-br-[70px] lg:rounded-br-[150px] p-10 lg:p-14">
+      <section className="w-full bg-gray-100 rounded-br-[70px] lg:rounded-br-[150px] p-10 lg:p-14">
         <div className="container mx-auto w-full h-full flex justify-end relative items-center flex-col lg:flex-row">
           <div className="w-[95%] lg:w-[58%] rounded-md bg-white shadow-xl lg:absolute h-fit z-10 left-0 p-7 flex flex-col gap-2">
             <h3 className="text-2xl sm:text-3xl font-bold">
@@ -510,7 +525,15 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
         <div className="container mx-auto px-10 lg:px-20">
           <div className="grid grid-cols-1 gap-10 items-center justify-items-center lg:grid-cols-2">
             <div className="w-full sm:w-3/4 lg:w-full">
-              <Lottie animation={webSite} width="100%" height={"100%"} />
+              <Image
+                draggable={false}
+                src={"/img/site.png"}
+                width={600}
+                height={450}
+                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                layout="responsive"
+                objectFit="contain"
+              />
             </div>
             <div className="w-full flex flex-col gap-2">
               <h2 className="text-4xl font-bold text-sky-700">
@@ -523,11 +546,21 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
                 layout exclusivo, atual, e pagando muito pouco por isso.
               </p>
 
-              <Link href="/sites-por-assinatura" passHref>
-                <a className="bg-sky-700 flex px-10 py-3 w-fit font-semibold text-white rounded-md mt-4 hover:bg-sky-800 active:bg-sky-700 select-none cursor-pointer transition-all delay-75">
-                  Quero conhecer mais!
-                </a>
-              </Link>
+              <div className="flex items-center gap-5 mt-5">
+                <div className="flex flex-col">
+                  <span>A partir de:</span>
+                  <span className="font-bold text-xl text-sky-700">
+                    R$ 29,90 / mês
+                  </span>
+                </div>
+                <div>
+                  <Link href="/sites-por-assinatura" passHref>
+                    <a className="bg-sky-700 flex px-10 py-3 w-fit font-semibold text-white rounded-md hover:bg-sky-800 active:bg-sky-700 select-none cursor-pointer transition-all delay-75">
+                      Quero conhecer mais!
+                    </a>
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -536,9 +569,6 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
       <section className="mt-16 w-full" id="ecommerce">
         <div className="container mx-auto px-10 lg:px-20">
           <div className="grid grid-cols-1 gap-10 items-center justify-items-center lg:grid-cols-2">
-            <div className="w-full sm:w-3/4 lg:w-full">
-              <Lottie animation={ecommerce} width="100%" height={"100%"} />
-            </div>
             <div className="w-full flex flex-col gap-2">
               <h2 className="text-4xl font-bold text-sky-700">Loja Online</h2>
               <p className="text-justify mt-4 text-sm md:text-base">
@@ -563,11 +593,33 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
                 </li>
               </ul>
 
-              <Link href={"/ecommerce"} passHref>
-                <a className="bg-sky-700 flex px-10 py-3 w-fit font-semibold text-white rounded-md mt-4 hover:bg-sky-800 active:bg-sky-700 select-none cursor-pointer transition-all delay-75">
-                  Quero conhecer mais!
-                </a>
-              </Link>
+              <div className="flex items-center gap-5 mt-5">
+                <div className="flex flex-col">
+                  <span>A partir de:</span>
+                  <span className="font-bold text-xl text-sky-700">
+                    R$ 99,00 / mês
+                  </span>
+                </div>
+                <div>
+                  <Link href={"/ecommerce"} passHref>
+                    <a className="bg-sky-700 flex px-10 py-3 w-fit font-semibold text-white rounded-md mt-4 hover:bg-sky-800 active:bg-sky-700 select-none cursor-pointer transition-all delay-75">
+                      Quero conhecer mais!
+                    </a>
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            <div className="w-full sm:w-3/4 lg:w-full">
+              <Image
+                draggable={false}
+                src={"/img/shopping.png"}
+                width={600}
+                height={450}
+                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                layout="responsive"
+                objectFit="contain"
+              />
             </div>
           </div>
         </div>

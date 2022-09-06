@@ -3,11 +3,10 @@ import { BiEdit } from "react-icons/bi";
 import Footer from "../components/Footer";
 import HeadApp from "../components/Head";
 import Header from "../components/Header";
-import LottieComponent from "../components/Lottie";
-import * as ecommerce from "../assets/ecommerce.json";
 import Stripe from "stripe";
 import { configs } from "../configs/indext";
 import { GetStaticProps, NextPage } from "next";
+import Image from "next/image";
 
 const stripe = new Stripe(configs.stripe_pk, {
   apiVersion: "2022-08-01",
@@ -29,13 +28,17 @@ const Ecommerce: NextPage<Props> = ({ packs, prices }) => {
       <HeadApp title="Ecommerce por assinatura - NK Informática" />
       <Header />
 
-      <section className="w-full bg-gray-100 rounded-br-[70px] lg:rounded-br-[150px] p-5">
+      <section className="w-full bg-gradient-to-b from-blue-300 to-sky-100 rounded-br-[70px] lg:rounded-br-[150px] p-5">
         <div className="container mx-auto flex flex-col items-center justify-center gap-3">
           <div className="w-1/2 md:w-72 lg:w-80">
-            <LottieComponent
-              animation={ecommerce}
-              width="100%"
-              height={"100%"}
+            <Image
+              draggable={false}
+              src={"/img/shopping.png"}
+              width={600}
+              height={450}
+              alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+              layout="responsive"
+              objectFit="contain"
             />
           </div>
           <h1 className="text-sky-900 text-lg sm:text-2xl md:text-3xl font-bold text-center max-w-5xl">

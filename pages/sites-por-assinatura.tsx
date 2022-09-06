@@ -2,8 +2,6 @@ import { Fragment } from "react";
 import Footer from "../components/Footer";
 import HeadApp from "../components/Head";
 import Header from "../components/Header";
-import Lottie from "../components/Lottie";
-import * as webSite from "../assets/website.json";
 import {
   BiDesktop,
   BiEdit,
@@ -16,6 +14,7 @@ import { AiOutlineCloudServer } from "react-icons/ai";
 import Stripe from "stripe";
 import { configs } from "../configs/indext";
 import { GetStaticProps, NextPage } from "next";
+import Image from "next/image";
 
 const stripe = new Stripe(configs.stripe_pk, {
   apiVersion: "2022-08-01",
@@ -37,16 +36,24 @@ const Sites: NextPage<Props> = ({ packs, prices }) => {
       <HeadApp title="Sites por Assinatura - NK Informática" />
       <Header />
 
-      <section className="w-full bg-gray-100 rounded-br-[70px] lg:rounded-br-[150px] p-5">
-        <div className="container mx-auto flex flex-col items-center justify-center gap-3">
+      <section className="w-full bg-gradient-to-b from-blue-300 to-sky-100 rounded-br-[70px] lg:rounded-br-[150px] p-5 relative overflow-hidden">
+        <div className="container mx-auto flex flex-col items-center justify-center gap-3 z-10">
           <div className="w-1/2 md:w-72 lg:w-80">
-            <Lottie animation={webSite} width="100%" height={"100%"} />
+            <Image
+              draggable={false}
+              src={"/img/site.png"}
+              width={600}
+              height={450}
+              alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+              layout="responsive"
+              objectFit="contain"
+            />
           </div>
-          <h1 className="text-sky-900 text-lg sm:text-2xl md:text-3xl font-bold text-center max-w-5xl">
+          <h1 className="text-sky-900 text-lg sm:text-2xl md:text-3xl font-bold text-center max-w-5xl z-10">
             CRIAÇÃO DE SITES POR ASSINATURA COM LAYOUTS PROFISSIONAIS, MODERNOS
             E COM UM VALOR QUE CABE NO SEU BOLSO
           </h1>
-          <span className="text-center text-gray-700 text-base lg:text-lg">
+          <span className="text-center text-gray-700 text-base lg:text-lg z-10">
             Seu Negócio 24 horas no ar!
           </span>
         </div>

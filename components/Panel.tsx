@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Fragment } from "react";
 import Lottie from "react-lottie";
 import * as animationData from "../assets/animation.json";
@@ -15,7 +16,7 @@ export default function Panel() {
 
   return (
     <Fragment>
-      <section className="w-full relative bg-blue-200 rounded-br-[70px] lg:rounded-br-[150px] py-10">
+      <section className="w-full relative bg-gradient-to-b from-blue-300 to-sky-100 rounded-br-[70px] lg:rounded-br-[150px] py-10">
         <div className="grid grid-cols-1 gap-3 w-full container mx-auto items-center justify-items-center lg:justify-items-end lg:grid-cols-2 px-10 lg:px-20">
           <div className="w-full flex flex-col gap-3 order-2 lg:order-1 -mt-10 py-10">
             <span className="text-gray-500 font-semibold z-10">
@@ -31,9 +32,11 @@ export default function Panel() {
               seu crescimento.
             </span>
 
-            <button className="bg-sky-700 w-fit px-10 py-3 text-white font-semibold rounded-md hover:bg-sky-800 active:bg-sky-700 transition-all delay-75 mt-5 z-10">
-              Seja nosso Cliente!
-            </button>
+            <Link href={"/cadastro"} passHref>
+              <a className="bg-sky-700 w-fit px-10 py-3 text-white font-semibold rounded-md hover:bg-sky-800 active:bg-sky-700 transition-all delay-75 mt-5 z-10">
+                Seja nosso Cliente!
+              </a>
+            </Link>
           </div>
           <div className="w-full sm:w-3/4 order-1 lg:order-2 py-10 lg:w-full">
             <Lottie

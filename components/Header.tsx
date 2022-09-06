@@ -17,8 +17,6 @@ import {
 } from "react-icons/bi";
 import Link from "next/link";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { BsTools } from "react-icons/bs";
-import { CgWebsite } from "react-icons/cg";
 import ClientContext from "../context/client";
 import { useRouter } from "next/router";
 
@@ -75,37 +73,12 @@ export default function Header() {
         </a>
       </Link>
 
-      <DropdownMenu.Root>
-        <DropdownMenu.Trigger className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-sky-700 ">
+      <Link href={"/servicos"} passHref>
+        <a className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-sky-700 ">
           <BiCog />
           Serviços
-        </DropdownMenu.Trigger>
-
-        <DropdownMenu.Portal>
-          <DropdownMenu.Content className="bg-white backdrop-blur-sm bg-opacity-90 rounded-md z-50 py-2 px-2 border shadow-lg mt-3">
-            <DropdownMenu.Group>
-              <Link href={"#manutencao"} passHref>
-                <DropdownMenu.Item className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500">
-                  <BsTools />
-                  Pacotes de Serviços
-                </DropdownMenu.Item>
-              </Link>
-              <Link href={"/sites-por-assinatura"}>
-                <DropdownMenu.Item className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500">
-                  <CgWebsite />
-                  Site por Assinatura
-                </DropdownMenu.Item>
-              </Link>
-              <Link href={"/ecommerce"}>
-                <DropdownMenu.Item className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500">
-                  <BiShoppingBag />
-                  Sua Loja Online
-                </DropdownMenu.Item>
-              </Link>
-            </DropdownMenu.Group>
-          </DropdownMenu.Content>
-        </DropdownMenu.Portal>
-      </DropdownMenu.Root>
+        </a>
+      </Link>
 
       <Link href={"#contato"} passHref>
         <a className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-blue-600 ">
@@ -156,10 +129,12 @@ export default function Header() {
               )}
               {clientState.id !== "" ? (
                 <>
-                  <DropdownMenu.Item className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500">
-                    <BiListCheck />
-                    Meus Dados
-                  </DropdownMenu.Item>
+                  <Link href={`/meusdados/${clientState.id}`}>
+                    <DropdownMenu.Item className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                      <BiListCheck />
+                      Meus Dados
+                    </DropdownMenu.Item>
+                  </Link>
                   <DropdownMenu.Item
                     className="text-red-600 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-red-600 cursor-pointer hover:text-white active:bg-red-500 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-red-400"
                     onClick={() => logout()}
@@ -180,7 +155,7 @@ export default function Header() {
 
   return (
     <Fragment>
-      <header className="w-full h-16 border-b border-b-gray-50 flex items-center justify-center sticky top-0 z-30 bg-white backdrop-blur-sm bg-opacity-90 shadow-sm">
+      <header className="w-full h-16 border-b border-b-gray-50 flex items-center justify-center sticky top-0 z-40 bg-white backdrop-blur-sm bg-opacity-90 shadow-sm">
         <nav className="container mx-auto px-10 lg:px-20 flex items-center justify-between">
           <div className="w-16">
             <Image
