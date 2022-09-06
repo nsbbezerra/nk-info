@@ -17,6 +17,7 @@ import Footer from "../components/Footer";
 import Link from "next/link";
 import Stripe from "stripe";
 import { configs } from "../configs/indext";
+import Button from "../components/layout/Button";
 
 const stripe = new Stripe(configs.stripe_pk, {
   apiVersion: "2022-08-01",
@@ -433,6 +434,80 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
                   </button>
                 </div>
               ))}
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mt-16 justify-items-center">
+            <div className="w-full sm:w-3/4 lg:w-full">
+              <Image
+                draggable={false}
+                src={"/img/cog.png"}
+                width={600}
+                height={450}
+                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                layout="responsive"
+                objectFit="contain"
+              />
+            </div>
+
+            <div className="lg:col-span-2">
+              <h2 className="text-4xl font-bold">
+                {packs.find((obj) => obj.metadata.category === "person")?.name}
+              </h2>
+              <p className="text-gray-600 text-sm max-w-screen-md mt-2">
+                {
+                  packs.find((obj) => obj.metadata.category === "person")
+                    ?.description
+                }
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-center mb-5">
+                <ul className="list-disc list-inside text-sm text-gray-600 mt-5">
+                  <li>
+                    {
+                      packs.find((obj) => obj.metadata.category === "person")
+                        ?.metadata.details_one
+                    }
+                  </li>
+                  <li>
+                    {
+                      packs.find((obj) => obj.metadata.category === "person")
+                        ?.metadata.details_two
+                    }
+                  </li>
+                  <li>
+                    {
+                      packs.find((obj) => obj.metadata.category === "person")
+                        ?.metadata.details_three
+                    }
+                  </li>
+                  <li>
+                    {
+                      packs.find((obj) => obj.metadata.category === "person")
+                        ?.metadata.details_four
+                    }
+                  </li>
+                </ul>
+
+                <div>
+                  <span className="text-3xl md:text-4xl xl:text-5xl font-bold text-sky-700">
+                    {calcReal(
+                      prices.find(
+                        (obj) =>
+                          obj.id ===
+                          packs.find(
+                            (obj) => obj.metadata.category === "person"
+                          )?.default_price
+                      )?.unit_amount as number
+                    )}{" "}
+                    / mês
+                  </span>
+                </div>
+              </div>
+
+              <Button icon={<BiEdit />} buttonSize="lg">
+                Contratar
+              </Button>
+            </div>
           </div>
         </div>
       </section>
