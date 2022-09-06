@@ -4,7 +4,7 @@ import Button from "../layout/Button";
 export default function MyDataComp() {
   return (
     <div className="flex flex-col gap-5">
-      <div className="overflow-hidden bg-white border rounded-md">
+      <div className="overflow-hidden bg-white border rounded-md shadow">
         <div className="px-4 py-5 sm:px-6">
           <h3 className="text-lg font-medium leading-6 text-gray-900">
             Meus Dados

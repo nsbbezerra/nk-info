@@ -78,6 +78,13 @@ const MyData: NextPage = () => {
               </DropdownMenu.Item>
               <DropdownMenu.Item
                 className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                onClick={() => setSearch({ text: "atendimento" })}
+              >
+                <BiCog />
+                Meus atendimentos
+              </DropdownMenu.Item>
+              <DropdownMenu.Item
+                className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 onClick={() => setSearch({ text: "equipment" })}
               >
                 <BiLaptop />

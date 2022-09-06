@@ -12,7 +12,7 @@ export default function MySubscriptions() {
       </div>
 
       <div className="grid grid-cols-1 gap-3 mt-5">
-        <div className="rounded-md border shadow h-fit">
+        <div className="rounded-md border shadow h-fit overflow-hidden">
           <div className="flex flex-col items-center justify-between px-3 pb-3 sm:flex-row sm:pb-0">
             <div className="flex flex-col sm:flex-row items-center gap-3 py-4 text-sky-700 font-bold md:text-lg">
               <BiPackage />
@@ -40,7 +40,7 @@ export default function MySubscriptions() {
             </dl>
           </div>
         </div>
-        <div className="rounded-md border shadow h-fit">
+        <div className="rounded-md border shadow h-fit overflow-hidden">
           <div className="flex flex-col items-center justify-between px-3 pb-3 sm:flex-row sm:pb-0">
             <div className="flex flex-col sm:flex-row items-center gap-3 py-4 text-sky-700 font-bold md:text-lg">
               <BiPackage />
