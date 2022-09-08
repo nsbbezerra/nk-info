@@ -103,22 +103,22 @@ export default function Header() {
                     Olá, {clientState.name || ""}
                   </span>
                 </div>
-                <DropdownMenu.Separator className="border-gray-300 border my-2" />
+                <DropdownMenu.Separator className="border-gray-300 border-b my-2" />
               </>
             ) : (
               ""
             )}
-            <DropdownMenu.Group>
+            <DropdownMenu.Group className="flex flex-col gap-2">
               {clientState.id === "" ? (
                 <>
                   <Link href="/cadastro" passHref>
-                    <DropdownMenu.Item className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                    <DropdownMenu.Item className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-500">
                       <BiSave />
                       Cadastre-se
                     </DropdownMenu.Item>
                   </Link>
                   <Link href="/login" passHref>
-                    <DropdownMenu.Item className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                    <DropdownMenu.Item className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-500">
                       <BiLogIn />
                       Login
                     </DropdownMenu.Item>
@@ -130,13 +130,13 @@ export default function Header() {
               {clientState.id !== "" ? (
                 <>
                   <Link href={`/meusdados/${clientState.id}`}>
-                    <DropdownMenu.Item className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                    <DropdownMenu.Item className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-500">
                       <BiListCheck />
                       Meus Dados
                     </DropdownMenu.Item>
                   </Link>
                   <DropdownMenu.Item
-                    className="text-red-600 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-red-600 cursor-pointer hover:text-white active:bg-red-500 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-red-400"
+                    className="text-red-600 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-red-600 cursor-pointer hover:text-white active:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-400"
                     onClick={() => logout()}
                   >
                     <BiLogOut />

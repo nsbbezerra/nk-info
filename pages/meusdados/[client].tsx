@@ -41,50 +41,50 @@ const MyData: NextPage = () => {
 
       <div className="container mx-auto px-10 lg:px-20 pt-16 grid grid-cols-1 xl:grid-cols-4 gap-10">
         <DropdownMenu.Root>
-          <DropdownMenu.Trigger className="bg-sky-700 px-5 h-12 text-white rounded-md flex items-center gap-2 hover:bg-sky-800 transition-all delay-75 active:bg-sky-700 w-fit lg:py-2 select-none xl:hidden">
+          <DropdownMenu.Trigger className="border border-sky-700 px-10 h-12 text-sky-700 rounded-md flex items-center gap-2 hover:bg-sky-100 transition-all delay-75 active:bg-sky-50 w-fit lg:py-2 select-none xl:hidden justify-center">
             <BsMenuApp />
-            Opções
+            Menu
           </DropdownMenu.Trigger>
 
           <DropdownMenu.Portal>
-            <DropdownMenu.Content className="bg-white backdrop-blur-sm bg-opacity-90 rounded-md z-50 p-2 border shadow-lg mt-1 min-w-[180px]">
+            <DropdownMenu.Content className="bg-white backdrop-blur-sm bg-opacity-90 rounded-md z-50 p-2 border shadow-lg mt-1 min-w-[180px] flex flex-col gap-2 ml-10">
               <DropdownMenu.Item
-                className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 onClick={() => setSearch({ text: "data" })}
               >
                 <BiListCheck />
                 Meus dados
               </DropdownMenu.Item>
               <DropdownMenu.Item
-                className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 onClick={() => setSearch({ text: "subscribes" })}
               >
                 <BiEdit />
                 Minhas assinaturas
               </DropdownMenu.Item>
               <DropdownMenu.Item
-                className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 onClick={() => setSearch({ text: "buy" })}
               >
                 <BiShoppingBag />
                 Minhas compras
               </DropdownMenu.Item>
               <DropdownMenu.Item
-                className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 onClick={() => setSearch({ text: "calls" })}
               >
                 <BiPhoneCall />
                 Meus chamados
               </DropdownMenu.Item>
               <DropdownMenu.Item
-                className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 onClick={() => setSearch({ text: "atendimento" })}
               >
                 <BiCog />
                 Meus atendimentos
               </DropdownMenu.Item>
               <DropdownMenu.Item
-                className="text-gray-800 py-2 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 transition-all delay-75 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 onClick={() => setSearch({ text: "equipment" })}
               >
                 <BiLaptop />
