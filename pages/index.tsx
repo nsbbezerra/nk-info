@@ -66,7 +66,7 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
         </div>
 
         <div className="grid grid-cols-1 gap-5 mt-10 md:grid-cols-2 lg:grid-cols-3">
-          <div className="w-full rounded-md shadow-md p-3 grid grid-cols-3 items-center bg-gray-50 gap-3">
+          <div className="w-full rounded-md p-3 grid grid-cols-3 items-center gap-3">
             <div className="w-full">
               <Image
                 draggable={false}
@@ -82,7 +82,7 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
               Manutenção preventiva em TI
             </div>
           </div>
-          <div className="w-full rounded-md shadow-md p-3 grid grid-cols-3 items-center bg-gray-50 gap-3">
+          <div className="w-full rounded-md p-3 grid grid-cols-3 items-center gap-3">
             <div className="w-full">
               <Image
                 draggable={false}
@@ -98,7 +98,7 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
               Marketing digital e Gestão de redes sociais
             </div>
           </div>
-          <div className="w-full rounded-md shadow-md p-3 grid grid-cols-3 items-center bg-gray-50 gap-3">
+          <div className="w-full rounded-md p-3 grid grid-cols-3 items-center gap-3">
             <div className="w-full">
               <Image
                 draggable={false}
@@ -428,10 +428,12 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
                     </p>
                   </div>
 
-                  <button className="mt-3 bg-sky-700 rounded-md px-10 py-3 flex items-center gap-2 text-white hover:bg-sky-800 active:bg-sky-700 w-full justify-center">
-                    <BiEdit />
-                    CONTRATAR
-                  </button>
+                  <Link passHref href={`/checkout/${prod.id}`}>
+                    <a className="mt-3 bg-sky-700 rounded-md px-10 py-3 flex items-center gap-2 text-white hover:bg-sky-800 active:bg-sky-700 w-full justify-center cursor-pointer">
+                      <BiEdit />
+                      CONTRATAR
+                    </a>
+                  </Link>
                 </div>
               ))}
           </div>
@@ -504,9 +506,16 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
                 </div>
               </div>
 
-              <Button icon={<BiEdit />} buttonSize="lg">
-                Contratar
-              </Button>
+              <Link
+                passHref
+                href={`/checkout/${
+                  packs.find((obj) => obj.metadata.category === "person")?.id
+                }`}
+              >
+                <Button icon={<BiEdit />} buttonSize="lg">
+                  Contratar
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -575,21 +584,22 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
                     </p>
                   </div>
 
-                  <button className="mt-3 bg-sky-700 rounded-md px-10 py-3 flex items-center gap-2 text-white hover:bg-sky-800 active:bg-sky-700 w-full justify-center">
-                    <BiEdit />
-                    CONTRATAR
-                  </button>
+                  <Link passHref href={`/checkout/${prod.id}`}>
+                    <a className="mt-3 bg-sky-700 rounded-md px-10 py-3 flex items-center gap-2 text-white hover:bg-sky-800 active:bg-sky-700 w-full justify-center">
+                      <BiEdit />
+                      CONTRATAR
+                    </a>
+                  </Link>
                 </div>
               ))}
           </div>
 
           <div className="flex justify-center mt-10">
-            <a
-              href="#"
-              className="font-semibold text-sky-700 flex items-center gap-2 hover:underline"
-            >
-              Veja Mais <BiChevronRight />
-            </a>
+            <Link href={"/servicos"} passHref>
+              <a className="font-semibold text-sky-700 flex items-center gap-2 hover:underline">
+                Veja Mais <BiChevronRight />
+              </a>
+            </Link>
           </div>
         </div>
       </section>

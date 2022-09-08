@@ -8,6 +8,7 @@ import Header from "../components/Header";
 import Stripe from "stripe";
 import { configs } from "../configs/indext";
 import { BiEdit } from "react-icons/bi";
+import Link from "next/link";
 
 const stripe = new Stripe(configs.stripe_pk, {
   apiVersion: "2022-08-01",
@@ -68,7 +69,7 @@ const Servicos: NextPage<Props> = ({ packs, prices }) => {
 
       <div className="container mx-auto px-10 lg:px-20 py-16">
         <span>Escolha uma opção:</span>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 sm:divide-x divide-y lg:divide-y-0 rounded-md border shadow-md overflow-hidden">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 sm:divide-x divide-y lg:divide-y-0 rounded-md border shadow overflow-hidden">
           <button
             className={`flex items-center px-3 py-3 gap-3 justify-center w-full ${
               search.text === "ti"
@@ -153,11 +154,12 @@ const Servicos: NextPage<Props> = ({ packs, prices }) => {
                   {prod.metadata?.details_five || ""}
                 </p>
               </div>
-
-              <button className="mt-3 bg-sky-700 rounded-md px-10 py-3 flex items-center gap-2 text-white hover:bg-sky-800 active:bg-sky-700 w-full justify-center">
-                <BiEdit />
-                CONTRATAR
-              </button>
+              <Link passHref href={`/checkout/${prod.id}`}>
+                <a className="mt-3 bg-sky-700 rounded-md px-10 py-3 flex items-center gap-2 text-white hover:bg-sky-800 active:bg-sky-700 w-full justify-center">
+                  <BiEdit />
+                  CONTRATAR
+                </a>
+              </Link>
             </div>
           ))}
         </div>

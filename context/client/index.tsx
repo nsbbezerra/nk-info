@@ -3,6 +3,15 @@ import { createContext, Dispatch, SetStateAction, useState } from "react";
 type ClientTypes = {
   id: string;
   name: string;
+  document: string;
+  email: string;
+  phone: string;
+  street: string;
+  number: string;
+  district: string;
+  cep: string;
+  city: string;
+  state: string;
 };
 
 type PropsClientContext = {
@@ -14,6 +23,15 @@ const DEFAULT_VALUES = {
   state: {
     id: "",
     name: "",
+    document: "",
+    email: "",
+    phone: "",
+    street: "",
+    number: "",
+    district: "",
+    cep: "",
+    city: "",
+    state: "",
   },
   setState: () => {},
 };

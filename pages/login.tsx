@@ -28,7 +28,10 @@ interface LoginProps {
 }
 
 export default function Login() {
-  const { push } = useRouter();
+  const { push, query } = useRouter();
+
+  const { redirect } = query;
+
   const [registerMode, setRegisterMode] = useState<string>("cpf");
   const initialValues: LoginProps = { document: "", phone: "" };
   const validationSchema = Yup.object({
@@ -63,7 +66,7 @@ export default function Login() {
         localStorage.setItem("client", user);
         setIsDialogOpen(true);
         setTimeout(() => {
-          push("/");
+          redirect ? push(`/checkout/${redirect}`) : push("/");
         }, 2000);
       } else {
         setIsDialogErrorOpen(true);

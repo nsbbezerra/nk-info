@@ -9,8 +9,10 @@ import {
 const isServerSide = typeof window === "undefined";
 const ssrCache = ssrExchange({ isClient: !isServerSide });
 
+const url = process.env.URI_GRAPHQL || "";
+
 const client = createClient({
-  url: "https://api-sa-east-1.hygraph.com/v2/cl6zk2iu80ktw01uefw9qbnpp/master",
+  url: url,
   exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange],
   requestPolicy: "network-only",
   fetchOptions: () => {

@@ -28,6 +28,12 @@ const LoginQuery = gql`
       name
       phone
       email
+      street
+      number
+      district
+      cep
+      city
+      state
     }
   }
 `;

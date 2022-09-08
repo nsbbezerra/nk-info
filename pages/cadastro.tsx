@@ -20,8 +20,11 @@ import * as Yup from "yup";
 import { useMutation } from "urql";
 import { CreateClient, PublishClient } from "../graphql/clientMutation";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import { useRouter } from "next/router";
 
 export default function Cadastro() {
+  const { query } = useRouter();
+  const { redirect } = query;
   const [registerMode, setRegisterMode] = useState<string>("cpf");
   const initialValues = {
     name: "",
@@ -479,7 +482,7 @@ export default function Cadastro() {
                   <BiHome /> Ir para o início
                 </AlertDialog.Cancel>
               </Link>
-              <Link href="/login">
+              <Link href={redirect ? `/login?redirect=${redirect}` : "/login"}>
                 <AlertDialog.Action className="bg-blue-600 hover:bg-blue-700 active:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 px-4 h-10 text-white rounded-md flex justify-center items-center gap-2 transition-all delay-75 w-full">
                   <BiLogIn /> Fazer login
                 </AlertDialog.Action>

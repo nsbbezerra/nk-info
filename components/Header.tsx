@@ -9,7 +9,6 @@ import {
   BiX,
   BiMenu,
   BiArrowToTop,
-  BiShoppingBag,
   BiLogIn,
   BiSave,
   BiListCheck,
@@ -53,7 +52,19 @@ export default function Header() {
 
   const logout = () => {
     localStorage.removeItem("client");
-    setClientState({ id: "", name: "" });
+    setClientState({
+      id: "",
+      name: "",
+      document: "",
+      email: "",
+      phone: "",
+      street: "",
+      number: "",
+      district: "",
+      cep: "",
+      city: "",
+      state: "",
+    });
     push("/");
   };
 
