@@ -107,7 +107,7 @@ export default function Cadastro() {
   return (
     <Fragment>
       <HeadApp title="NK Informática | Sistemas Web, Gestão Comercial, Marketing Digital, Gestão de Redes Sociais" />
-      <section className="grid grid-cols-1 lg:grid-cols-3 h-screen w-screen">
+      <section className="grid grid-cols-1 lg:grid-cols-3 h-screen w-screen max-w-[100vw] overflow-x-hidden">
         <article className="w-full bg-gray-900 rounded-br-[70px] lg:rounded-br-[150px] p-5 flex items-center justify-center">
           <div>
             <div className="container mx-auto flex flex-col items-center justify-center gap-3">

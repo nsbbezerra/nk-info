@@ -9,6 +9,7 @@ import ClientContext from "../../context/client";
 import Stripe from "stripe";
 import { configs } from "../../configs/indext";
 import { GetServerSideProps, NextPage } from "next";
+import Button from "../../components/layout/Button";
 
 const stripe = new Stripe(configs.stripe_pk, {
   apiVersion: "2022-08-01",
@@ -78,8 +79,8 @@ const Checkout: NextPage<Props> = ({ product, price }) => {
           </div>
         </div>
       ) : (
-        <div className="container mx-auto px-10 lg:px-20 mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-          <div className="lg:col-span-2">
+        <div className="container mx-auto px-10 max-w-4xl mt-16 grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div>
             <div className="overflow-hidden bg-white border rounded-md shadow">
               <div className="px-4 py-5 sm:px-6">
                 <h3 className="text-lg font-medium leading-6 text-gray-900">
@@ -124,7 +125,7 @@ const Checkout: NextPage<Props> = ({ product, price }) => {
           </div>
 
           <div
-            className="rounded-md shadow-lg border p-5 w-full flex flex-col items-center bg-white h-fit"
+            className="rounded-md shadow border p-5 w-full flex flex-col items-center bg-white h-fit"
             key={product.id}
           >
             <span className="text-gray-700 text-lg text-center font-bold">
@@ -157,10 +158,9 @@ const Checkout: NextPage<Props> = ({ product, price }) => {
               </p>
             </div>
 
-            <button className="mt-3 bg-sky-700 rounded-md px-10 py-3 flex items-center gap-2 text-white hover:bg-sky-800 active:bg-sky-700 w-full justify-center cursor-pointer">
-              <BiShoppingBag />
+            <Button icon={<BiShoppingBag />} buttonSize="lg" isFullSize>
               CONTRATAR
-            </button>
+            </Button>
           </div>
         </div>
       )}
