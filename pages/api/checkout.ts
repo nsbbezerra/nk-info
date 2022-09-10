@@ -23,9 +23,13 @@ export default async function createCheckoutSession(
       line_items: [{ price: price.id, quantity: 1 }],
       mode: "subscription",
     });
-
-    res.status(201).json({ url: session.url as string, id: session.id });
+    res.status(201).json({
+      url: session.url as string,
+      id: session.id as string,
+    });
   } catch (error) {
-    res.status(400).json({ message: JSON.stringify(error) });
+    res
+      .status(400)
+      .json({ message: "Ocorreu um erro inesperado durante o processo" });
   }
 }

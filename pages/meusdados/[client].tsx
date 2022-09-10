@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import { GetServerSideProps, GetStaticProps, NextPage } from "next";
 import { Fragment, useState } from "react";
 import {
   BiCog,
@@ -19,12 +19,33 @@ import MyShopping from "../../components/dados/MyShopping";
 import MyCalls from "../../components/dados/MyCalls";
 import MyEquipment from "../../components/dados/MyEquipment";
 import MyAtendimento from "../../components/dados/MyAtendimento";
+import { client, ssrCache } from "../../lib/urql";
+import { FIND_CLIENT_SUBSCRIPTIONS } from "../../graphql/clientMoviment";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useQuery } from "urql";
 
 type SearchProps = {
   text: "data" | "subscribes" | "buy" | "calls" | "equipment" | "atendimento";
 };
 
-const MyData: NextPage = () => {
+type Props = {
+  activateCode?: string;
+  id: string;
+  category: string;
+  checkoutId: string;
+  limitCalls?: number;
+  limitCallsVirtual?: number;
+  paymentIntentId?: string;
+  serviceName: string;
+};
+
+interface Subscriptions {
+  subscriptions: Props[];
+}
+
+const MyData: NextPage<Subscriptions> = ({ subscriptions }) => {
+  const { query } = useRouter();
   const [search, setSearch] = useState<SearchProps>({ text: "data" });
 
   return (
@@ -151,7 +172,9 @@ const MyData: NextPage = () => {
             {search.text === "calls" && <MyCalls />}
             {search.text === "atendimento" && <MyAtendimento />}
             {search.text === "equipment" && <MyEquipment />}
-            {search.text === "subscribes" && <MySubscriptions />}
+            {search.text === "subscribes" && (
+              <MySubscriptions subscriptions={subscriptions} />
+            )}
           </div>
         </div>
       </div>
@@ -162,3 +185,18 @@ const MyData: NextPage = () => {
 };
 
 export default MyData;
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const clientId = params?.client || "";
+  const mySubsciptions = await client
+    .query(FIND_CLIENT_SUBSCRIPTIONS, { id: clientId })
+    .toPromise();
+
+  const subscriptions = mySubsciptions.data.invoices;
+
+  return {
+    props: {
+      subscriptions,
+    },
+  };
+};
