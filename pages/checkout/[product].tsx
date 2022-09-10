@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useState } from "react";
 import { BiLogIn, BiSave, BiShoppingBag } from "react-icons/bi";
 import Footer from "../../components/Footer";
 import HeadApp from "../../components/Head";
@@ -10,6 +10,10 @@ import Stripe from "stripe";
 import { configs } from "../../configs/indext";
 import { GetServerSideProps, NextPage } from "next";
 import Button from "../../components/layout/Button";
+import { useMutation } from "urql";
+import { CREATE_INVOICE, PUBLISH_INVOICE } from "../../graphql/invoiceMutation";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 const stripe = new Stripe(configs.stripe_pk, {
   apiVersion: "2022-08-01",
@@ -23,10 +27,63 @@ interface Props {
 const Checkout: NextPage<Props> = ({ product, price }) => {
   const { state: clientState, setState: setClientState } =
     useContext(ClientContext);
+  const { push } = useRouter();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const calcReal = (amount: number) => {
     let calc = amount / 100;
     return calc.toLocaleString("pt-br", { style: "currency", currency: "BRL" });
+  };
+
+  const [creatMutationResult, createInvoice] = useMutation(CREATE_INVOICE);
+  const [publishInvoiceResult, publishInvoice] = useMutation(PUBLISH_INVOICE);
+
+  const setPublishInvoice = async (id: string, url: string) => {
+    const variables = { id };
+    publishInvoice(variables).then((result) => {
+      setIsLoading(false);
+      if (result.error) {
+        console.log(result.error.message);
+      }
+      console.log(result);
+      push(url);
+    });
+  };
+
+  const saveInvoice = (checkoutId: string, url: string) => {
+    try {
+      const variables = {
+        serviceName: product.name,
+        stripeServiceId: product.default_price,
+        client: clientState.id,
+        limitCalls: parseInt(product.metadata.call_limit || "0"),
+        limitCallsVirtual: parseInt(product.metadata.virtual_limit || "0"),
+        category: product.metadata.category,
+        checkoutId,
+      };
+      createInvoice(variables).then((result) => {
+        if (result.error) {
+          console.log(result.error.message);
+        }
+        const { id } = result.data.createInvoice;
+        setPublishInvoice(id, url);
+      });
+    } catch (error) {
+      alert((error as Error).message);
+    }
+  };
+
+  const createCheckoutSession = async () => {
+    setIsLoading(true);
+    try {
+      const { data } = await axios.post("/api/checkout", {
+        price: price,
+      });
+      saveInvoice(data.id, data.url);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -158,7 +215,13 @@ const Checkout: NextPage<Props> = ({ product, price }) => {
               </p>
             </div>
 
-            <Button icon={<BiShoppingBag />} buttonSize="lg" isFullSize>
+            <Button
+              icon={<BiShoppingBag />}
+              buttonSize="lg"
+              isFullSize
+              isLoading={isLoading}
+              onClick={() => createCheckoutSession()}
+            >
               CONTRATAR
             </Button>
           </div>
