@@ -1,15 +1,22 @@
-import { Fragment } from "react";
-import { BiLaptop, BiSearch } from "react-icons/bi";
+import { Fragment, useState } from "react";
+import { BiLaptop, BiPlus, BiSave, BiSearch, BiX } from "react-icons/bi";
 import Button from "../layout/Button";
+import * as Dialog from "@radix-ui/react-dialog";
 
 export default function MyEquipment() {
+  const [dialog, setDialog] = useState<boolean>(false);
+
   return (
     <Fragment>
-      <div className="px-4 py-5 sm:px-6 rounded-md border">
+      <div className="px-4 py-5 sm:px-6 rounded-md border mb-5">
         <h3 className="text-lg font-medium leading-6 text-gray-900">
           Meus Equipamentos
         </h3>
       </div>
+
+      <Button icon={<BiPlus />} buttonSize="lg" onClick={() => setDialog(true)}>
+        Adicionar equipamento
+      </Button>
 
       <div className="grid grid-cols-1 gap-3 mt-5">
         <div className="rounded-md border shadow h-fit overflow-hidden">
@@ -54,6 +61,79 @@ export default function MyEquipment() {
           </div>
         </div>
       </div>
+
+      <Dialog.Root open={dialog} onOpenChange={() => setDialog(!dialog)}>
+        <Dialog.Trigger asChild />
+        <Dialog.Portal>
+          <Dialog.Overlay className="fixed top-0 bottom-0 left-0 right-0 bg-black bg-opacity-40 backdrop-blur-sm z-50" />
+          <Dialog.Content className="fixed w-[80%] left-[10%] right-[10%] bg-white shadow-lg rounded-md top-10 md:top-[15%] z-50 max-h-[80vh] overflow-auto lg:w-[60%] lg:left-[20%] lg:right-[20%]">
+            <div className="flex justify-between items-center border-b px-5 py-3 sticky top-0 bg-white">
+              <Dialog.Title className="font-bold text-lg  ">
+                Adicionar Equipamento
+              </Dialog.Title>
+              <Dialog.Close
+                asChild
+                className=" bg-black bg-opacity-10 rounded-full text-2xl cursor-pointer hover:bg-opacity-20 active:bg-opacity-10"
+              >
+                <BiX />
+              </Dialog.Close>
+            </div>
+
+            <div className="flex flex-col gap-3 w-full p-5">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                  <label>
+                    Tipo <span className="text-red-600">*</span>
+                  </label>
+                  <select
+                    name="type"
+                    className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75 bg-transparent"
+                    placeholder="Selecione uma opção"
+                  >
+                    <option>Notebook</option>
+                    <option>Computador</option>
+                  </select>
+                </div>
+                <div>
+                  <label>
+                    Marca <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    name="name"
+                    className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
+                    placeholder="Nome"
+                  />
+                </div>
+                <div>
+                  <label>
+                    Modelo <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    name="name"
+                    className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
+                    placeholder="Nome"
+                  />
+                </div>
+              </div>
+              <div>
+                <label>Descrição</label>
+                <textarea
+                  name="name"
+                  className="w-full px-3 py-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75 resize-none"
+                  placeholder="Nome"
+                  rows={5}
+                />
+              </div>
+
+              <div className="flex justify-end">
+                <Button icon={<BiSave />} buttonSize="lg">
+                  Salvar
+                </Button>
+              </div>
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     </Fragment>
   );
 }

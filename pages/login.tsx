@@ -2,7 +2,6 @@ import { Fragment, useContext, useEffect, useState } from "react";
 import {
   BiCheck,
   BiChevronLeft,
-  BiHome,
   BiLogIn,
   BiMessageAltError,
   BiX,

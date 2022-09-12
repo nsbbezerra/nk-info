@@ -19,29 +19,12 @@ import MyShopping from "../../components/dados/MyShopping";
 import MyCalls from "../../components/dados/MyCalls";
 import MyEquipment from "../../components/dados/MyEquipment";
 import MyAtendimento from "../../components/dados/MyAtendimento";
-import { client } from "../../lib/urql";
-import { FIND_CLIENT_SUBSCRIPTIONS } from "../../graphql/clientMoviment";
 
 type SearchProps = {
   text: "data" | "subscribes" | "buy" | "calls" | "equipment" | "atendimento";
 };
 
-type Props = {
-  activateCode?: string;
-  id: string;
-  category: string;
-  checkoutId: string;
-  limitCalls?: number;
-  limitCallsVirtual?: number;
-  paymentIntentId?: string;
-  serviceName: string;
-};
-
-interface Subscriptions {
-  subscriptions: Props[];
-}
-
-const MyData: NextPage<Subscriptions> = ({ subscriptions }) => {
+const MyData: NextPage = () => {
   const [search, setSearch] = useState<SearchProps>({ text: "data" });
 
   return (
@@ -112,48 +95,60 @@ const MyData: NextPage<Subscriptions> = ({ subscriptions }) => {
         </DropdownMenu.Root>
 
         <div className="w-full rounded-md shadow overflow-hidden border h-fit hidden xl:block">
-          <div className="flex items-center gap-3 px-3 py-3 bg-sky-700 text-white font-bold">
+          <div className="flex items-center gap-3 px-3 py-3 text-sky-700 font-bold border-b">
             <BsMenuApp />
-            Menu
+            Selecione uma opção
           </div>
 
           <button
-            className="w-full flex items-center gap-3 py-2 px-3 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none"
+            className={`w-full flex items-center gap-3 py-2 px-3 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none ${
+              search.text === "data" && "bg-sky-100"
+            }`}
             onClick={() => setSearch({ text: "data" })}
           >
             <BiListCheck />
             Meus dados
           </button>
           <button
-            className="w-full flex items-center gap-3 py-2 px-3 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none"
+            className={`w-full flex items-center gap-3 py-2 px-3 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none ${
+              search.text === "subscribes" && "bg-sky-100"
+            }`}
             onClick={() => setSearch({ text: "subscribes" })}
           >
             <BiEdit />
             Minhas assinaturas
           </button>
           <button
-            className="w-full flex items-center gap-3 py-2 px-3 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none"
+            className={`w-full flex items-center gap-3 py-2 px-3 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none ${
+              search.text === "buy" && "bg-sky-100"
+            }`}
             onClick={() => setSearch({ text: "buy" })}
           >
             <BiShoppingBag />
             Minhas compras
           </button>
           <button
-            className="w-full flex items-center gap-3 py-2 px-3 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none"
+            className={`w-full flex items-center gap-3 py-2 px-3 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none ${
+              search.text === "calls" && "bg-sky-100"
+            }`}
             onClick={() => setSearch({ text: "calls" })}
           >
             <BiPhoneCall />
             Meus chamados
           </button>
           <button
-            className="w-full flex items-center gap-3 py-2 px-3 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none"
+            className={`w-full flex items-center gap-3 py-2 px-3 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none ${
+              search.text === "atendimento" && "bg-sky-100"
+            }`}
             onClick={() => setSearch({ text: "atendimento" })}
           >
             <BiCog />
             Meus atendimentos
           </button>
           <button
-            className="w-full flex items-center gap-3 py-2 px-3 cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none"
+            className={`w-full flex items-center gap-3 py-2 px-3 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none ${
+              search.text === "equipment" && "bg-sky-100"
+            }`}
             onClick={() => setSearch({ text: "equipment" })}
           >
             <BiLaptop />
@@ -168,9 +163,7 @@ const MyData: NextPage<Subscriptions> = ({ subscriptions }) => {
             {search.text === "calls" && <MyCalls />}
             {search.text === "atendimento" && <MyAtendimento />}
             {search.text === "equipment" && <MyEquipment />}
-            {search.text === "subscribes" && (
-              <MySubscriptions subscriptions={subscriptions} />
-            )}
+            {search.text === "subscribes" && <MySubscriptions />}
           </div>
         </div>
       </div>
@@ -181,18 +174,3 @@ const MyData: NextPage<Subscriptions> = ({ subscriptions }) => {
 };
 
 export default MyData;
-
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const clientId = params?.client || "";
-  const mySubsciptions = await client
-    .query(FIND_CLIENT_SUBSCRIPTIONS, { id: clientId })
-    .toPromise();
-
-  const subscriptions = mySubsciptions.data.invoices;
-
-  return {
-    props: {
-      subscriptions,
-    },
-  };
-};

@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, useContext, useEffect } from "react";
 import {
   BiCheck,
   BiMessageAltError,
@@ -18,11 +18,14 @@ import { format } from "date-fns";
 import pt_br from "date-fns/locale/pt-BR";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useMutation } from "urql";
+import { useMutation, useQuery } from "urql";
 import { DELETE_INVOICE } from "../../graphql/invoiceMutation";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import Image from "next/image";
+import ClientContext from "../../context/client";
+import { FIND_CLIENT_SUBSCRIPTIONS } from "../../graphql/clientMoviment";
 
-type Props = {
+type Subscriptions = {
   activateCode?: string;
   id: string;
   category: string;
@@ -33,10 +36,6 @@ type Props = {
   serviceName: string;
 };
 
-interface Subscriptions {
-  subscriptions: Props[];
-}
-
 type PaymentSubscription = {
   subscription: Stripe.Subscription;
   item: Stripe.SubscriptionItem | null;
@@ -46,14 +45,29 @@ type InvoiceProps = {
   invoice: Stripe.Invoice | null;
 };
 
-export default function MySubscriptions({ subscriptions }: Subscriptions) {
-  const { push, reload } = useRouter();
+export default function MySubscriptions() {
+  const { state } = useContext(ClientContext);
+  const { push } = useRouter();
   const [subscription, setSubscription] =
     useState<PaymentSubscription | null>();
   const [idSubscription, setIdSubscription] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [invoiceLoading, setInvoiceLoading] = useState<boolean>(false);
   const [invoice, setInvoice] = useState<InvoiceProps | null>();
+  const [subscriptions, setSubscriptions] = useState<Subscriptions[]>([]);
+
+  const [result, reexecuteQuery] = useQuery({
+    query: FIND_CLIENT_SUBSCRIPTIONS,
+    variables: { id: state.id },
+  });
+
+  const { fetching, data, error } = result;
+
+  useEffect(() => {
+    if (data) {
+      setSubscriptions(data.invoices);
+    }
+  }, [data]);
 
   const [delInvoiceResult, delInvoice] = useMutation(DELETE_INVOICE);
 
@@ -76,12 +90,18 @@ export default function MySubscriptions({ subscriptions }: Subscriptions) {
 
   function closeError() {
     setIsDialogErrorOpen(false);
-    reload();
+    reexecuteQuery();
   }
 
   function closeSuccess() {
     setIsDialogOpen(false);
-    reload();
+    reexecuteQuery();
+  }
+
+  if (error) {
+    let message = error.message;
+    setMessageDialog(message);
+    openError();
   }
 
   const findDetails = async (id: string, checkoutId: string) => {
@@ -185,237 +205,305 @@ export default function MySubscriptions({ subscriptions }: Subscriptions) {
       </div>
 
       <div className="grid grid-cols-1 gap-3 mt-5">
-        {subscriptions.map((sub) => (
-          <div
-            className="rounded-md border shadow h-fit overflow-hidden"
-            key={sub.id}
-          >
-            <div className="flex flex-col sm:items-center justify-between px-3 pb-3 sm:flex-row sm:pb-0">
-              <div className="flex flex-row items-center gap-3 py-4 text-sky-700 font-bold text-lg text-center">
-                <BiPackage />
-                <span>{sub.serviceName}</span>
-              </div>
-
-              <Button
-                icon={<BiSearch />}
-                isLoading={idSubscription === sub.id && isLoading}
-                onClick={() => findDetails(sub.id, sub.checkoutId)}
+        {fetching ? (
+          <div className="w-full flex flex-col items-center justify-center gap-2">
+            <div className="w-20">
+              <svg
+                width="100%"
+                height="100%"
+                viewBox="0 0 128 128"
+                className="animate-spin"
               >
-                Detalhes
-              </Button>
+                <path
+                  fill="#222"
+                  d="M64.4 16a49 49 0 0 0-50 48 51 51 0 0 0 50 52.2 53 53 0 0 0 54-52c-.7-48-45-55.7-45-55.7s45.3 3.8 49 55.6c.8 32-24.8 59.5-58 60.2-33 .8-61.4-25.7-62-60C1.3 29.8 28.8.6 64.3 0c0 0 8.5 0 8.7 8.4 0 8-8.6 7.6-8.6 7.6z"
+                ></path>
+              </svg>
             </div>
-            {!subscription ? (
-              ""
+
+            <span>Carregando...</span>
+          </div>
+        ) : (
+          <>
+            {subscriptions.length === 0 ? (
+              <div className="w-full flex flex-col justify-center items-center gap-2">
+                <div className="w-1/4">
+                  <Image
+                    draggable={false}
+                    src={"/img/box-6.png"}
+                    width={600}
+                    height={450}
+                    alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                    layout="responsive"
+                    objectFit="contain"
+                    quality={100}
+                  />
+                </div>
+                <span className="text-gray-700 text-center">
+                  Nenhuma informação para mostrar
+                </span>
+              </div>
             ) : (
               <>
-                {idSubscription === sub.id && subscription ? (
-                  <div className="border-t border-gray-200">
-                    <dl>
-                      <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt className="text-sm font-medium text-gray-500">
-                          Preço
-                        </dt>
-                        <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                          {calcReal(subscription.item?.plan.amount as number)}
-                        </dd>
+                {subscriptions.map((sub) => (
+                  <div
+                    className="rounded-md border shadow h-fit overflow-hidden"
+                    key={sub.id}
+                  >
+                    <div className="flex flex-col sm:items-center justify-between px-4 pb-3 sm:flex-row sm:pb-0">
+                      <div className="flex flex-row items-center gap-3 py-4 text-sky-700 font-bold text-lg text-center">
+                        <div className="w-12">
+                          <Image
+                            draggable={false}
+                            src={"/img/box-2.png"}
+                            width={600}
+                            height={450}
+                            alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                            layout="responsive"
+                            objectFit="contain"
+                            quality={100}
+                          />
+                        </div>
+                        <span>{sub.serviceName}</span>
                       </div>
-                      <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt className="text-sm font-medium text-gray-500">
-                          Data do Pagamento
-                        </dt>
-                        <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                          {format(
-                            new Date(
-                              subscription.subscription.current_period_start
-                            ),
-                            "dd/MM/yyyy 'às' HH:mm'h'",
-                            {
-                              locale: pt_br,
-                            }
-                          )}
-                        </dd>
-                      </div>
-                      <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt className="text-sm font-medium text-gray-500">
-                          Data do Vencimento
-                        </dt>
-                        <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                          {format(
-                            new Date(
-                              subscription.subscription.current_period_end
-                            ),
-                            "dd/MM/yyyy 'às' HH:mm'h'",
-                            {
-                              locale: pt_br,
-                            }
-                          )}
-                        </dd>
-                      </div>
-                      <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt className="text-sm font-medium text-gray-500">
-                          Status do Pacote
-                        </dt>
-                        <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                          {subscription.subscription.status === "active" && (
-                            <span className="text-green-600 font-bold w-fit px-3 py-1 border border-green-600 rounded-md">
-                              Ativo
-                            </span>
-                          )}
-                          {subscription.subscription.status === "canceled" && (
-                            <span className="text-gray-900 font-bold w-fit px-3 py-1 border border-gray-900 rounded-md">
-                              Cancelado
-                            </span>
-                          )}
-                          {subscription.subscription.status ===
-                            "incomplete" && (
-                            <span className="text-orange-600 font-bold w-fit px-3 py-1 border border-orange-600 rounded-md">
-                              Incompleto
-                            </span>
-                          )}
-                          {subscription.subscription.status ===
-                            "incomplete_expired" && (
-                            <span className="text-zinc-800 font-bold w-fit px-3 py-1 border border-zinc-800 rounded-md">
-                              Incompleto e Expirado
-                            </span>
-                          )}
-                          {subscription.subscription.status === "past_due" && (
-                            <span className="text-red-600 font-bold w-fit px-3 py-1 border border-red-600 rounded-md">
-                              Vencido
-                            </span>
-                          )}
-                          {subscription.subscription.status === "trialing" && (
-                            <span className="text-sky-700 font-bold w-fit px-3 py-1 border border-sky-700 rounded-md">
-                              Modo Teste
-                            </span>
-                          )}
-                          {subscription.subscription.status === "unpaid" && (
-                            <span className="text-zinc-600 font-bold w-fit px-3 py-1 border border-zinc-600 rounded-md">
-                              Não Pago
-                            </span>
-                          )}
-                        </dd>
-                      </div>
-                      <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt className="text-sm font-medium text-gray-500">
-                          Opções
-                        </dt>
-                        <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                          {subscription.subscription.status === "active" && (
-                            <div className="flex md:items-center flex-col md:flex-row justify-center gap-2 md:justify-start flex-wrap">
-                              <Button
-                                buttonSize="sm"
-                                icon={<BiTrash />}
-                                scheme="error"
-                                onClick={() =>
-                                  cancelSubscription(
-                                    subscription.subscription.id,
-                                    sub.id
-                                  )
-                                }
-                                isLoading={invoiceLoading}
-                              >
-                                Cancelar assinatura
-                              </Button>
-                            </div>
-                          )}
-                          {subscription.subscription.status === "canceled" && (
-                            <span>Nenhuma</span>
-                          )}
-                          {subscription.subscription.status ===
-                            "incomplete" && (
-                            <div className="flex md:items-center flex-col md:flex-row justify-center gap-2 md:justify-start flex-wrap">
-                              <Button
-                                buttonSize="sm"
-                                icon={<BiShoppingBag />}
-                                isLoading={invoiceLoading}
-                                onClick={() =>
-                                  findInvoiceInfo(
-                                    subscription.subscription
-                                      .latest_invoice as string
-                                  )
-                                }
-                              >
-                                Completar pagamento
-                              </Button>
-                              {invoice && (
-                                <Link
-                                  href={
-                                    invoice.invoice?.hosted_invoice_url || "#"
-                                  }
-                                  passHref
-                                >
-                                  <a
-                                    className="flex h-8 items-center border h px-3 rounded-md text-sky-700 border-sky-700 font-semibold hover:bg-sky-50 active:bg-sky-100 w-fit"
-                                    target={"_blank"}
-                                  >
-                                    <BiZoomIn />
-                                    Visualizar fatura
-                                  </a>
-                                </Link>
-                              )}
-                            </div>
-                          )}
-                          {subscription.subscription.status ===
-                            "incomplete_expired" && (
-                            <Button
-                              buttonSize="sm"
-                              icon={<BiTrash />}
-                              scheme="error"
-                              onClick={() => cancelSubscriptionExpires(sub.id)}
-                              isLoading={invoiceLoading}
-                            >
-                              Cancelar assinatura
-                            </Button>
-                          )}
-                          {subscription.subscription.status === "trialing" && (
-                            <span className="text-sky-700 font-bold w-fit px-3 py-1 border border-sky-700 rounded-md">
-                              Modo Teste
-                            </span>
-                          )}
-                          {subscription.subscription.status === "unpaid" && (
-                            <div className="flex md:items-center flex-col md:flex-row justify-center gap-2 md:justify-start flex-wrap">
-                              <Button
-                                buttonSize="sm"
-                                icon={<BiPlus />}
-                                isLoading={invoiceLoading}
-                                onClick={() =>
-                                  findInvoiceInfo(
-                                    subscription.subscription
-                                      .latest_invoice as string
-                                  )
-                                }
-                              >
-                                Nova fatura
-                              </Button>
-                              {invoice && (
-                                <Link
-                                  href={
-                                    invoice.invoice?.hosted_invoice_url || "#"
-                                  }
-                                  passHref
-                                >
-                                  <a
-                                    className="flex h-8 items-center border h px-3 rounded-md text-sky-700 border-sky-700 font-semibold hover:bg-sky-50 active:bg-sky-100 w-fit"
-                                    target={"_blank"}
-                                  >
-                                    <BiZoomIn />
-                                    Visualizar fatura
-                                  </a>
-                                </Link>
-                              )}
-                            </div>
-                          )}
-                        </dd>
-                      </div>
-                    </dl>
+
+                      <Button
+                        icon={<BiSearch />}
+                        isLoading={idSubscription === sub.id && isLoading}
+                        onClick={() => findDetails(sub.id, sub.checkoutId)}
+                      >
+                        Detalhes
+                      </Button>
+                    </div>
+                    {!subscription ? (
+                      ""
+                    ) : (
+                      <>
+                        {idSubscription === sub.id && subscription ? (
+                          <div className="border-t border-gray-200">
+                            <dl>
+                              <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt className="text-sm font-medium text-gray-500">
+                                  Preço
+                                </dt>
+                                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                  {calcReal(
+                                    subscription.item?.plan.amount as number
+                                  )}
+                                </dd>
+                              </div>
+                              <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt className="text-sm font-medium text-gray-500">
+                                  Data do Pagamento
+                                </dt>
+                                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                  {format(
+                                    new Date(
+                                      subscription.subscription.current_period_start
+                                    ),
+                                    "dd/MM/yyyy 'às' HH:mm'h'",
+                                    {
+                                      locale: pt_br,
+                                    }
+                                  )}
+                                </dd>
+                              </div>
+                              <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt className="text-sm font-medium text-gray-500">
+                                  Data do Vencimento
+                                </dt>
+                                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                  {format(
+                                    new Date(
+                                      subscription.subscription.current_period_end
+                                    ),
+                                    "dd/MM/yyyy 'às' HH:mm'h'",
+                                    {
+                                      locale: pt_br,
+                                    }
+                                  )}
+                                </dd>
+                              </div>
+                              <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt className="text-sm font-medium text-gray-500">
+                                  Status do Pacote
+                                </dt>
+                                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                  {subscription.subscription.status ===
+                                    "active" && (
+                                    <span className="text-green-600 font-bold w-fit px-3 py-1 border border-green-600 rounded-md">
+                                      Ativo
+                                    </span>
+                                  )}
+                                  {subscription.subscription.status ===
+                                    "canceled" && (
+                                    <span className="text-gray-900 font-bold w-fit px-3 py-1 border border-gray-900 rounded-md">
+                                      Cancelado
+                                    </span>
+                                  )}
+                                  {subscription.subscription.status ===
+                                    "incomplete" && (
+                                    <span className="text-orange-600 font-bold w-fit px-3 py-1 border border-orange-600 rounded-md">
+                                      Incompleto
+                                    </span>
+                                  )}
+                                  {subscription.subscription.status ===
+                                    "incomplete_expired" && (
+                                    <span className="text-zinc-800 font-bold w-fit px-3 py-1 border border-zinc-800 rounded-md">
+                                      Incompleto e Expirado
+                                    </span>
+                                  )}
+                                  {subscription.subscription.status ===
+                                    "past_due" && (
+                                    <span className="text-red-600 font-bold w-fit px-3 py-1 border border-red-600 rounded-md">
+                                      Vencido
+                                    </span>
+                                  )}
+                                  {subscription.subscription.status ===
+                                    "trialing" && (
+                                    <span className="text-sky-700 font-bold w-fit px-3 py-1 border border-sky-700 rounded-md">
+                                      Modo Teste
+                                    </span>
+                                  )}
+                                  {subscription.subscription.status ===
+                                    "unpaid" && (
+                                    <span className="text-zinc-600 font-bold w-fit px-3 py-1 border border-zinc-600 rounded-md">
+                                      Não Pago
+                                    </span>
+                                  )}
+                                </dd>
+                              </div>
+                              <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt className="text-sm font-medium text-gray-500">
+                                  Opções
+                                </dt>
+                                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                  {subscription.subscription.status ===
+                                    "active" && (
+                                    <div className="flex md:items-center flex-col md:flex-row justify-center gap-2 md:justify-start flex-wrap">
+                                      <Button
+                                        buttonSize="sm"
+                                        icon={<BiTrash />}
+                                        scheme="error"
+                                        onClick={() =>
+                                          cancelSubscription(
+                                            subscription.subscription.id,
+                                            sub.id
+                                          )
+                                        }
+                                        isLoading={invoiceLoading}
+                                      >
+                                        Cancelar assinatura
+                                      </Button>
+                                    </div>
+                                  )}
+                                  {subscription.subscription.status ===
+                                    "canceled" && <span>Nenhuma</span>}
+                                  {subscription.subscription.status ===
+                                    "incomplete" && (
+                                    <div className="flex md:items-center flex-col md:flex-row justify-center gap-2 md:justify-start flex-wrap">
+                                      <Button
+                                        buttonSize="sm"
+                                        icon={<BiShoppingBag />}
+                                        isLoading={invoiceLoading}
+                                        onClick={() =>
+                                          findInvoiceInfo(
+                                            subscription.subscription
+                                              .latest_invoice as string
+                                          )
+                                        }
+                                      >
+                                        Completar pagamento
+                                      </Button>
+                                      {invoice && (
+                                        <Link
+                                          href={
+                                            invoice.invoice
+                                              ?.hosted_invoice_url || "#"
+                                          }
+                                          passHref
+                                        >
+                                          <a
+                                            className="flex h-8 items-center border h px-3 rounded-md text-sky-700 border-sky-700 font-semibold hover:bg-sky-50 active:bg-sky-100 w-fit"
+                                            target={"_blank"}
+                                          >
+                                            <BiZoomIn />
+                                            Visualizar fatura
+                                          </a>
+                                        </Link>
+                                      )}
+                                    </div>
+                                  )}
+                                  {subscription.subscription.status ===
+                                    "incomplete_expired" && (
+                                    <Button
+                                      buttonSize="sm"
+                                      icon={<BiTrash />}
+                                      scheme="error"
+                                      onClick={() =>
+                                        cancelSubscriptionExpires(sub.id)
+                                      }
+                                      isLoading={invoiceLoading}
+                                    >
+                                      Cancelar assinatura
+                                    </Button>
+                                  )}
+                                  {subscription.subscription.status ===
+                                    "trialing" && (
+                                    <span className="text-sky-700 font-bold w-fit px-3 py-1 border border-sky-700 rounded-md">
+                                      Modo Teste
+                                    </span>
+                                  )}
+                                  {subscription.subscription.status ===
+                                    "unpaid" && (
+                                    <div className="flex md:items-center flex-col md:flex-row justify-center gap-2 md:justify-start flex-wrap">
+                                      <Button
+                                        buttonSize="sm"
+                                        icon={<BiPlus />}
+                                        isLoading={invoiceLoading}
+                                        onClick={() =>
+                                          findInvoiceInfo(
+                                            subscription.subscription
+                                              .latest_invoice as string
+                                          )
+                                        }
+                                      >
+                                        Nova fatura
+                                      </Button>
+                                      {invoice && (
+                                        <Link
+                                          href={
+                                            invoice.invoice
+                                              ?.hosted_invoice_url || "#"
+                                          }
+                                          passHref
+                                        >
+                                          <a
+                                            className="flex h-8 items-center border h px-3 rounded-md text-sky-700 border-sky-700 font-semibold hover:bg-sky-50 active:bg-sky-100 w-fit"
+                                            target={"_blank"}
+                                          >
+                                            <BiZoomIn />
+                                            Visualizar fatura
+                                          </a>
+                                        </Link>
+                                      )}
+                                    </div>
+                                  )}
+                                </dd>
+                              </div>
+                            </dl>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </>
+                    )}
                   </div>
-                ) : (
-                  ""
-                )}
+                ))}
               </>
             )}
-          </div>
-        ))}
+          </>
+        )}
       </div>
 
       <AlertDialog.Root open={isDialogOpen}>
