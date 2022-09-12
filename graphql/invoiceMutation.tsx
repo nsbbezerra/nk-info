@@ -34,4 +34,12 @@ const PUBLISH_INVOICE = gql`
   }
 `;
 
-export { CREATE_INVOICE, PUBLISH_INVOICE };
+const DELETE_INVOICE = gql`
+  mutation DelInvoice($id: ID!) {
+    deleteInvoice(where: { id: $id }) {
+      id
+    }
+  }
+`;
+
+export { CREATE_INVOICE, PUBLISH_INVOICE, DELETE_INVOICE };

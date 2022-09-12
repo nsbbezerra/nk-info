@@ -1,11 +1,26 @@
 import { Fragment, useEffect } from "react";
-import { BiPackage, BiRefresh, BiSearch, BiShoppingBag } from "react-icons/bi";
+import {
+  BiCheck,
+  BiMessageAltError,
+  BiPackage,
+  BiPlus,
+  BiSearch,
+  BiShoppingBag,
+  BiTrash,
+  BiX,
+  BiZoomIn,
+} from "react-icons/bi";
 import Button from "../layout/Button";
 import { useState } from "react";
 import Stripe from "stripe";
 import axios from "axios";
 import { format } from "date-fns";
 import pt_br from "date-fns/locale/pt-BR";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { useMutation } from "urql";
+import { DELETE_INVOICE } from "../../graphql/invoiceMutation";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
 
 type Props = {
   activateCode?: string;
@@ -27,33 +42,67 @@ type PaymentSubscription = {
   item: Stripe.SubscriptionItem | null;
 };
 
+type InvoiceProps = {
+  invoice: Stripe.Invoice | null;
+};
+
 export default function MySubscriptions({ subscriptions }: Subscriptions) {
+  const { push, reload } = useRouter();
   const [subscription, setSubscription] =
     useState<PaymentSubscription | null>();
   const [idSubscription, setIdSubscription] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [invoiceLoading, setInvoiceLoading] = useState<boolean>(false);
+  const [invoice, setInvoice] = useState<InvoiceProps | null>();
 
-  useEffect(() => {
-    console.log(subscription);
-  }, [subscription]);
+  const [delInvoiceResult, delInvoice] = useMutation(DELETE_INVOICE);
+
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [isDialogErrorOpen, setIsDialogErrorOpen] = useState<boolean>(false);
+  const [messageDialog, setMessageDialog] = useState<string>("");
 
   const calcReal = (amount: number) => {
     let calc = amount / 100;
     return calc.toLocaleString("pt-br", { style: "currency", currency: "BRL" });
   };
 
+  function openError() {
+    setIsDialogErrorOpen(true);
+  }
+
+  function openSuccess() {
+    setIsDialogOpen(true);
+  }
+
+  function closeError() {
+    setIsDialogErrorOpen(false);
+    reload();
+  }
+
+  function closeSuccess() {
+    setIsDialogOpen(false);
+    reload();
+  }
+
   const findDetails = async (id: string, checkoutId: string) => {
     setSubscription(null);
+    setInvoice(null);
     setIdSubscription(id);
     setIsLoading(true);
     try {
       const { data } = await axios.post("/api/checkoutDetails", {
         id: checkoutId,
       });
-      findSubscription(data.checkout.subscription);
+      if (data.checkout.subscription === null) {
+        data.checkout.url !== null && push(data.checkout.url);
+      } else {
+        findSubscription(data.checkout.subscription);
+      }
     } catch (error) {
       setIsLoading(false);
-      console.log((error as Error).message);
+      let message = (error as Error).message;
+      setMessageDialog(message);
+      openError();
     }
   };
 
@@ -62,7 +111,6 @@ export default function MySubscriptions({ subscriptions }: Subscriptions) {
       const { data } = await axios.post("/api/subscription", {
         id,
       });
-      console.log(data);
       setIsLoading(false);
       setSubscription({
         subscription: data.subscription,
@@ -70,7 +118,61 @@ export default function MySubscriptions({ subscriptions }: Subscriptions) {
       });
     } catch (error) {
       setIsLoading(false);
-      console.log((error as Error).message);
+      let message = (error as Error).message;
+      setMessageDialog(message);
+      openError();
+    }
+  };
+
+  const findInvoiceInfo = async (id: string) => {
+    setInvoiceLoading(true);
+    try {
+      const { data } = await axios.post("/api/findInvoice", { id });
+      setInvoice({ invoice: data.invoice });
+      setInvoiceLoading(false);
+    } catch (error) {
+      setInvoiceLoading(false);
+      let message = (error as Error).message;
+      setMessageDialog(message);
+      openError();
+    }
+  };
+
+  const cancelSubscription = async (id: string, subscriptionId: string) => {
+    setInvoiceLoading(true);
+    try {
+      const response = await axios.post("/api/cancelSubscription", { id });
+      const variables = { id: subscriptionId };
+      await delInvoice(variables);
+      setInvoiceLoading(false);
+      setMessageDialog(response.data.message);
+      openSuccess();
+    } catch (error) {
+      setInvoiceLoading(false);
+      let message = (error as Error).message;
+      setMessageDialog(message);
+      openError();
+    }
+  };
+
+  const cancelSubscriptionExpires = async (subscriptionId: string) => {
+    setInvoiceLoading(true);
+    try {
+      const variables = { id: subscriptionId };
+      const { data, error } = await delInvoice(variables);
+      if (data) {
+        setInvoiceLoading(false);
+        setMessageDialog("Assinatura cancelada com sucesso");
+        openSuccess();
+      } else if (error) {
+        setMessageDialog(error.message);
+        openError();
+      }
+    } catch (error) {
+      setInvoiceLoading(false);
+      let message = (error as Error).message;
+      setMessageDialog(message);
+      openError();
     }
   };
 
@@ -88,8 +190,8 @@ export default function MySubscriptions({ subscriptions }: Subscriptions) {
             className="rounded-md border shadow h-fit overflow-hidden"
             key={sub.id}
           >
-            <div className="flex flex-col items-center justify-between px-3 pb-3 sm:flex-row sm:pb-0">
-              <div className="flex flex-col sm:flex-row items-center gap-3 py-4 text-sky-700 font-bold md:text-lg">
+            <div className="flex flex-col sm:items-center justify-between px-3 pb-3 sm:flex-row sm:pb-0">
+              <div className="flex flex-row items-center gap-3 py-4 text-sky-700 font-bold text-lg text-center">
                 <BiPackage />
                 <span>{sub.serviceName}</span>
               </div>
@@ -199,24 +301,70 @@ export default function MySubscriptions({ subscriptions }: Subscriptions) {
                         </dt>
                         <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                           {subscription.subscription.status === "active" && (
-                            <span>Nenhuma ação</span>
+                            <div className="flex md:items-center flex-col md:flex-row justify-center gap-2 md:justify-start flex-wrap">
+                              <Button
+                                buttonSize="sm"
+                                icon={<BiTrash />}
+                                scheme="error"
+                                onClick={() =>
+                                  cancelSubscription(
+                                    subscription.subscription.id,
+                                    sub.id
+                                  )
+                                }
+                                isLoading={invoiceLoading}
+                              >
+                                Cancelar assinatura
+                              </Button>
+                            </div>
                           )}
                           {subscription.subscription.status === "canceled" && (
-                            <span className="text-gray-900 font-bold w-fit px-3 py-1 border border-gray-900 rounded-md">
-                              Cancelado
-                            </span>
+                            <span>Nenhuma</span>
                           )}
                           {subscription.subscription.status ===
                             "incomplete" && (
-                            <Button buttonSize="sm" icon={<BiShoppingBag />}>
-                              Completar pagamento
-                            </Button>
+                            <div className="flex md:items-center flex-col md:flex-row justify-center gap-2 md:justify-start flex-wrap">
+                              <Button
+                                buttonSize="sm"
+                                icon={<BiShoppingBag />}
+                                isLoading={invoiceLoading}
+                                onClick={() =>
+                                  findInvoiceInfo(
+                                    subscription.subscription
+                                      .latest_invoice as string
+                                  )
+                                }
+                              >
+                                Completar pagamento
+                              </Button>
+                              {invoice && (
+                                <Link
+                                  href={
+                                    invoice.invoice?.hosted_invoice_url || "#"
+                                  }
+                                  passHref
+                                >
+                                  <a
+                                    className="flex h-8 items-center border h px-3 rounded-md text-sky-700 border-sky-700 font-semibold hover:bg-sky-50 active:bg-sky-100 w-fit"
+                                    target={"_blank"}
+                                  >
+                                    <BiZoomIn />
+                                    Visualizar fatura
+                                  </a>
+                                </Link>
+                              )}
+                            </div>
                           )}
                           {subscription.subscription.status ===
-                            "incomplete_expired" && <span>Nenhuma ação</span>}
-                          {subscription.subscription.status === "past_due" && (
-                            <Button buttonSize="sm" icon={<BiRefresh />}>
-                              Renovar
+                            "incomplete_expired" && (
+                            <Button
+                              buttonSize="sm"
+                              icon={<BiTrash />}
+                              scheme="error"
+                              onClick={() => cancelSubscriptionExpires(sub.id)}
+                              isLoading={invoiceLoading}
+                            >
+                              Cancelar assinatura
                             </Button>
                           )}
                           {subscription.subscription.status === "trialing" && (
@@ -225,9 +373,37 @@ export default function MySubscriptions({ subscriptions }: Subscriptions) {
                             </span>
                           )}
                           {subscription.subscription.status === "unpaid" && (
-                            <Button buttonSize="sm" icon={<BiRefresh />}>
-                              Renovar
-                            </Button>
+                            <div className="flex md:items-center flex-col md:flex-row justify-center gap-2 md:justify-start flex-wrap">
+                              <Button
+                                buttonSize="sm"
+                                icon={<BiPlus />}
+                                isLoading={invoiceLoading}
+                                onClick={() =>
+                                  findInvoiceInfo(
+                                    subscription.subscription
+                                      .latest_invoice as string
+                                  )
+                                }
+                              >
+                                Nova fatura
+                              </Button>
+                              {invoice && (
+                                <Link
+                                  href={
+                                    invoice.invoice?.hosted_invoice_url || "#"
+                                  }
+                                  passHref
+                                >
+                                  <a
+                                    className="flex h-8 items-center border h px-3 rounded-md text-sky-700 border-sky-700 font-semibold hover:bg-sky-50 active:bg-sky-100 w-fit"
+                                    target={"_blank"}
+                                  >
+                                    <BiZoomIn />
+                                    Visualizar fatura
+                                  </a>
+                                </Link>
+                              )}
+                            </div>
                           )}
                         </dd>
                       </div>
@@ -241,6 +417,58 @@ export default function MySubscriptions({ subscriptions }: Subscriptions) {
           </div>
         ))}
       </div>
+
+      <AlertDialog.Root open={isDialogOpen}>
+        <AlertDialog.Trigger asChild />
+        <AlertDialog.Portal>
+          <AlertDialog.Overlay className="fixed top-0 bottom-0 left-0 right-0 bg-black bg-opacity-40 backdrop-blur-sm" />
+          <AlertDialog.Content className="fixed w-[80%] left-[10%] right-[10%] sm:w-[50%] sm:left-[25%] sm:right-[25%] md:w-[40%] md:left-[30%] md:right-[30%] lg:w-[30%] bg-white shadow-lg rounded-md top-[15%] z-50 lg:left-[35%] lg:right-[35%] flex items-center justify-center flex-col p-5 gap-2">
+            <AlertDialog.Title className="text-green-600 px-4 py-3 font-semibold text-4xl w-20 h-20 flex items-center justify-center bg-green-100 rounded-full">
+              <BiCheck />
+            </AlertDialog.Title>
+            <AlertDialog.Description className="text-green-600 text-2xl font-semibold">
+              Sucesso
+            </AlertDialog.Description>
+            <div className="text-center">
+              <span className="text-gray-700">{messageDialog}</span>
+            </div>
+            <div className="flex items-center w-full">
+              <AlertDialog.Cancel
+                className="bg-green-600 hover:bg-green-700 active:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 px-4 h-10 rounded-md flex text-white justify-center items-center gap-2 transition-all delay-75 w-full"
+                onClick={() => closeSuccess()}
+              >
+                <BiX /> Fechar
+              </AlertDialog.Cancel>
+            </div>
+          </AlertDialog.Content>
+        </AlertDialog.Portal>
+      </AlertDialog.Root>
+
+      <AlertDialog.Root open={isDialogErrorOpen}>
+        <AlertDialog.Trigger asChild />
+        <AlertDialog.Portal>
+          <AlertDialog.Overlay className="fixed top-0 bottom-0 left-0 right-0 bg-black bg-opacity-40 backdrop-blur-sm" />
+          <AlertDialog.Content className="fixed w-[80%] left-[10%] right-[10%] sm:w-[50%] sm:left-[25%] sm:right-[25%] md:w-[40%] md:left-[30%] md:right-[30%] lg:w-[30%] bg-white shadow-lg rounded-md top-[15%] z-50 lg:left-[35%] lg:right-[35%] flex items-center justify-center flex-col p-5 gap-2">
+            <AlertDialog.Title className="text-red-600 px-4 py-3 font-semibold text-4xl w-20 h-20 flex items-center justify-center bg-red-100 rounded-full">
+              <BiMessageAltError />
+            </AlertDialog.Title>
+            <AlertDialog.Description className="text-red-600 text-2xl font-semibold">
+              Ocorreu um erro
+            </AlertDialog.Description>
+            <div className="text-center">
+              <span className="text-gray-700">{messageDialog}</span>
+            </div>
+            <div className="flex items-center w-full">
+              <AlertDialog.Cancel
+                className="bg-red-600 hover:bg-red-700 active:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 px-4 h-10 rounded-md flex text-white justify-center items-center gap-2 transition-all delay-75 w-full"
+                onClick={() => closeError()}
+              >
+                <BiX /> Fechar
+              </AlertDialog.Cancel>
+            </div>
+          </AlertDialog.Content>
+        </AlertDialog.Portal>
+      </AlertDialog.Root>
     </Fragment>
   );
 }

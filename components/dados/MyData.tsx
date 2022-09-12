@@ -1,7 +1,12 @@
+import { stat } from "fs";
+import { useContext } from "react";
 import { BiEdit } from "react-icons/bi";
+import ClientContext from "../../context/client";
 import Button from "../layout/Button";
 
 export default function MyDataComp() {
+  const { state, setState } = useContext(ClientContext);
+
   return (
     <div className="flex flex-col gap-5">
       <div className="overflow-hidden bg-white border rounded-md shadow">
@@ -15,29 +20,26 @@ export default function MyDataComp() {
             <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt className="text-sm font-medium text-gray-500">Nome</dt>
               <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                Margot Foster
+                {state.name}
               </dd>
             </div>
             <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt className="text-sm font-medium text-gray-500">Telefone</dt>
               <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                Backend Developer
+                {state.phone}
               </dd>
             </div>
             <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt className="text-sm font-medium text-gray-500">Email</dt>
               <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                margotfoster@example.com
+                {state.email}
               </dd>
             </div>
             <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt className="text-sm font-medium text-gray-500">Endereço</dt>
               <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim
-                incididunt cillum culpa consequat. Excepteur qui ipsum aliquip
-                consequat sint. Sit id mollit nulla mollit nostrud in ea officia
-                proident. Irure nostrud pariatur mollit ad adipisicing
-                reprehenderit deserunt qui eu.
+                {state.street}, {state.number}, {state.district}, CEP:
+                {state.cep}, {state.city} - {state.state}
               </dd>
             </div>
           </dl>

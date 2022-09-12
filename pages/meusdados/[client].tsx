@@ -1,4 +1,4 @@
-import { GetServerSideProps, GetStaticProps, NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import { Fragment, useState } from "react";
 import {
   BiCog,
@@ -19,11 +19,8 @@ import MyShopping from "../../components/dados/MyShopping";
 import MyCalls from "../../components/dados/MyCalls";
 import MyEquipment from "../../components/dados/MyEquipment";
 import MyAtendimento from "../../components/dados/MyAtendimento";
-import { client, ssrCache } from "../../lib/urql";
+import { client } from "../../lib/urql";
 import { FIND_CLIENT_SUBSCRIPTIONS } from "../../graphql/clientMoviment";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { useQuery } from "urql";
 
 type SearchProps = {
   text: "data" | "subscribes" | "buy" | "calls" | "equipment" | "atendimento";
@@ -45,7 +42,6 @@ interface Subscriptions {
 }
 
 const MyData: NextPage<Subscriptions> = ({ subscriptions }) => {
-  const { query } = useRouter();
   const [search, setSearch] = useState<SearchProps>({ text: "data" });
 
   return (

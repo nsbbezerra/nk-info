@@ -2,6 +2,7 @@ import { ReactNode, useRef } from "react";
 
 interface Props {
   buttonSize?: "xs" | "sm" | "md" | "lg";
+  scheme?: "success" | "info" | "warning" | "error";
   isFullSize?: boolean;
   icon?: ReactNode;
   isLoading?: boolean;
@@ -17,35 +18,94 @@ export default function Button({
   icon,
   isLoading = false,
   isDisabled = false,
+  scheme = "info",
   ...rest
 }: ButtonProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
+  const schemeColors = {
+    info: {
+      bg: "bg-sky-700",
+      hover: "bg-sky-800",
+      active: "bg-sky-700",
+      color: "text-white",
+      disable: "bg-sky-300",
+      ring: "ring-sky-500",
+    },
+    success: {
+      bg: "bg-green-600",
+      hover: "bg-green-700",
+      active: "bg-green-600",
+      color: "text-white",
+      disable: "bg-green-300",
+      ring: "ring-green-400",
+    },
+    warning: {
+      bg: "bg-orange-600",
+      hover: "bg-orange-700",
+      active: "bg-orange-600",
+      color: "text-white",
+      disable: "bg-orange-300",
+      ring: "ring-orange-400",
+    },
+    error: {
+      bg: "bg-red-600",
+      hover: "bg-red-700",
+      active: "bg-red-600",
+      color: "text-white",
+      disable: "bg-red-300",
+      ring: "ring-red-400",
+    },
+  };
+
+  function handleColors() {
+    switch (scheme) {
+      case "info":
+        return schemeColors.info;
+      case "success":
+        return schemeColors.success;
+      case "warning":
+        return schemeColors.warning;
+      case "error":
+        return schemeColors.error;
+      default:
+        return schemeColors.info;
+    }
+  }
+
   const xsClass = `${
     isLoading === true || isDisabled === true
-      ? "bg-sky-300 cursor-not-allowed"
-      : "bg-sky-700 hover:bg-sky-800 active:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500"
+      ? `${handleColors().disable} cursor-not-allowed`
+      : `${handleColors().bg} hover:${handleColors().hover} active:${
+          handleColors().active
+        } focus:outline-none focus:ring-2 focus:${handleColors().ring}`
   } px-2 h-7 text-xs text-white rounded-md flex items-center justify-center gap-2 transition-all delay-75 select-none ${
     isFullSize ? "w-full" : "w-fit"
   }`;
   const smClass = `${
     isLoading === true || isDisabled === true
-      ? "bg-sky-300 cursor-not-allowed"
-      : "bg-sky-700 hover:bg-sky-800 active:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500"
+      ? `${handleColors().disable} cursor-not-allowed`
+      : `${handleColors().bg} hover:${handleColors().hover} active:${
+          handleColors().active
+        } focus:outline-none focus:ring-2 focus:${handleColors().ring}`
   } px-3 h-8 text-sm text-white justify-center rounded-md flex items-center gap-2 transition-all delay-75 ${
     isFullSize ? "w-full" : "w-fit"
   } select-none`;
   const mdClass = `${
     isLoading === true || isDisabled === true
-      ? "bg-sky-300 cursor-not-allowed"
-      : "bg-sky-700 hover:bg-sky-800 active:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500"
+      ? `${handleColors().disable} cursor-not-allowed`
+      : `${handleColors().bg} hover:${handleColors().hover} active:${
+          handleColors().active
+        } focus:outline-none focus:ring-2 focus:${handleColors().ring}`
   } px-4 h-10 text-white rounded-md flex justify-center items-center gap-2 transition-all delay-75 ${
     isFullSize ? "w-full" : "w-fit"
   } select-none`;
   const lgClass = `${
     isLoading === true || isDisabled === true
-      ? "bg-sky-300 cursor-not-allowed"
-      : "bg-sky-700 hover:bg-sky-800 active:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500"
+      ? `${handleColors().disable} cursor-not-allowed`
+      : `${handleColors().bg} hover:${handleColors().hover} active:${
+          handleColors().active
+        } focus:outline-none focus:ring-2 focus:${handleColors().ring}`
   } px-5 h-12 text-lg text-white rounded-md flex justify-center items-center gap-2 transition-all delay-75 ${
     isFullSize ? "w-full" : "w-fit"
   } select-none`;
