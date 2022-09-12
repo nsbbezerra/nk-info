@@ -19,7 +19,10 @@ import pt_br from "date-fns/locale/pt-BR";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useMutation, useQuery } from "urql";
-import { DELETE_INVOICE } from "../../graphql/invoiceMutation";
+import {
+  DELETE_INVOICE,
+  UPDATE_SUB_ID_INVOICE,
+} from "../../graphql/invoiceMutation";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import Image from "next/image";
 import ClientContext from "../../context/client";
@@ -70,6 +73,9 @@ export default function MySubscriptions() {
   }, [data]);
 
   const [delInvoiceResult, delInvoice] = useMutation(DELETE_INVOICE);
+  const [updateSubIdInvoiceResult, updateSubIdInvoice] = useMutation(
+    UPDATE_SUB_ID_INVOICE
+  );
 
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isDialogErrorOpen, setIsDialogErrorOpen] = useState<boolean>(false);
@@ -117,6 +123,7 @@ export default function MySubscriptions() {
         data.checkout.url !== null && push(data.checkout.url);
       } else {
         findSubscription(data.checkout.subscription);
+        setUpdateInvoiceSubId(id, data.checkout.subscription);
       }
     } catch (error) {
       setIsLoading(false);
@@ -124,6 +131,20 @@ export default function MySubscriptions() {
       setMessageDialog(message);
       openError();
     }
+  };
+
+  const setUpdateInvoiceSubId = (id: string, subId: string) => {
+    const variables = {
+      id: id,
+      paymentIntentId: subId,
+    };
+
+    updateSubIdInvoice(variables).then((response) => {
+      if (response.error) {
+        setMessageDialog(response.error.message);
+        openError();
+      }
+    });
   };
 
   const findSubscription = async (id: string) => {
@@ -251,8 +272,8 @@ export default function MySubscriptions() {
                     key={sub.id}
                   >
                     <div className="flex flex-col sm:items-center justify-between px-4 pb-3 sm:flex-row sm:pb-0">
-                      <div className="flex flex-row items-center gap-3 py-4 text-sky-700 font-bold text-lg text-center">
-                        <div className="w-12">
+                      <div className="flex flex-row items-center gap-3 py-4 text-sky-700 font-bold text-lg">
+                        <div className="w-[48px] min-w-[48px]">
                           <Image
                             draggable={false}
                             src={"/img/box-2.png"}

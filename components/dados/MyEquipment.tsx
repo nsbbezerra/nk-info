@@ -195,8 +195,8 @@ export default function MyEquipment() {
                     key={eq.id}
                   >
                     <div className="flex flex-col sm:items-center justify-between px-4 pb-3 sm:flex-row sm:pb-0">
-                      <div className="flex flex-row items-center gap-3 py-4 text-sky-700 font-bold text-lg text-center">
-                        <div className="w-12">
+                      <div className="flex flex-row items-center gap-3 py-4 text-sky-700 font-bold text-lg">
+                        <div className="w-[48px] min-w-[48px]">
                           <Image
                             draggable={false}
                             src={"/img/computer.png"}
