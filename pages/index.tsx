@@ -65,52 +65,52 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 mt-10 md:grid-cols-2 lg:grid-cols-3">
-          <div className="w-full rounded-md p-3 grid grid-cols-3 items-center gap-3">
-            <div className="w-full">
+        <div className="grid grid-cols-1 gap-5 mt-10 lg:grid-cols-3">
+          <div className="w-full rounded-md p-3 grid grid-cols-3 items-center gap-3 bg-gray-400 bg-opacity-5 shadow h-32 -ml-5 lg:ml-0">
+            <div className="w-[80px] min-w-[80px]">
               <Image
                 draggable={false}
-                src={"/img/pc.png"}
-                width={600}
-                height={450}
+                src={"/img/maintenence.svg"}
+                width={945}
+                height={584}
                 alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
                 layout="responsive"
                 objectFit="contain"
               />
             </div>
-            <div className="col-span-2 text-center font-bold text-sky-700 text-xl">
+            <div className="col-span-2 font-bold text-xl">
               Manutenção preventiva em TI
             </div>
           </div>
-          <div className="w-full rounded-md p-3 grid grid-cols-3 items-center gap-3">
-            <div className="w-full">
+          <div className="w-full rounded-md p-3 grid grid-cols-3 items-center gap-3 bg-gray-400 bg-opacity-5 shadow lg:mt-5 h-32">
+            <div className="w-[80px] min-w-[80px]">
               <Image
                 draggable={false}
-                src={"/img/marketing.png"}
-                width={600}
-                height={450}
+                src={"/img/social.svg"}
+                width={552}
+                height={554}
                 alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
                 layout="responsive"
                 objectFit="contain"
               />
             </div>
-            <div className="col-span-2 text-center font-bold text-sky-700 text-xl">
+            <div className="col-span-2 font-bold text-xl">
               Marketing digital e Gestão de redes sociais
             </div>
           </div>
-          <div className="w-full rounded-md p-3 grid grid-cols-3 items-center gap-3">
-            <div className="w-full">
+          <div className="w-full rounded-md p-3 grid grid-cols-3 items-center gap-3 bg-gray-400 bg-opacity-5 shadow h-32 lg:mt-10 ml-5 lg:ml-0">
+            <div className="w-[80px] min-w-[80px]">
               <Image
                 draggable={false}
-                src={"/img/devops.png"}
-                width={600}
-                height={450}
+                src={"/img/develop.svg"}
+                width={787}
+                height={573}
                 alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
                 layout="responsive"
                 objectFit="contain"
               />
             </div>
-            <div className="col-span-2 text-center font-bold text-sky-700 text-xl">
+            <div className="col-span-2 font-bold text-xl">
               Desenvolvimento web, mobile e desktop
             </div>
           </div>
@@ -438,13 +438,13 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
               ))}
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mt-16 justify-items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mt-20 justify-items-center">
             <div className="w-full sm:w-3/4 lg:w-full">
               <Image
                 draggable={false}
-                src={"/img/cog.png"}
-                width={600}
-                height={450}
+                src={"/img/maintenence.svg"}
+                width={945}
+                height={584}
                 alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
                 layout="responsive"
                 objectFit="contain"
@@ -612,9 +612,9 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
             <div className="w-full sm:w-3/4 lg:w-full">
               <Image
                 draggable={false}
-                src={"/img/site.png"}
-                width={600}
-                height={450}
+                src={"/img/web_site.svg"}
+                width={1099}
+                height={633}
                 alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
                 layout="responsive"
                 objectFit="contain"
@@ -657,9 +657,9 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
             <div className="w-full sm:w-3/4 lg:w-full">
               <Image
                 draggable={false}
-                src={"/img/shopping.png"}
-                width={600}
-                height={450}
+                src={"/img/web_shopping.svg"}
+                width={880}
+                height={632}
                 alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
                 layout="responsive"
                 objectFit="contain"

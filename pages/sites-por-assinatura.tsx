@@ -41,9 +41,9 @@ const Sites: NextPage<Props> = ({ packs, prices }) => {
           <div className="w-1/2 md:w-72 lg:w-80">
             <Image
               draggable={false}
-              src={"/img/site.png"}
-              width={600}
-              height={450}
+              src={"/img/web_site.svg"}
+              width={1099}
+              height={633}
               alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
               layout="responsive"
               objectFit="contain"

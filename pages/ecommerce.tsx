@@ -33,9 +33,9 @@ const Ecommerce: NextPage<Props> = ({ packs, prices }) => {
           <div className="w-1/2 md:w-72 lg:w-80">
             <Image
               draggable={false}
-              src={"/img/shopping.png"}
-              width={600}
-              height={450}
+              src={"/img/web_shopping.svg"}
+              width={880}
+              height={632}
               alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
               layout="responsive"
               objectFit="contain"
