@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Fragment, useState, useContext, useEffect } from "react";
-import { BiPlus, BiRefresh, BiSave, BiX } from "react-icons/bi";
+import { BiPlus, BiSave, BiX } from "react-icons/bi";
 import Stripe from "stripe";
 import Button from "../layout/Button";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -11,10 +11,13 @@ import {
   CREATE_CALL,
   FIND_CALLS_AND_INVOICES,
   FIND_CALL_TO_COMPARE,
+  PUBLISH_CALL,
 } from "../../graphql/clientMoviment";
 import * as Yup from "yup";
 import axios from "axios";
 import { client } from "../../lib/urql";
+import { format } from "date-fns";
+import pt_br from "date-fns/locale/pt-BR";
 
 interface CallProps {
   id: string;
@@ -75,6 +78,7 @@ export default function MyCalls() {
   });
 
   const [createCallResult, createCall] = useMutation(CREATE_CALL);
+  const [publishCallResult, publishCall] = useMutation(PUBLISH_CALL);
 
   const { data, error, fetching } = callsResult;
 
@@ -98,11 +102,48 @@ export default function MyCalls() {
     return text.charAt(0).toUpperCase() + text.slice(1);
   }
 
+  const setPublishCall = (id: string) => {
+    try {
+      const variables = { id };
+
+      publishCall(variables).then((response) => {
+        console.log(response);
+        setLoading(false);
+        setInvoiceId("");
+        setCompareValues({
+          calls: 0,
+          limitCalls: 0,
+          status: "incomplete",
+        });
+        setDialog(false);
+        reexecuteQuery();
+      });
+    } catch (error) {
+      let message = (error as Error).message;
+      console.log(message);
+    }
+  };
+
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: (values, { resetForm }) => {
+      setLoading(true);
+      const variables = {
+        client: state.id,
+        description: values.description,
+        dateCall: dateActive,
+        callStatus: "open",
+        month: dateActive.toLocaleString("pt-Br", { month: "long" }),
+        year: dateActive.getFullYear().toString(),
+        invoice: invoiceId,
+      };
+
+      createCall(variables).then((response) => {
+        console.log(response);
+        setPublishCall(response.data.createCall.id);
+        resetForm();
+      });
     },
   });
 
@@ -159,56 +200,119 @@ export default function MyCalls() {
         >
           Novo Chamado
         </Button>
-        <Button icon={<BiRefresh />} buttonSize="lg" scheme="success">
-          Atualizar
-        </Button>
       </div>
 
       <div className="grid grid-cols-1 gap-3 mt-5">
-        <div className="rounded-md border shadow h-fit overflow-hidden">
-          <div className="flex flex-col sm:items-center justify-between px-4 pb-3 sm:flex-row sm:pb-0">
-            <div className="flex flex-row items-center gap-3 py-4 font-bold text-lg">
-              <div className="w-[48px] min-w-[48px]">
-                <Image
-                  draggable={false}
-                  src={"/img/call.svg"}
-                  width={972}
-                  height={629}
-                  alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
-                  layout="responsive"
-                  objectFit="contain"
-                  quality={100}
-                />
-              </div>
-              <span>Chamado: adhoek</span>
-              <span className="bg-yellow-400 font-light text-base px-3 py-1 rounded-md text-gray-900">
-                Aguardando...
-              </span>
+        {fetching ? (
+          <div className="w-full flex flex-col items-center justify-center gap-2">
+            <div className="w-20">
+              <svg
+                width="100%"
+                height="100%"
+                viewBox="0 0 128 128"
+                className="animate-spin"
+              >
+                <path
+                  fill="#222"
+                  d="M64.4 16a49 49 0 0 0-50 48 51 51 0 0 0 50 52.2 53 53 0 0 0 54-52c-.7-48-45-55.7-45-55.7s45.3 3.8 49 55.6c.8 32-24.8 59.5-58 60.2-33 .8-61.4-25.7-62-60C1.3 29.8 28.8.6 64.3 0c0 0 8.5 0 8.7 8.4 0 8-8.6 7.6-8.6 7.6z"
+                ></path>
+              </svg>
             </div>
+
+            <span>Carregando...</span>
           </div>
-          <div className="border-t border-gray-200">
-            <dl>
-              <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">
-                  Data e Hora
-                </dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                  10/10/2000 às 21:00
-                </dd>
+        ) : (
+          <>
+            {calls.length === 0 ? (
+              <div className="w-full flex flex-col justify-center items-center gap-2">
+                <div className="w-1/4">
+                  <Image
+                    draggable={false}
+                    src={"/img/box-6.png"}
+                    width={600}
+                    height={450}
+                    alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                    layout="responsive"
+                    objectFit="contain"
+                    quality={100}
+                  />
+                </div>
+                <span className="text-gray-700 text-center">
+                  Nenhuma informação para mostrar
+                </span>
               </div>
-              <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">Relatório</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                  Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim
-                  incididunt cillum culpa consequat. Excepteur qui ipsum aliquip
-                  consequat sint. Sit id mollit nulla mollit nostrud in ea
-                  officia proident. Irure nostrud pariatur mollit ad adipisicing
-                  reprehenderit deserunt qui eu.
-                </dd>
-              </div>
-            </dl>
-          </div>
-        </div>
+            ) : (
+              <>
+                {calls.map((call) => (
+                  <div
+                    className="rounded-md border shadow h-fit overflow-hidden"
+                    key={call.id}
+                  >
+                    <div className="flex flex-col sm:items-center justify-between px-4 pb-3 sm:flex-row sm:pb-0">
+                      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 py-4 font-bold text-lg w-full">
+                        <div className="flex items-start md:items-center gap-3 flex-col md:flex-row">
+                          <div className="w-[48px] min-w-[48px]">
+                            <Image
+                              draggable={false}
+                              src={"/img/call.svg"}
+                              width={972}
+                              height={629}
+                              alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+                              layout="responsive"
+                              objectFit="contain"
+                              quality={100}
+                            />
+                          </div>
+                          <span>Chamado: {call.id}</span>
+                        </div>
+                        <span
+                          className={`${
+                            (call.callStatus === "open" && "bg-yellow-600") ||
+                            (call.callStatus === "accepted" &&
+                              "bg-green-600") ||
+                            (call.callStatus === "refused" && "bg-red-600") ||
+                            (call.callStatus === "finished" && "bg-sky-700")
+                          } text-base px-3 py-1 rounded-md text-white font-bold block`}
+                        >
+                          {call.callStatus === "open" && "Aberto"}
+                          {call.callStatus === "accepted" && "Aceito"}
+                          {call.callStatus === "finished" && "Finalizado"}
+                          {call.callStatus === "refused" && "Recusado"}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="border-t border-gray-200">
+                      <dl>
+                        <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                          <dt className="text-sm font-medium text-gray-500">
+                            Data e Hora
+                          </dt>
+                          <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                            {format(
+                              new Date(call.dateCall),
+                              "dd/MM/yyyy 'às' HH:mm'h'",
+                              {
+                                locale: pt_br,
+                              }
+                            )}
+                          </dd>
+                        </div>
+                        <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                          <dt className="text-sm font-medium text-gray-500">
+                            Relatório
+                          </dt>
+                          <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                            {call.description}
+                          </dd>
+                        </div>
+                      </dl>
+                    </div>
+                  </div>
+                ))}
+              </>
+            )}
+          </>
+        )}
       </div>
 
       <Dialog.Root open={dialog} onOpenChange={() => setDialog(!dialog)}>
@@ -232,7 +336,11 @@ export default function MyCalls() {
               <div>
                 <label>Chamados</label>
                 <input
-                  className="w-full h-10 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
+                  className={`w-full h-10 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75 ${
+                    compareValues.calls >= compareValues.limitCalls
+                      ? "bg-red-600 text-white border-0"
+                      : ""
+                  }`}
                   placeholder="Seu telefone aqui"
                   id="phone"
                   type="phone"
@@ -252,16 +360,25 @@ export default function MyCalls() {
                 />
               </div>
               <div>
-                <label>Chamados</label>
+                <label>Status</label>
                 <div
                   className={`w-full h-10 px-3 flex ${
                     (compareValues.status === "active" && "bg-green-600") ||
-                    (compareValues.status === "incomplete" && "bg-zinc-800")
+                    (compareValues.status === "incomplete" && "bg-zinc-800") ||
+                    (compareValues.status === "incomplete_expired" &&
+                      "bg-zinc-800") ||
+                    (compareValues.status === "past_due" && "bg-red-600") ||
+                    (compareValues.status === "unpaid" && "bg-red-600")
                   } text-white rounded-md items-center justify-center`}
                   placeholder="Seu telefone aqui"
                   id="phone"
                 >
-                  Ativo
+                  {compareValues.status === "active" && "Ativo"}
+                  {compareValues.status === "canceled" && "Cancelado"}
+                  {compareValues.status === "incomplete" && "Nenhum"}
+                  {compareValues.status === "incomplete_expired" && "Nenhum"}
+                  {compareValues.status === "past_due" && "Vencido"}
+                  {compareValues.status === "unpaid" && "Não Pago"}
                 </div>
               </div>
             </div>
@@ -290,7 +407,9 @@ export default function MyCalls() {
                   </div>
                 </div>
                 <div>
-                  <label>Descrição</label>
+                  <label>
+                    Descrição <span className="text-red-600">*</span>
+                  </label>
                   <textarea
                     name="description"
                     className="w-full px-3 py-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75 resize-none"
@@ -299,17 +418,30 @@ export default function MyCalls() {
                     value={formik.values.description}
                     onChange={formik.handleChange}
                   />
+                  {formik.touched.description &&
+                  Boolean(formik.errors.description) ? (
+                    <span className="text-sm text-red-600">
+                      {formik.touched.description && formik.errors.description}
+                    </span>
+                  ) : (
+                    ""
+                  )}
                 </div>
 
                 <div className="flex justify-end">
-                  <Button
-                    icon={<BiSave />}
-                    buttonSize="lg"
-                    type="submit"
-                    isLoading={loading}
-                  >
-                    Salvar
-                  </Button>
+                  {compareValues.status === "active" && (
+                    <Button
+                      icon={<BiSave />}
+                      buttonSize="lg"
+                      type="submit"
+                      isLoading={loading}
+                      isDisabled={
+                        compareValues.calls >= compareValues.limitCalls
+                      }
+                    >
+                      Salvar
+                    </Button>
+                  )}
                 </div>
               </div>
             </form>

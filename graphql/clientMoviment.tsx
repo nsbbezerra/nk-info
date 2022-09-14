@@ -69,7 +69,10 @@ const FIND_CALLS_AND_INVOICES = gql`
       activateCode
       paymentIntentId
     }
-    calls(where: { month: $month, year: $year, client: { id: $id } }) {
+    calls(
+      where: { month: $month, year: $year, client: { id: $id } }
+      orderBy: createdAt_DESC
+    ) {
       dateCall
       description
       callStatus
@@ -84,7 +87,7 @@ const CREATE_CALL = gql`
   mutation CreateCall(
     $client: ID!
     $description: String!
-    $dateCall: DATE!
+    $dateCall: Date!
     $callStatus: String!
     $month: String!
     $year: String!
