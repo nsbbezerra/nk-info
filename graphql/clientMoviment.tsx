@@ -57,9 +57,83 @@ const PUBLISH_EQUIPMENT = gql`
   }
 `;
 
+const FIND_CALLS_AND_INVOICES = gql`
+  query FindCallsAndInvoices($id: ID!, $month: String!, $year: String!) {
+    invoices(where: { client: { id: $id }, category: "ti" }) {
+      id
+      serviceName
+      limitCalls
+      limitCallsVirtual
+      checkoutId
+      category
+      activateCode
+      paymentIntentId
+    }
+    calls(where: { month: $month, year: $year, client: { id: $id } }) {
+      dateCall
+      description
+      callStatus
+      id
+      month
+      year
+    }
+  }
+`;
+
+const CREATE_CALL = gql`
+  mutation CreateCall(
+    $client: ID!
+    $description: String!
+    $dateCall: DATE!
+    $callStatus: String!
+    $month: String!
+    $year: String!
+    $invoice: ID!
+  ) {
+    createCall(
+      data: {
+        client: { connect: { id: $client } }
+        invoice: { connect: { id: $invoice } }
+        description: $description
+        dateCall: $dateCall
+        callStatus: $callStatus
+        month: $month
+        year: $year
+      }
+    ) {
+      id
+    }
+  }
+`;
+
+const PUBLISH_CALL = gql`
+  mutation PublishCall($id: ID!) {
+    publishCall(where: { id: $id }, to: PUBLISHED) {
+      id
+    }
+  }
+`;
+
+const FIND_CALL_TO_COMPARE = gql`
+  query FindCallsToCompare($id: ID!, $month: String!, $year: String!) {
+    calls(where: { month: $month, year: $year, invoice: { id: $id } }) {
+      dateCall
+      description
+      callStatus
+      id
+      month
+      year
+    }
+  }
+`;
+
 export {
   FIND_CLIENT_SUBSCRIPTIONS,
   CREATE_EQUIPMENT,
   PUBLISH_EQUIPMENT,
   FIND_EQUIPMENTS,
+  FIND_CALLS_AND_INVOICES,
+  CREATE_CALL,
+  PUBLISH_CALL,
+  FIND_CALL_TO_COMPARE,
 };

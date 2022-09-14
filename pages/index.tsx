@@ -65,9 +65,9 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 mt-10 lg:grid-cols-3">
-          <div className="w-full rounded-md p-3 grid grid-cols-3 items-center gap-3 bg-gray-400 bg-opacity-5 shadow h-32 -ml-5 lg:ml-0">
-            <div className="w-[80px] min-w-[80px]">
+        <div className="grid grid-cols-1 gap-5 mt-10 md:grid-cols-3">
+          <div className="w-full rounded-md p-5 grid grid-cols-1 justify-items-center items-center gap-5 border -ml-5 lg:ml-0 h-fit md:h-60 lg:h-64">
+            <div className="w-[230px]">
               <Image
                 draggable={false}
                 src={"/img/maintenence.svg"}
@@ -78,12 +78,12 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
                 objectFit="contain"
               />
             </div>
-            <div className="col-span-2 font-bold text-xl">
+            <div className="col-span-2 text-lg text-center">
               Manutenção preventiva em TI
             </div>
           </div>
-          <div className="w-full rounded-md p-3 grid grid-cols-3 items-center gap-3 bg-gray-400 bg-opacity-5 shadow lg:mt-5 h-32">
-            <div className="w-[80px] min-w-[80px]">
+          <div className="w-full rounded-md p-5 grid grid-cols-1 justify-items-center items-center gap-3 border lg:mt-5 h-fit md:h-60 lg:h-64">
+            <div className="w-[150px]">
               <Image
                 draggable={false}
                 src={"/img/social.svg"}
@@ -94,12 +94,12 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
                 objectFit="contain"
               />
             </div>
-            <div className="col-span-2 font-bold text-xl">
+            <div className="col-span-2 text-lg text-center">
               Marketing digital e Gestão de redes sociais
             </div>
           </div>
-          <div className="w-full rounded-md p-3 grid grid-cols-3 items-center gap-3 bg-gray-400 bg-opacity-5 shadow h-32 lg:mt-10 ml-5 lg:ml-0">
-            <div className="w-[80px] min-w-[80px]">
+          <div className="w-full rounded-md p-5 grid grid-cols-1 justify-items-center items-center gap-3 border lg:mt-10 ml-5 lg:ml-0 h-fit md:h-60 lg:h-64">
+            <div className="w-[200px]">
               <Image
                 draggable={false}
                 src={"/img/develop.svg"}
@@ -110,7 +110,7 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
                 objectFit="contain"
               />
             </div>
-            <div className="col-span-2 font-bold text-xl">
+            <div className="col-span-2 text-lg text-center">
               Desenvolvimento web, mobile e desktop
             </div>
           </div>

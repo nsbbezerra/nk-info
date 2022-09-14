@@ -9,6 +9,7 @@ import Stripe from "stripe";
 import { configs } from "../configs/indext";
 import { BiEdit } from "react-icons/bi";
 import Link from "next/link";
+import Image from "next/image";
 
 const stripe = new Stripe(configs.stripe_pk, {
   apiVersion: "2022-08-01",
@@ -60,7 +61,18 @@ const Servicos: NextPage<Props> = ({ packs, prices }) => {
       <HeadApp title="NK Informática | Serviços" />
       <Header />
       <section className="w-full bg-gradient-to-b from-blue-300 to-sky-100 rounded-br-[70px] lg:rounded-br-[150px] p-5 relative overflow-hidden">
-        <div className="container mx-auto z-10 py-10 text-center w-full flex justify-center">
+        <div className="container mx-auto z-10 py-10 text-center w-full flex justify-center flex-col gap-5 items-center">
+          <div className="w-1/2 md:w-72">
+            <Image
+              draggable={false}
+              src={"/img/services.svg"}
+              width={1058}
+              height={748}
+              alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+              layout="responsive"
+              objectFit="contain"
+            />
+          </div>
           <h1 className="text-sky-900 text-lg sm:text-2xl md:text-3xl font-bold text-center max-w-5xl z-10">
             NOSSOS PLANOS E SERVIÇOS
           </h1>

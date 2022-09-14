@@ -66,7 +66,7 @@ export default function Login() {
         setIsDialogOpen(true);
         setTimeout(() => {
           redirect ? push(`/checkout/${redirect}`) : push("/");
-        }, 2000);
+        }, 1000);
       } else {
         setIsDialogErrorOpen(true);
       }
@@ -77,7 +77,7 @@ export default function Login() {
     <Fragment>
       <HeadApp title="NK Informática | Sistemas Web, Gestão Comercial, Marketing Digital, Gestão de Redes Sociais" />
       <section className="grid grid-cols-1 lg:grid-cols-3 h-screen w-screen">
-        <article className="w-full bg-gray-900 rounded-br-[70px] lg:rounded-br-[150px] p-5 flex items-center justify-center">
+        <article className="w-full bg-gradient-to-b from-blue-300 to-sky-100 rounded-br-[70px] lg:rounded-br-[150px] p-5 flex items-center justify-center">
           <div>
             <div className="container mx-auto flex flex-col items-center justify-center gap-3">
               <div className="w-1/2 md:w-72 lg:w-72">
@@ -87,10 +87,10 @@ export default function Login() {
                   height={"100%"}
                 />
               </div>
-              <h1 className="text-gray-300 text-3xl font-bold text-center max-w-5xl">
+              <h1 className="text-sky-700 text-3xl font-bold text-center max-w-5xl">
                 Bem vindo de volta!
               </h1>
-              <p className="text-gray-100 text-center text-sm">
+              <p className="text-gray-800 text-center text-sm w-[70%]">
                 Entre com sua conta e tenha acesso aos seus planos contratados,
                 seus dados, mais também dê uma olhada nos nossos novos planos,
                 temos muita coisa preparada especialmente para você.

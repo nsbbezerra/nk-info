@@ -2,7 +2,6 @@ import { Fragment, useContext, useEffect } from "react";
 import {
   BiCheck,
   BiMessageAltError,
-  BiPackage,
   BiPlus,
   BiSearch,
   BiShoppingBag,
@@ -251,9 +250,9 @@ export default function MySubscriptions() {
                 <div className="w-1/4">
                   <Image
                     draggable={false}
-                    src={"/img/box-6.png"}
-                    width={600}
-                    height={450}
+                    src={"/img/empty_box.svg"}
+                    width={863}
+                    height={645}
                     alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
                     layout="responsive"
                     objectFit="contain"
@@ -272,17 +271,16 @@ export default function MySubscriptions() {
                     key={sub.id}
                   >
                     <div className="flex flex-col sm:items-center justify-between px-4 pb-3 sm:flex-row sm:pb-0">
-                      <div className="flex flex-row items-center gap-3 py-4 text-sky-700 font-bold text-lg">
+                      <div className="flex flex-row items-center gap-3 py-4 font-bold text-lg">
                         <div className="w-[48px] min-w-[48px]">
                           <Image
                             draggable={false}
-                            src={"/img/box-2.png"}
-                            width={600}
-                            height={450}
+                            src={"/img/subs.svg"}
+                            width={734}
+                            height={504}
                             alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
                             layout="responsive"
                             objectFit="contain"
-                            quality={100}
                           />
                         </div>
                         <span>{sub.serviceName}</span>

@@ -108,7 +108,7 @@ export default function Cadastro() {
     <Fragment>
       <HeadApp title="NK Informática | Sistemas Web, Gestão Comercial, Marketing Digital, Gestão de Redes Sociais" />
       <section className="grid grid-cols-1 lg:grid-cols-3 h-screen w-screen max-w-[100vw] overflow-x-hidden">
-        <article className="w-full bg-gray-900 rounded-br-[70px] lg:rounded-br-[150px] p-5 flex items-center justify-center">
+        <article className="w-full bg-gradient-to-b from-blue-300 to-sky-100 rounded-br-[70px] lg:rounded-br-[150px] p-5 flex items-center justify-center">
           <div>
             <div className="container mx-auto flex flex-col items-center justify-center gap-3">
               <div className="w-1/2 md:w-72 lg:w-72">
@@ -118,10 +118,10 @@ export default function Cadastro() {
                   height={"100%"}
                 />
               </div>
-              <h1 className="text-gray-300 text-3xl font-bold text-center max-w-5xl">
+              <h1 className="text-sky-700 text-3xl font-bold text-center max-w-5xl">
                 Seja nosso cliente!
               </h1>
-              <p className="text-gray-100 text-center text-sm">
+              <p className="text-gray-800 text-center text-sm w-[70%]">
                 Que bom que chegou até aqui, agora é só mais um passo até você
                 ter acesso aos melhores pacotes de serviços para você ou para o
                 seu negócio, cadastre-se e tenha acesso às melhores ferramentas
@@ -131,38 +131,40 @@ export default function Cadastro() {
           </div>
         </article>
 
-        <aside className="lg:col-span-2 p-5 md:p-10 flex justify-center items-center w-full h-full">
+        <aside className="lg:col-span-2 p-5 md:p-7 flex justify-center items-center w-full h-full">
           <div className="border rounded-md shadow-lg p-5 w-full">
-            <Link href="/" passHref>
-              <a className="flex items-center gap-2 text-sky-700 hover:underline mb-3 cursor-pointer w-fit">
-                <BiChevronLeft />
-                Voltar
-              </a>
-            </Link>
+            <div className="flex items-center gap-5">
+              <Link href="/" passHref>
+                <a className="flex items-center gap-2 text-sky-700 hover:underline mb-3 cursor-pointer w-fit">
+                  <BiChevronLeft />
+                  Voltar
+                </a>
+              </Link>
 
-            <ToggleGroup.Root
-              type="single"
-              className="inline-flex rounded-md mb-3 overflow-hidden"
-              onValueChange={(e) => setRegisterMode(e)}
-              value={registerMode}
-            >
-              <ToggleGroup.Item
-                value="cpf"
-                className={`${
-                  registerMode === "cpf" ? "bg-sky-700" : "bg-sky-500"
-                } text-white h-8 px-2 flex items-center border-r`}
+              <ToggleGroup.Root
+                type="single"
+                className="inline-flex rounded-md mb-3 overflow-hidden"
+                onValueChange={(e) => setRegisterMode(e)}
+                value={registerMode}
               >
-                Pessoa Física
-              </ToggleGroup.Item>
-              <ToggleGroup.Item
-                value="cnpj"
-                className={`${
-                  registerMode === "cnpj" ? "bg-sky-700" : "bg-sky-500"
-                } text-white h-8 px-2 flex items-center`}
-              >
-                Pessoa Jurídica
-              </ToggleGroup.Item>
-            </ToggleGroup.Root>
+                <ToggleGroup.Item
+                  value="cpf"
+                  className={`${
+                    registerMode === "cpf" ? "bg-sky-700" : "bg-sky-500"
+                  } text-white h-8 px-2 flex items-center border-r`}
+                >
+                  Pessoa Física
+                </ToggleGroup.Item>
+                <ToggleGroup.Item
+                  value="cnpj"
+                  className={`${
+                    registerMode === "cnpj" ? "bg-sky-700" : "bg-sky-500"
+                  } text-white h-8 px-2 flex items-center`}
+                >
+                  Pessoa Jurídica
+                </ToggleGroup.Item>
+              </ToggleGroup.Root>
+            </div>
             <form onSubmit={formik.handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div className="md:col-span-2">

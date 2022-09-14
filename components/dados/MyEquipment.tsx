@@ -1,11 +1,9 @@
 import { Fragment, useState, useContext, useEffect } from "react";
 import {
   BiCheck,
-  BiLaptop,
   BiMessageAltError,
   BiPlus,
   BiSave,
-  BiSearch,
   BiX,
 } from "react-icons/bi";
 import Button from "../layout/Button";
@@ -195,13 +193,13 @@ export default function MyEquipment() {
                     key={eq.id}
                   >
                     <div className="flex flex-col sm:items-center justify-between px-4 pb-3 sm:flex-row sm:pb-0">
-                      <div className="flex flex-row items-center gap-3 py-4 text-sky-700 font-bold text-lg">
+                      <div className="flex flex-row items-center gap-3 py-4 font-bold text-lg">
                         <div className="w-[48px] min-w-[48px]">
                           <Image
                             draggable={false}
-                            src={"/img/computer.png"}
-                            width={600}
-                            height={450}
+                            src={"/img/computer.svg"}
+                            width={597}
+                            height={506}
                             alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
                             layout="responsive"
                             objectFit="contain"

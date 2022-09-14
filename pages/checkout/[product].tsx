@@ -91,8 +91,19 @@ const Checkout: NextPage<Props> = ({ product, price }) => {
       <HeadApp title="NK Informática | Checkout" />
       <Header />
       <section className="w-full bg-gradient-to-b from-blue-300 to-sky-100 rounded-br-[70px] lg:rounded-br-[150px] p-5 relative overflow-hidden">
-        <div className="container mx-auto z-10 py-10 text-center w-full flex justify-center">
-          <h1 className="text-sky-900 text-lg sm:text-2xl md:text-3xl font-bold text-center max-w-5xl z-10">
+        <div className="container mx-auto z-10 py-10 text-center w-full flex flex-col items-center justify-center gap-5">
+          <div className="w-1/2 md:w-72">
+            <Image
+              draggable={false}
+              src={"/img/payment.svg"}
+              width={905}
+              height={587}
+              alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+              layout="responsive"
+              objectFit="contain"
+            />
+          </div>
+          <h1 className="text-sky-900 text-4xl font-bold text-center max-w-5xl z-10">
             CHECKOUT
           </h1>
         </div>

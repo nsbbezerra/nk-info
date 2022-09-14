@@ -19,6 +19,7 @@ import MyShopping from "../../components/dados/MyShopping";
 import MyCalls from "../../components/dados/MyCalls";
 import MyEquipment from "../../components/dados/MyEquipment";
 import MyAtendimento from "../../components/dados/MyAtendimento";
+import Image from "next/image";
 
 type SearchProps = {
   text: "data" | "subscribes" | "buy" | "calls" | "equipment" | "atendimento";
@@ -32,8 +33,19 @@ const MyData: NextPage = () => {
       <HeadApp title="NK Informática | Meus dados" />
       <Header />
       <section className="w-full bg-gradient-to-b from-blue-300 to-sky-100 rounded-br-[70px] lg:rounded-br-[150px] p-5 relative overflow-hidden">
-        <div className="container mx-auto z-10 py-10 text-center w-full flex justify-center">
-          <h1 className="text-sky-900 text-lg sm:text-2xl md:text-3xl font-bold text-center max-w-5xl z-10">
+        <div className="container mx-auto z-10 py-10 text-center w-full flex flex-col justify-center items-center gap-5">
+          <div className="w-1/2 md:w-72">
+            <Image
+              draggable={false}
+              src={"/img/my_data.svg"}
+              width={894}
+              height={517}
+              alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
+              layout="responsive"
+              objectFit="contain"
+            />
+          </div>
+          <h1 className="text-sky-900 text-4xl font-bold text-center max-w-5xl z-10">
             MEUS DADOS
           </h1>
         </div>
