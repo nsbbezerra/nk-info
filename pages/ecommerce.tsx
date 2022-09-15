@@ -4,13 +4,9 @@ import Footer from "../components/Footer";
 import HeadApp from "../components/Head";
 import Header from "../components/Header";
 import Stripe from "stripe";
-import { configs } from "../configs/indext";
 import { GetStaticProps, NextPage } from "next";
 import Image from "next/image";
-
-const stripe = new Stripe(configs.stripe_pk, {
-  apiVersion: "2022-08-01",
-});
+import { stripe } from "../configs/stripe";
 
 interface Props {
   packs: Stripe.Product[];

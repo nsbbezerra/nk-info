@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Fragment } from "react";
 import {
   AiOutlineWhatsApp,
@@ -33,18 +34,44 @@ export default function Footer() {
               </span>
 
               <div className="w-fit flex gap-4 items-center">
-                <button className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-400 hover:bg-blue-500 active:bg-blue-400 transition-all delay-75">
-                  <AiOutlineWhatsApp />
-                </button>
-                <button className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-400 hover:bg-blue-500 active:bg-blue-400 transition-all delay-75">
-                  <AiOutlineFacebook />
-                </button>
-                <button className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-400 hover:bg-blue-500 active:bg-blue-400 transition-all delay-75">
-                  <AiOutlineLinkedin />
-                </button>
-                <button className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-400 hover:bg-blue-500 active:bg-blue-400 transition-all delay-75">
-                  <AiOutlineInstagram />
-                </button>
+                <Link href={"https://wa.me/5563999711716"} passHref>
+                  <a
+                    className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-400 hover:bg-blue-500 active:bg-blue-400 transition-all delay-75"
+                    target={"_blank"}
+                  >
+                    <AiOutlineWhatsApp />
+                  </a>
+                </Link>
+                <Link href={"https://www.facebook.com/nkinfo.pa"} passHref>
+                  <a
+                    className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-400 hover:bg-blue-500 active:bg-blue-400 transition-all delay-75"
+                    target={"_blank"}
+                  >
+                    <AiOutlineFacebook />
+                  </a>
+                </Link>
+                <Link
+                  href={"https://www.linkedin.com/in/natanael-bezerra-dev/"}
+                  passHref
+                >
+                  <a
+                    className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-400 hover:bg-blue-500 active:bg-blue-400 transition-all delay-75"
+                    target={"_blank"}
+                  >
+                    <AiOutlineLinkedin />
+                  </a>
+                </Link>
+                <Link
+                  href={"https://www.instagram.com/nk.informatica.pa/"}
+                  passHref
+                >
+                  <a
+                    className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-400 hover:bg-blue-500 active:bg-blue-400 transition-all delay-75"
+                    target={"_blank"}
+                  >
+                    <AiOutlineInstagram />
+                  </a>
+                </Link>
               </div>
             </div>
 
@@ -59,9 +86,14 @@ export default function Footer() {
               <p className="text-gray-400">CNPJ: 40.526.622/0001-72</p>
               <p className="text-gray-400 flex gap-2 items-center">
                 Whatsapp: (63) 99971-1716{" "}
-                <a className="bg-green-400 p-1 rounded-full text-gray-900 cursor-pointer hover:bg-green-500 active:bg-green-400 transition-all delay-75">
-                  <AiOutlineWhatsApp />
-                </a>
+                <Link href={"https://wa.me/5563999711716"} passHref>
+                  <a
+                    className="bg-green-400 p-1 rounded-full text-gray-900 cursor-pointer hover:bg-green-500 active:bg-green-400 transition-all delay-75"
+                    target={"_blank"}
+                  >
+                    <AiOutlineWhatsApp />
+                  </a>
+                </Link>
               </p>
               <p className="text-gray-400">contato.nk.info@gmail.com</p>
             </div>

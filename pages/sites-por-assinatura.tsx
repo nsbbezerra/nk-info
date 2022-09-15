@@ -12,13 +12,9 @@ import {
 import { RiPagesLine } from "react-icons/ri";
 import { AiOutlineCloudServer } from "react-icons/ai";
 import Stripe from "stripe";
-import { configs } from "../configs/indext";
 import { GetStaticProps, NextPage } from "next";
 import Image from "next/image";
-
-const stripe = new Stripe(configs.stripe_pk, {
-  apiVersion: "2022-08-01",
-});
+import { stripe } from "../configs/stripe";
 
 interface Props {
   packs: Stripe.Product[];

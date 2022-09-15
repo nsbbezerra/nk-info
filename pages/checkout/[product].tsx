@@ -7,17 +7,13 @@ import HeadApp from "../../components/Head";
 import Header from "../../components/Header";
 import ClientContext from "../../context/client";
 import Stripe from "stripe";
-import { configs } from "../../configs/indext";
 import { GetServerSideProps, NextPage } from "next";
 import Button from "../../components/layout/Button";
 import { useMutation } from "urql";
 import { CREATE_INVOICE, PUBLISH_INVOICE } from "../../graphql/invoiceMutation";
 import axios from "axios";
 import { useRouter } from "next/router";
-
-const stripe = new Stripe(configs.stripe_pk, {
-  apiVersion: "2022-08-01",
-});
+import { stripe } from "../../configs/stripe";
 
 interface Props {
   product: Stripe.Product;

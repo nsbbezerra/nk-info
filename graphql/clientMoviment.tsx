@@ -79,6 +79,10 @@ const FIND_CALLS_AND_INVOICES = gql`
       id
       month
       year
+      invoice {
+        id
+        serviceName
+      }
     }
   }
 `;

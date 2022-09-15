@@ -25,6 +25,11 @@ import axios from "axios";
 import { client } from "../../lib/urql";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 
+type InvoicePropsIntern = {
+  id: string;
+  serviceName: string;
+};
+
 interface CallProps {
   id: string;
   description: string;
@@ -32,6 +37,7 @@ interface CallProps {
   callStatus: "open" | "accepted" | "refused" | "finished";
   month: string;
   year: string;
+  invoice: InvoicePropsIntern;
 }
 
 interface SubscriptionProps {
@@ -328,7 +334,9 @@ export default function MyCalls() {
                               quality={100}
                             />
                           </div>
-                          <span>Chamado: {call.id}</span>
+                          <span>
+                            Chamado do Pacote: {call.invoice.serviceName}
+                          </span>
                         </div>
                         <span
                           className={`${

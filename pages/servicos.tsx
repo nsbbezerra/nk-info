@@ -6,14 +6,10 @@ import HeadApp from "../components/Head";
 import Header from "../components/Header";
 
 import Stripe from "stripe";
-import { configs } from "../configs/indext";
 import { BiEdit } from "react-icons/bi";
 import Link from "next/link";
 import Image from "next/image";
-
-const stripe = new Stripe(configs.stripe_pk, {
-  apiVersion: "2022-08-01",
-});
+import { stripe } from "../configs/stripe";
 
 interface Props {
   packs: Stripe.Product[];

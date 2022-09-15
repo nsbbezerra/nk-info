@@ -1,6 +1,6 @@
 import type { GetStaticProps, NextPage } from "next";
 import Image from "next/image";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import HeadApp from "../components/Head";
 import Header from "../components/Header";
 import Panel from "../components/Panel";
@@ -12,27 +12,123 @@ import {
   BiMailSend,
   BiCalendar,
   BiSend,
+  BiX,
+  BiMessageAltError,
+  BiCheck,
 } from "react-icons/bi";
 import Footer from "../components/Footer";
 import Link from "next/link";
 import Stripe from "stripe";
-import { configs } from "../configs/indext";
 import Button from "../components/layout/Button";
-
-const stripe = new Stripe(configs.stripe_pk, {
-  apiVersion: "2022-08-01",
-});
+import { useMutation } from "urql";
+import { CREATE_MESSAGE, PUBLISH_MESSAGE } from "../graphql/messages";
+import * as Yup from "yup";
+import { useFormik } from "formik";
+import ReactInputMask from "react-input-mask";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import { stripe } from "../configs/stripe";
 
 interface Props {
   packs: Stripe.Product[];
   prices: Stripe.Price[];
 }
 
+interface MessageProps {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+}
+
 const Home: NextPage<Props> = ({ packs, prices }) => {
+  const [createMessageResult, createMessage] = useMutation(CREATE_MESSAGE);
+  const [publishMessageResult, publishMessage] = useMutation(PUBLISH_MESSAGE);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [isDialogErrorOpen, setIsDialogErrorOpen] = useState<boolean>(false);
+  const [messageDialog, setMessageDialog] = useState<string>("");
+
   const calcReal = (amount: number) => {
     let calc = amount / 100;
     return calc.toLocaleString("pt-br", { style: "currency", currency: "BRL" });
   };
+
+  function openError() {
+    setIsDialogErrorOpen(true);
+  }
+
+  function openSuccess() {
+    setIsDialogOpen(true);
+  }
+
+  function closeError() {
+    setIsDialogErrorOpen(false);
+  }
+
+  function closeSuccess() {
+    setIsDialogOpen(false);
+  }
+
+  const initialValues: MessageProps = {
+    email: "",
+    message: "",
+    name: "",
+    phone: "",
+  };
+
+  const validationScheme = Yup.object({
+    name: Yup.string().required("Insira seu nome"),
+    message: Yup.string().required("Insira uma mensagem"),
+    email: Yup.string()
+      .email("Insira um email válido")
+      .required("Insira um email"),
+    phone: Yup.string().required("Insira um telefone"),
+  });
+
+  const setPublishMessage = (id: string) => {
+    try {
+      const variables = { id };
+      publishMessage(variables).then((response) => {
+        setLoading(false);
+        if (response.error) {
+          let message = response.error.message;
+          setMessageDialog(message);
+          openError();
+        } else if (response.data) {
+          setMessageDialog("Mensagem enviada com sucesso");
+          openSuccess();
+        }
+      });
+    } catch (error) {
+      console.log((error as Error).message);
+    }
+  };
+
+  const formik = useFormik({
+    initialValues: initialValues,
+    validationSchema: validationScheme,
+    onSubmit: (values, { resetForm }) => {
+      setLoading(true);
+      const variables = {
+        name: values.name,
+        email: values.email,
+        message: values.message,
+        phone: values.phone,
+      };
+
+      createMessage(variables).then((response) => {
+        setLoading(false);
+        if (response.error) {
+          let message = response.error.message;
+          setMessageDialog(message);
+        } else if (response.data) {
+          setPublishMessage(response.data.createMessage.id);
+          resetForm();
+        }
+      });
+    },
+  });
 
   return (
     <Fragment>
@@ -357,7 +453,7 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
           <div className="-mt-10 w-full lg:w-[45vw] rounded-md overflow-hidden sm:h-[450px] lg:h-fit lg:mt-0 xl:max-h-[500px]">
             <Image
               draggable={false}
-              src={"/img/office.jpg"}
+              src={"/img/bulb.jpg"}
               width={1280}
               height={1020}
               alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
@@ -884,52 +980,152 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
             </div>
           </div>
 
-          <div className="w-full max-w-4xl mx-auto mt-10">
-            <label htmlFor="name">Nome</label>
-            <input
-              className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
-              placeholder="Seu nome aqui"
-              id="name"
-            />
+          <form onSubmit={formik.handleSubmit}>
+            <div className="w-full max-w-4xl mx-auto mt-10">
+              <label htmlFor="name">Nome</label>
+              <input
+                className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
+                placeholder="Seu nome aqui"
+                id="name"
+                name="name"
+                value={formik.values.name}
+                onChange={formik.handleChange}
+              />
+              {formik.touched.name && Boolean(formik.errors.name) ? (
+                <span className="text-sm text-red-600">
+                  {formik.touched.name && formik.errors.name}
+                </span>
+              ) : (
+                ""
+              )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3 mb-3">
-              <div>
-                <label htmlFor="email">Email</label>
-                <input
-                  className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
-                  placeholder="Seu email aqui"
-                  id="email"
-                  type="email"
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3 mb-3">
+                <div>
+                  <label htmlFor="email">Email</label>
+                  <input
+                    className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
+                    placeholder="Seu email aqui"
+                    id="email"
+                    type="email"
+                    name="email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                  />
+                  {formik.touched.email && Boolean(formik.errors.email) ? (
+                    <span className="text-sm text-red-600">
+                      {formik.touched.email && formik.errors.email}
+                    </span>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div>
+                  <label htmlFor="phone">Telefone</label>
+                  <ReactInputMask
+                    mask={"99 99999-9999"}
+                    className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
+                    placeholder="Seu telefone aqui"
+                    id="phone"
+                    name="phone"
+                    value={formik.values.phone}
+                    onChange={formik.handleChange}
+                  />
+                  {formik.touched.phone && Boolean(formik.errors.phone) ? (
+                    <span className="text-sm text-red-600">
+                      {formik.touched.phone && formik.errors.phone}
+                    </span>
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
-              <div>
-                <label htmlFor="phone">Telefone</label>
-                <input
-                  className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
-                  placeholder="Seu telefone aqui"
-                  id="phone"
-                  type="phone"
-                />
+
+              <label htmlFor="message">Mensagem</label>
+              <textarea
+                className="w-full p-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75 resize-none"
+                placeholder="Sua mensagem aqui"
+                id="message"
+                name="message"
+                rows={6}
+                value={formik.values.message}
+                onChange={formik.handleChange}
+              />
+              {formik.touched.message && Boolean(formik.errors.message) ? (
+                <span className="text-sm text-red-600">
+                  {formik.touched.message && formik.errors.message}
+                </span>
+              ) : (
+                ""
+              )}
+
+              <div className="mt-5">
+                <Button
+                  icon={<BiSend />}
+                  buttonSize="lg"
+                  type="submit"
+                  isLoading={loading}
+                >
+                  Enviar Mensagem
+                </Button>
               </div>
             </div>
-
-            <label htmlFor="message">Mensagem</label>
-            <textarea
-              className="w-full px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75 resize-none"
-              placeholder="Sua mensagem aqui"
-              id="message"
-              rows={6}
-            />
-
-            <button className="bg-sky-700 flex items-center gap-3 px-10 py-3 w-fit text-white rounded-md mt-4 hover:bg-sky-800 active:bg-sky-700 select-none cursor-pointer transition-all delay-75">
-              <BiSend />
-              Enviar Mensagem
-            </button>
-          </div>
+          </form>
         </div>
       </section>
 
       <Footer />
+
+      <AlertDialog.Root open={isDialogOpen}>
+        <AlertDialog.Trigger asChild />
+        <AlertDialog.Portal>
+          <AlertDialog.Overlay className="fixed top-0 bottom-0 left-0 right-0 bg-black bg-opacity-40 backdrop-blur-sm z-50" />
+          <AlertDialog.Content className="fixed w-[80%] left-[10%] right-[10%] sm:w-[50%] sm:left-[25%] sm:right-[25%] md:w-[40%] md:left-[30%] md:right-[30%] lg:w-[30%] bg-white shadow-lg rounded-md top-[15%] z-50 lg:left-[35%] lg:right-[35%] flex items-center justify-center flex-col p-5 gap-2">
+            <AlertDialog.Title className="text-green-600 px-4 py-3 font-semibold text-4xl w-20 h-20 flex items-center justify-center bg-green-100 rounded-full">
+              <BiCheck />
+            </AlertDialog.Title>
+            <AlertDialog.Description className="text-green-600 text-2xl font-semibold">
+              Sucesso
+            </AlertDialog.Description>
+            <div className="text-center">
+              <span className="text-gray-700">{messageDialog}</span>
+            </div>
+            <div className="flex items-center w-full">
+              <AlertDialog.Cancel
+                className="bg-green-600 hover:bg-green-700 active:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 px-4 h-10 rounded-md flex text-white justify-center items-center gap-2 transition-all delay-75 w-full"
+                onClick={() => closeSuccess()}
+              >
+                <BiX /> Fechar
+              </AlertDialog.Cancel>
+            </div>
+          </AlertDialog.Content>
+        </AlertDialog.Portal>
+      </AlertDialog.Root>
+
+      <AlertDialog.Root open={isDialogErrorOpen}>
+        <AlertDialog.Trigger asChild />
+        <AlertDialog.Portal>
+          <AlertDialog.Overlay className="fixed top-0 bottom-0 left-0 right-0 bg-black bg-opacity-40 backdrop-blur-sm z-50" />
+          <AlertDialog.Content className="fixed w-[80%] left-[10%] right-[10%] sm:w-[50%] sm:left-[25%] sm:right-[25%] md:w-[40%] md:left-[30%] md:right-[30%] lg:w-[30%] bg-white shadow-lg rounded-md top-[15%] z-50 lg:left-[35%] lg:right-[35%] flex items-center justify-center flex-col p-5 gap-2">
+            <AlertDialog.Title className="text-red-600 px-4 py-3 font-semibold text-4xl w-20 h-20 flex items-center justify-center bg-red-100 rounded-full">
+              <BiMessageAltError />
+            </AlertDialog.Title>
+            <AlertDialog.Description className="text-red-600 text-2xl font-semibold">
+              Ocorreu um erro
+            </AlertDialog.Description>
+            <div className="text-center">
+              <span className="text-gray-700">{messageDialog}</span>
+            </div>
+            <div className="flex items-center w-full">
+              <AlertDialog.Cancel
+                className="bg-red-600 hover:bg-red-700 active:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 px-4 h-10 rounded-md flex text-white justify-center items-center gap-2 transition-all delay-75 w-full"
+                onClick={() => closeError()}
+              >
+                <BiX /> Fechar
+              </AlertDialog.Cancel>
+            </div>
+          </AlertDialog.Content>
+        </AlertDialog.Portal>
+      </AlertDialog.Root>
     </Fragment>
   );
 };
