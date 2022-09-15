@@ -15,11 +15,10 @@ export default async function createCheckoutSession(
   const { id } = req.body;
 
   try {
-    const subscription = await stripe.subscriptions.del(id);
-    console.log(subscription);
+    await stripe.subscriptions.del(id);
+
     res.status(200).json({ message: "Assinatura cancelada com sucesso" });
   } catch (error) {
-    console.log(error);
     res
       .status(400)
       .json({ message: "Ocorreu um erro inesperado durante o processo" });

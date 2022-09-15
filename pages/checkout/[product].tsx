@@ -43,11 +43,9 @@ const Checkout: NextPage<Props> = ({ product, price }) => {
     const variables = { id };
     publishInvoice(variables).then((result) => {
       setIsLoading(false);
-      if (result.error) {
-        console.log(result.error.message);
+      if (result.data) {
+        push(url);
       }
-      console.log(result);
-      push(url);
     });
   };
 
@@ -63,14 +61,13 @@ const Checkout: NextPage<Props> = ({ product, price }) => {
         checkoutId,
       };
       createInvoice(variables).then((result) => {
-        if (result.error) {
-          console.log(result.error.message);
+        if (result.data) {
+          const { id } = result.data.createInvoice;
+          setPublishInvoice(id, url);
         }
-        const { id } = result.data.createInvoice;
-        setPublishInvoice(id, url);
       });
     } catch (error) {
-      alert((error as Error).message);
+      return true;
     }
   };
 
@@ -82,7 +79,7 @@ const Checkout: NextPage<Props> = ({ product, price }) => {
       });
       saveInvoice(data.id, data.url);
     } catch (error) {
-      console.log(error);
+      return true;
     }
   };
 

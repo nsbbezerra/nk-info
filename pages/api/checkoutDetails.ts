@@ -18,7 +18,6 @@ export default async function listCheckoutSessionDetails(
   res.status(200).json({ checkout: checkout });
   try {
   } catch (error) {
-    console.log("ERRO");
     res
       .status(400)
       .json({ message: "Ocorreu um erro inesperado durante o processo" });

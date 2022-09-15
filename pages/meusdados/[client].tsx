@@ -107,14 +107,14 @@ const MyData: NextPage = () => {
         </DropdownMenu.Root>
 
         <div className="w-full rounded-md shadow overflow-hidden border h-fit hidden xl:block">
-          <div className="flex items-center gap-3 px-3 py-3 text-sky-700 font-bold border-b">
+          <div className="flex items-center gap-3 px-3 py-3 text-sky-900 font-bold border-b bg-zinc-50">
             <BsMenuApp />
             Selecione uma opção
           </div>
 
           <button
-            className={`w-full flex items-center gap-3 py-2 px-3 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none ${
-              search.text === "data" && "bg-sky-100"
+            className={`w-full flex items-center gap-3 py-3 px-4 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none ${
+              search.text === "data" && "bg-sky-100 text-sky-700 font-bold"
             }`}
             onClick={() => setSearch({ text: "data" })}
           >
@@ -122,8 +122,9 @@ const MyData: NextPage = () => {
             Meus dados
           </button>
           <button
-            className={`w-full flex items-center gap-3 py-2 px-3 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none ${
-              search.text === "subscribes" && "bg-sky-100"
+            className={`w-full flex items-center gap-3 py-3 px-4 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none ${
+              search.text === "subscribes" &&
+              "bg-sky-100 text-sky-700 font-bold"
             }`}
             onClick={() => setSearch({ text: "subscribes" })}
           >
@@ -131,8 +132,8 @@ const MyData: NextPage = () => {
             Minhas assinaturas
           </button>
           <button
-            className={`w-full flex items-center gap-3 py-2 px-3 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none ${
-              search.text === "buy" && "bg-sky-100"
+            className={`w-full flex items-center gap-3 py-3 px-4 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none ${
+              search.text === "buy" && "bg-sky-100 text-sky-700 font-bold"
             }`}
             onClick={() => setSearch({ text: "buy" })}
           >
@@ -140,8 +141,8 @@ const MyData: NextPage = () => {
             Minhas compras
           </button>
           <button
-            className={`w-full flex items-center gap-3 py-2 px-3 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none ${
-              search.text === "calls" && "bg-sky-100"
+            className={`w-full flex items-center gap-3 py-3 px-4 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none ${
+              search.text === "calls" && "bg-sky-100 text-sky-700 font-bold"
             }`}
             onClick={() => setSearch({ text: "calls" })}
           >
@@ -149,8 +150,9 @@ const MyData: NextPage = () => {
             Meus chamados
           </button>
           <button
-            className={`w-full flex items-center gap-3 py-2 px-3 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none ${
-              search.text === "atendimento" && "bg-sky-100"
+            className={`w-full flex items-center gap-3 py-3 px-4 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none ${
+              search.text === "atendimento" &&
+              "bg-sky-100 text-sky-700 font-bold"
             }`}
             onClick={() => setSearch({ text: "atendimento" })}
           >
@@ -158,8 +160,8 @@ const MyData: NextPage = () => {
             Meus atendimentos
           </button>
           <button
-            className={`w-full flex items-center gap-3 py-2 px-3 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none ${
-              search.text === "equipment" && "bg-sky-100"
+            className={`w-full flex items-center gap-3 py-3 px-4 border-b cursor-pointer hover:bg-sky-100 active:bg-sky-50 select-none ${
+              search.text === "equipment" && "bg-sky-100 text-sky-700 font-bold"
             }`}
             onClick={() => setSearch({ text: "equipment" })}
           >

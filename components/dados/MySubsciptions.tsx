@@ -3,6 +3,8 @@ import {
   BiCheck,
   BiMessageAltError,
   BiPlus,
+  BiQrScan,
+  BiScan,
   BiSearch,
   BiShoppingBag,
   BiTrash,
@@ -164,6 +166,27 @@ export default function MySubscriptions() {
     }
   };
 
+  const findSubscriptionDetails = async (id: string, subId: string) => {
+    setSubscription(null);
+    setIdSubscription(subId);
+    setIsLoading(true);
+    try {
+      const { data } = await axios.post("/api/subscription", {
+        id,
+      });
+      setIsLoading(false);
+      setSubscription({
+        subscription: data.subscription,
+        item: data.subscription,
+      });
+    } catch (error) {
+      setIsLoading(false);
+      let message = (error as Error).message;
+      setMessageDialog(message);
+      openError();
+    }
+  };
+
   const findInvoiceInfo = async (id: string) => {
     setInvoiceLoading(true);
     try {
@@ -286,13 +309,29 @@ export default function MySubscriptions() {
                         <span>{sub.serviceName}</span>
                       </div>
 
-                      <Button
-                        icon={<BiSearch />}
-                        isLoading={idSubscription === sub.id && isLoading}
-                        onClick={() => findDetails(sub.id, sub.checkoutId)}
-                      >
-                        Detalhes
-                      </Button>
+                      {!sub.paymentIntentId ? (
+                        <Button
+                          icon={<BiScan />}
+                          isLoading={idSubscription === sub.id && isLoading}
+                          onClick={() => findDetails(sub.id, sub.checkoutId)}
+                          scheme="warning"
+                        >
+                          Validar
+                        </Button>
+                      ) : (
+                        <Button
+                          icon={<BiSearch />}
+                          isLoading={idSubscription === sub.id && isLoading}
+                          onClick={() =>
+                            findSubscriptionDetails(
+                              sub.paymentIntentId || "",
+                              sub.id
+                            )
+                          }
+                        >
+                          Detalhes
+                        </Button>
+                      )}
                     </div>
                     {!subscription ? (
                       ""

@@ -1,6 +1,13 @@
 import Image from "next/image";
 import { Fragment, useState, useContext, useEffect } from "react";
-import { BiPlus, BiSave, BiX } from "react-icons/bi";
+import {
+  BiCheck,
+  BiMessageAltError,
+  BiPlus,
+  BiRefresh,
+  BiSave,
+  BiX,
+} from "react-icons/bi";
 import Stripe from "stripe";
 import Button from "../layout/Button";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -16,8 +23,7 @@ import {
 import * as Yup from "yup";
 import axios from "axios";
 import { client } from "../../lib/urql";
-import { format } from "date-fns";
-import pt_br from "date-fns/locale/pt-BR";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
 
 interface CallProps {
   id: string;
@@ -64,6 +70,10 @@ export default function MyCalls() {
   const [dialog, setDialog] = useState<boolean>(false);
   const [invoiceId, setInvoiceId] = useState<string>("");
 
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [isDialogErrorOpen, setIsDialogErrorOpen] = useState<boolean>(false);
+  const [messageDialog, setMessageDialog] = useState<string>("");
+
   const [callsResult, reexecuteQuery] = useQuery({
     query: FIND_CALLS_AND_INVOICES,
     variables: {
@@ -80,15 +90,36 @@ export default function MyCalls() {
   const [createCallResult, createCall] = useMutation(CREATE_CALL);
   const [publishCallResult, publishCall] = useMutation(PUBLISH_CALL);
 
+  function openError() {
+    setIsDialogErrorOpen(true);
+  }
+
+  function openSuccess() {
+    setIsDialogOpen(true);
+  }
+
+  function closeError() {
+    setIsDialogErrorOpen(false);
+  }
+
+  function closeSuccess() {
+    setIsDialogOpen(false);
+  }
+
   const { data, error, fetching } = callsResult;
 
   useEffect(() => {
     if (data) {
       setCalls(data.calls);
       setInvoice(data.invoices);
-      console.log(data);
     }
   }, [data]);
+
+  if (error) {
+    let message = error.message;
+    setMessageDialog(message);
+    openError();
+  }
 
   const initialValues = {
     description: "",
@@ -107,20 +138,27 @@ export default function MyCalls() {
       const variables = { id };
 
       publishCall(variables).then((response) => {
-        console.log(response);
-        setLoading(false);
-        setInvoiceId("");
-        setCompareValues({
-          calls: 0,
-          limitCalls: 0,
-          status: "incomplete",
-        });
-        setDialog(false);
-        reexecuteQuery();
+        if (response.error) {
+          setMessageDialog(response.error.message);
+          openError();
+        } else if (response.data) {
+          setLoading(false);
+          setInvoiceId("");
+          setCompareValues({
+            calls: 0,
+            limitCalls: 0,
+            status: "incomplete",
+          });
+          setDialog(false);
+          reexecuteQuery();
+          setMessageDialog("Chamado aberto com sucesso");
+          openSuccess();
+        }
       });
     } catch (error) {
       let message = (error as Error).message;
-      console.log(message);
+      setMessageDialog(message);
+      openError();
     }
   };
 
@@ -140,14 +178,23 @@ export default function MyCalls() {
       };
 
       createCall(variables).then((response) => {
-        console.log(response);
-        setPublishCall(response.data.createCall.id);
-        resetForm();
+        if (response.error) {
+          setMessageDialog(response.error.message);
+          openError();
+        } else if (response.data) {
+          setPublishCall(response.data.createCall.id);
+          resetForm();
+        }
       });
     },
   });
 
   const handleSearchSubscription = async (id: string) => {
+    setCompareValues({
+      calls: 0,
+      limitCalls: 0,
+      status: "incomplete",
+    });
     const result = invoice.find((obj) => obj.id === id);
     setInvoiceId(id);
     try {
@@ -176,8 +223,18 @@ export default function MyCalls() {
       setCompareValues(options);
     } catch (error) {
       let message = (error as Error).message;
-      console.log(message);
+      setMessageDialog(message);
+      openError();
     }
+  };
+
+  const formatDate = (myDate: Date) => {
+    const dateformat = new Date(myDate);
+    const dia = (dateformat.getDate() + 1).toString().padStart(2, "0");
+    const mes = (dateformat.getMonth() + 1).toString().padStart(2, "0");
+    const ano = dateformat.getFullYear();
+
+    return `${dia}/${mes}/${ano}`;
   };
 
   return (
@@ -199,6 +256,14 @@ export default function MyCalls() {
           onClick={() => setDialog(true)}
         >
           Novo Chamado
+        </Button>
+        <Button
+          icon={<BiRefresh />}
+          buttonSize="lg"
+          onClick={() => reexecuteQuery()}
+          scheme="warning"
+        >
+          Atualizar
         </Button>
       </div>
 
@@ -285,16 +350,10 @@ export default function MyCalls() {
                       <dl>
                         <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                           <dt className="text-sm font-medium text-gray-500">
-                            Data e Hora
+                            Data
                           </dt>
                           <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                            {format(
-                              new Date(call.dateCall),
-                              "dd/MM/yyyy 'às' HH:mm'h'",
-                              {
-                                locale: pt_br,
-                              }
-                            )}
+                            {formatDate(call.dateCall)}
                           </dd>
                         </div>
                         <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -448,6 +507,58 @@ export default function MyCalls() {
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>
+
+      <AlertDialog.Root open={isDialogOpen}>
+        <AlertDialog.Trigger asChild />
+        <AlertDialog.Portal>
+          <AlertDialog.Overlay className="fixed top-0 bottom-0 left-0 right-0 bg-black bg-opacity-40 backdrop-blur-sm z-50" />
+          <AlertDialog.Content className="fixed w-[80%] left-[10%] right-[10%] sm:w-[50%] sm:left-[25%] sm:right-[25%] md:w-[40%] md:left-[30%] md:right-[30%] lg:w-[30%] bg-white shadow-lg rounded-md top-[15%] z-50 lg:left-[35%] lg:right-[35%] flex items-center justify-center flex-col p-5 gap-2">
+            <AlertDialog.Title className="text-green-600 px-4 py-3 font-semibold text-4xl w-20 h-20 flex items-center justify-center bg-green-100 rounded-full">
+              <BiCheck />
+            </AlertDialog.Title>
+            <AlertDialog.Description className="text-green-600 text-2xl font-semibold">
+              Sucesso
+            </AlertDialog.Description>
+            <div className="text-center">
+              <span className="text-gray-700">{messageDialog}</span>
+            </div>
+            <div className="flex items-center w-full">
+              <AlertDialog.Cancel
+                className="bg-green-600 hover:bg-green-700 active:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 px-4 h-10 rounded-md flex text-white justify-center items-center gap-2 transition-all delay-75 w-full"
+                onClick={() => closeSuccess()}
+              >
+                <BiX /> Fechar
+              </AlertDialog.Cancel>
+            </div>
+          </AlertDialog.Content>
+        </AlertDialog.Portal>
+      </AlertDialog.Root>
+
+      <AlertDialog.Root open={isDialogErrorOpen}>
+        <AlertDialog.Trigger asChild />
+        <AlertDialog.Portal>
+          <AlertDialog.Overlay className="fixed top-0 bottom-0 left-0 right-0 bg-black bg-opacity-40 backdrop-blur-sm z-50" />
+          <AlertDialog.Content className="fixed w-[80%] left-[10%] right-[10%] sm:w-[50%] sm:left-[25%] sm:right-[25%] md:w-[40%] md:left-[30%] md:right-[30%] lg:w-[30%] bg-white shadow-lg rounded-md top-[15%] z-50 lg:left-[35%] lg:right-[35%] flex items-center justify-center flex-col p-5 gap-2">
+            <AlertDialog.Title className="text-red-600 px-4 py-3 font-semibold text-4xl w-20 h-20 flex items-center justify-center bg-red-100 rounded-full">
+              <BiMessageAltError />
+            </AlertDialog.Title>
+            <AlertDialog.Description className="text-red-600 text-2xl font-semibold">
+              Ocorreu um erro
+            </AlertDialog.Description>
+            <div className="text-center">
+              <span className="text-gray-700">{messageDialog}</span>
+            </div>
+            <div className="flex items-center w-full">
+              <AlertDialog.Cancel
+                className="bg-red-600 hover:bg-red-700 active:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 px-4 h-10 rounded-md flex text-white justify-center items-center gap-2 transition-all delay-75 w-full"
+                onClick={() => closeError()}
+              >
+                <BiX /> Fechar
+              </AlertDialog.Cancel>
+            </div>
+          </AlertDialog.Content>
+        </AlertDialog.Portal>
+      </AlertDialog.Root>
     </Fragment>
   );
 }
