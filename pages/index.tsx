@@ -135,7 +135,6 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
       <HeadApp title="NK Informática | Sistemas Web, Gestão Comercial, Marketing Digital, Gestão de Redes Sociais" />
       <Header />
       <Panel />
-
       {/** SEÇÃO SOBRE NÓS */}
 
       <section className="container mx-auto py-16 px-10 lg:px-20" id="sobre">

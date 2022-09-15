@@ -1,7 +1,9 @@
 import Stripe from "stripe";
 import { configs } from "./indext";
 
-const stripe = new Stripe(process.env.STRIPE_PK || configs.stripe_pk, {
+const pk = process.env.STRIPE_PK || configs.stripe_pk;
+console.log(pk);
+const stripe = new Stripe(pk, {
   apiVersion: "2022-08-01",
 });
 
