@@ -172,7 +172,7 @@ export default function MyEquipment() {
                 <div className="w-1/4">
                   <Image
                     draggable={false}
-                    src={"/img/box-6.png"}
+                    src={"/img/empty_box.svg"}
                     width={600}
                     height={450}
                     alt="NK Info, sistemas, soluções em TI e desenvolvimento web."

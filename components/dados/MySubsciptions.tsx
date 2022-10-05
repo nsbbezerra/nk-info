@@ -3,8 +3,6 @@ import {
   BiCheck,
   BiMessageAltError,
   BiPlus,
-  BiQrScan,
-  BiScan,
   BiSearch,
   BiShoppingBag,
   BiTrash,
@@ -20,10 +18,7 @@ import pt_br from "date-fns/locale/pt-BR";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useMutation, useQuery } from "urql";
-import {
-  DELETE_INVOICE,
-  UPDATE_SUB_ID_INVOICE,
-} from "../../graphql/invoiceMutation";
+import { DELETE_INVOICE } from "../../graphql/invoiceMutation";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import Image from "next/image";
 import ClientContext from "../../context/client";
@@ -40,9 +35,11 @@ type Subscriptions = {
   serviceName: string;
 };
 
-type PaymentSubscription = {
-  subscription: Stripe.Subscription;
+type SubscriptionInfoProps = {
+  subscription: Stripe.Subscription | null;
   item: Stripe.SubscriptionItem | null;
+  checkout: Stripe.Checkout.Session | null;
+  product: Stripe.Product | null;
 };
 
 type InvoiceProps = {
@@ -53,7 +50,7 @@ export default function MySubscriptions() {
   const { state } = useContext(ClientContext);
   const { push } = useRouter();
   const [subscription, setSubscription] =
-    useState<PaymentSubscription | null>();
+    useState<SubscriptionInfoProps | null>(null);
   const [idSubscription, setIdSubscription] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [invoiceLoading, setInvoiceLoading] = useState<boolean>(false);
@@ -74,9 +71,6 @@ export default function MySubscriptions() {
   }, [data]);
 
   const [delInvoiceResult, delInvoice] = useMutation(DELETE_INVOICE);
-  const [updateSubIdInvoiceResult, updateSubIdInvoice] = useMutation(
-    UPDATE_SUB_ID_INVOICE
-  );
 
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isDialogErrorOpen, setIsDialogErrorOpen] = useState<boolean>(false);
@@ -120,65 +114,18 @@ export default function MySubscriptions() {
       const { data } = await axios.post("/api/checkoutDetails", {
         id: checkoutId,
       });
-      if (data.checkout.subscription === null) {
+      console.log(data);
+      if (data.subscription === null) {
         data.checkout.url !== null && push(data.checkout.url);
       } else {
-        findSubscription(data.checkout.subscription);
-        setUpdateInvoiceSubId(id, data.checkout.subscription);
+        setSubscription({
+          checkout: data.checkout,
+          subscription: data.subscription,
+          item: data.subscription.items.data[0],
+          product: data.product,
+        });
       }
-    } catch (error) {
       setIsLoading(false);
-      let message = (error as Error).message;
-      setMessageDialog(message);
-      openError();
-    }
-  };
-
-  const setUpdateInvoiceSubId = (id: string, subId: string) => {
-    const variables = {
-      id: id,
-      paymentIntentId: subId,
-    };
-
-    updateSubIdInvoice(variables).then((response) => {
-      if (response.error) {
-        setMessageDialog(response.error.message);
-        openError();
-      }
-    });
-  };
-
-  const findSubscription = async (id: string) => {
-    try {
-      const { data } = await axios.post("/api/subscription", {
-        id,
-      });
-      setIsLoading(false);
-      setSubscription({
-        subscription: data.subscription,
-        item: data.subscription,
-      });
-    } catch (error) {
-      setIsLoading(false);
-      let message = (error as Error).message;
-      setMessageDialog(message);
-      openError();
-    }
-  };
-
-  const findSubscriptionDetails = async (id: string, subId: string) => {
-    setSubscription(null);
-    setIdSubscription(subId);
-    setIsLoading(true);
-    try {
-      const { data } = await axios.post("/api/subscription", {
-        id,
-      });
-      setIsLoading(false);
-      setSubscription({
-        subscription: data.subscription,
-        item: data.subscription,
-      });
     } catch (error) {
       setIsLoading(false);
       let message = (error as Error).message;
@@ -204,8 +151,10 @@ export default function MySubscriptions() {
   const cancelSubscription = async (id: string, subscriptionId: string) => {
     setInvoiceLoading(true);
     try {
-      const response = await axios.post("/api/cancelSubscription", { id });
-      const variables = { id: subscriptionId };
+      const response = await axios.post("/api/cancelSubscription", {
+        id: subscriptionId,
+      });
+      const variables = { id: id };
       await delInvoice(variables);
       setInvoiceLoading(false);
       setMessageDialog(response.data.message);
@@ -306,32 +255,16 @@ export default function MySubscriptions() {
                             objectFit="contain"
                           />
                         </div>
-                        <span>{sub.serviceName}</span>
+                        <span>Assinatura ID: {sub.id}</span>
                       </div>
 
-                      {!sub.paymentIntentId ? (
-                        <Button
-                          icon={<BiScan />}
-                          isLoading={idSubscription === sub.id && isLoading}
-                          onClick={() => findDetails(sub.id, sub.checkoutId)}
-                          scheme="warning"
-                        >
-                          Validar
-                        </Button>
-                      ) : (
-                        <Button
-                          icon={<BiSearch />}
-                          isLoading={idSubscription === sub.id && isLoading}
-                          onClick={() =>
-                            findSubscriptionDetails(
-                              sub.paymentIntentId || "",
-                              sub.id
-                            )
-                          }
-                        >
-                          Detalhes
-                        </Button>
-                      )}
+                      <Button
+                        icon={<BiSearch />}
+                        isLoading={idSubscription === sub.id && isLoading}
+                        onClick={() => findDetails(sub.id, sub.checkoutId)}
+                      >
+                        Detalhes
+                      </Button>
                     </div>
                     {!subscription ? (
                       ""
@@ -340,9 +273,25 @@ export default function MySubscriptions() {
                         {idSubscription === sub.id && subscription ? (
                           <div className="border-t border-gray-200">
                             <dl>
-                              <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                              <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-500">
-                                  Preço
+                                  Informação da Assinatura
+                                </dt>
+                                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                  {subscription.product?.name}
+                                </dd>
+                              </div>
+                              <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt className="text-sm font-medium text-gray-500">
+                                  Limite de Chamados Mensais
+                                </dt>
+                                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                  {subscription.product?.metadata?.call_limit}
+                                </dd>
+                              </div>
+                              <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt className="text-sm font-medium text-gray-500">
+                                  Valor Mensal
                                 </dt>
                                 <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                   {calcReal(
@@ -350,14 +299,15 @@ export default function MySubscriptions() {
                                   )}
                                 </dd>
                               </div>
-                              <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                              <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-500">
                                   Data do Pagamento
                                 </dt>
                                 <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                   {format(
                                     new Date(
-                                      subscription.subscription.current_period_start
+                                      subscription.subscription
+                                        ?.current_period_start || new Date()
                                     ),
                                     "dd/MM/yyyy 'às' HH:mm'h'",
                                     {
@@ -366,14 +316,15 @@ export default function MySubscriptions() {
                                   )}
                                 </dd>
                               </div>
-                              <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                              <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-500">
                                   Data do Vencimento
                                 </dt>
                                 <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                   {format(
                                     new Date(
-                                      subscription.subscription.current_period_end
+                                      subscription.subscription
+                                        ?.current_period_end || new Date()
                                     ),
                                     "dd/MM/yyyy 'às' HH:mm'h'",
                                     {
@@ -382,48 +333,48 @@ export default function MySubscriptions() {
                                   )}
                                 </dd>
                               </div>
-                              <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                              <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-500">
                                   Status do Pacote
                                 </dt>
                                 <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                  {subscription.subscription.status ===
+                                  {subscription.subscription?.status ===
                                     "active" && (
                                     <span className="text-green-600 font-bold w-fit px-3 py-1 border border-green-600 rounded-md">
                                       Ativo
                                     </span>
                                   )}
-                                  {subscription.subscription.status ===
+                                  {subscription.subscription?.status ===
                                     "canceled" && (
                                     <span className="text-gray-900 font-bold w-fit px-3 py-1 border border-gray-900 rounded-md">
                                       Cancelado
                                     </span>
                                   )}
-                                  {subscription.subscription.status ===
+                                  {subscription.subscription?.status ===
                                     "incomplete" && (
                                     <span className="text-orange-600 font-bold w-fit px-3 py-1 border border-orange-600 rounded-md">
                                       Incompleto
                                     </span>
                                   )}
-                                  {subscription.subscription.status ===
+                                  {subscription.subscription?.status ===
                                     "incomplete_expired" && (
                                     <span className="text-zinc-800 font-bold w-fit px-3 py-1 border border-zinc-800 rounded-md">
                                       Incompleto e Expirado
                                     </span>
                                   )}
-                                  {subscription.subscription.status ===
+                                  {subscription.subscription?.status ===
                                     "past_due" && (
                                     <span className="text-red-600 font-bold w-fit px-3 py-1 border border-red-600 rounded-md">
                                       Vencido
                                     </span>
                                   )}
-                                  {subscription.subscription.status ===
+                                  {subscription.subscription?.status ===
                                     "trialing" && (
                                     <span className="text-sky-700 font-bold w-fit px-3 py-1 border border-sky-700 rounded-md">
                                       Modo Teste
                                     </span>
                                   )}
-                                  {subscription.subscription.status ===
+                                  {subscription.subscription?.status ===
                                     "unpaid" && (
                                     <span className="text-zinc-600 font-bold w-fit px-3 py-1 border border-zinc-600 rounded-md">
                                       Não Pago
@@ -431,12 +382,12 @@ export default function MySubscriptions() {
                                   )}
                                 </dd>
                               </div>
-                              <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                              <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-500">
                                   Opções
                                 </dt>
                                 <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                  {subscription.subscription.status ===
+                                  {subscription.subscription?.status ===
                                     "active" && (
                                     <div className="flex md:items-center flex-col md:flex-row justify-center gap-2 md:justify-start flex-wrap">
                                       <Button
@@ -445,8 +396,9 @@ export default function MySubscriptions() {
                                         scheme="error"
                                         onClick={() =>
                                           cancelSubscription(
-                                            subscription.subscription.id,
-                                            sub.id
+                                            sub.id,
+                                            subscription.subscription
+                                              ?.id as string
                                           )
                                         }
                                         isLoading={invoiceLoading}
@@ -455,9 +407,9 @@ export default function MySubscriptions() {
                                       </Button>
                                     </div>
                                   )}
-                                  {subscription.subscription.status ===
+                                  {subscription.subscription?.status ===
                                     "canceled" && <span>Nenhuma</span>}
-                                  {subscription.subscription.status ===
+                                  {subscription.subscription?.status ===
                                     "incomplete" && (
                                     <div className="flex md:items-center flex-col md:flex-row justify-center gap-2 md:justify-start flex-wrap">
                                       <Button
@@ -467,7 +419,7 @@ export default function MySubscriptions() {
                                         onClick={() =>
                                           findInvoiceInfo(
                                             subscription.subscription
-                                              .latest_invoice as string
+                                              ?.latest_invoice as string
                                           )
                                         }
                                       >
@@ -492,7 +444,7 @@ export default function MySubscriptions() {
                                       )}
                                     </div>
                                   )}
-                                  {subscription.subscription.status ===
+                                  {subscription.subscription?.status ===
                                     "incomplete_expired" && (
                                     <Button
                                       buttonSize="sm"
@@ -506,13 +458,13 @@ export default function MySubscriptions() {
                                       Cancelar assinatura
                                     </Button>
                                   )}
-                                  {subscription.subscription.status ===
+                                  {subscription.subscription?.status ===
                                     "trialing" && (
                                     <span className="text-sky-700 font-bold w-fit px-3 py-1 border border-sky-700 rounded-md">
                                       Modo Teste
                                     </span>
                                   )}
-                                  {subscription.subscription.status ===
+                                  {subscription.subscription?.status ===
                                     "unpaid" && (
                                     <div className="flex md:items-center flex-col md:flex-row justify-center gap-2 md:justify-start flex-wrap">
                                       <Button
@@ -522,7 +474,7 @@ export default function MySubscriptions() {
                                         onClick={() =>
                                           findInvoiceInfo(
                                             subscription.subscription
-                                              .latest_invoice as string
+                                              ?.latest_invoice as string
                                           )
                                         }
                                       >

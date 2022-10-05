@@ -143,7 +143,7 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
             <h2 className="text-4xl font-bold">Sobre Nós!</h2>
             <div className="w-32 bg-gradient-to-r from-blue-400 to-blue-600 h-1 rounded-[50%]" />
           </div>
-          <div className="text-center text-gray-600 mt-10">
+          <div className="text-center text-gray-600 mt-10 lg:text-lg">
             <p>
               Somos uma empresa desde 2017 focada em soluções na área de
               Tecnologia da Informação, estamos sempre em atualização tanto na
@@ -157,57 +157,6 @@ const Home: NextPage<Props> = ({ packs, prices }) => {
               empresa sempre bem visível, flúida, destravada e automatizada,
               nossas áreas de atuação são:
             </p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 gap-5 mt-10 md:grid-cols-3">
-          <div className="w-full rounded-md p-5 grid grid-cols-1 justify-items-center items-center gap-5 border -ml-5 lg:ml-0 h-fit md:h-60 lg:h-64">
-            <div className="w-[230px]">
-              <Image
-                draggable={false}
-                src={"/img/maintenence.svg"}
-                width={945}
-                height={584}
-                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
-                layout="responsive"
-                objectFit="contain"
-              />
-            </div>
-            <div className="col-span-2 text-lg text-center">
-              Manutenção preventiva em TI
-            </div>
-          </div>
-          <div className="w-full rounded-md p-5 grid grid-cols-1 justify-items-center items-center gap-3 border lg:mt-5 h-fit md:h-60 lg:h-64">
-            <div className="w-[150px]">
-              <Image
-                draggable={false}
-                src={"/img/social.svg"}
-                width={552}
-                height={554}
-                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
-                layout="responsive"
-                objectFit="contain"
-              />
-            </div>
-            <div className="col-span-2 text-lg text-center">
-              Marketing digital e Gestão de redes sociais
-            </div>
-          </div>
-          <div className="w-full rounded-md p-5 grid grid-cols-1 justify-items-center items-center gap-3 border lg:mt-10 ml-5 lg:ml-0 h-fit md:h-60 lg:h-64">
-            <div className="w-[200px]">
-              <Image
-                draggable={false}
-                src={"/img/develop.svg"}
-                width={787}
-                height={573}
-                alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
-                layout="responsive"
-                objectFit="contain"
-              />
-            </div>
-            <div className="col-span-2 text-lg text-center">
-              Desenvolvimento web, mobile e desktop
-            </div>
           </div>
         </div>
       </section>

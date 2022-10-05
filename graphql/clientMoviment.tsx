@@ -10,7 +10,6 @@ const FIND_CLIENT_SUBSCRIPTIONS = gql`
       checkoutId
       category
       activateCode
-      paymentIntentId
     }
   }
 `;
@@ -67,7 +66,6 @@ const FIND_CALLS_AND_INVOICES = gql`
       checkoutId
       category
       activateCode
-      paymentIntentId
     }
     calls(
       where: { month: $month, year: $year, client: { id: $id } }

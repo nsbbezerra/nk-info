@@ -42,20 +42,4 @@ const DELETE_INVOICE = gql`
   }
 `;
 
-const UPDATE_SUB_ID_INVOICE = gql`
-  mutation UpdateSubIdInvoice($id: ID!, $paymentIntentId: String!) {
-    updateInvoice(
-      where: { id: $id }
-      data: { paymentIntentId: $paymentIntentId }
-    ) {
-      id
-    }
-  }
-`;
-
-export {
-  CREATE_INVOICE,
-  PUBLISH_INVOICE,
-  DELETE_INVOICE,
-  UPDATE_SUB_ID_INVOICE,
-};
+export { CREATE_INVOICE, PUBLISH_INVOICE, DELETE_INVOICE };

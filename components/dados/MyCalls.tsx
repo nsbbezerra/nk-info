@@ -24,6 +24,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { client } from "../../lib/urql";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import { AiOutlineLoading, AiOutlineLoading3Quarters } from "react-icons/ai";
 
 type InvoicePropsIntern = {
   id: string;
@@ -51,7 +52,6 @@ interface InvoiceProps {
   checkoutId: string;
   limitCalls?: number;
   limitCallsVirtual?: number;
-  paymentIntentId?: string;
   serviceName: string;
 }
 
@@ -66,7 +66,6 @@ export default function MyCalls() {
   const [dateActive] = useState<Date>(new Date());
   const [calls, setCalls] = useState<CallProps[]>([]);
   const [invoice, setInvoice] = useState<InvoiceProps[]>([]);
-  const [subscription, setSubscription] = useState<SubscriptionProps | null>();
   const [compareValues, setCompareValues] = useState<ValuesToCompareProps>({
     calls: 0,
     limitCalls: 0,
@@ -79,6 +78,7 @@ export default function MyCalls() {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isDialogErrorOpen, setIsDialogErrorOpen] = useState<boolean>(false);
   const [messageDialog, setMessageDialog] = useState<string>("");
+  const [loadingSub, setLoadingSub] = useState<boolean>(false);
 
   const [callsResult, reexecuteQuery] = useQuery({
     query: FIND_CALLS_AND_INVOICES,
@@ -196,6 +196,10 @@ export default function MyCalls() {
   });
 
   const handleSearchSubscription = async (id: string) => {
+    if (id === "") {
+      return false;
+    }
+    setLoadingSub(true);
     setCompareValues({
       calls: 0,
       limitCalls: 0,
@@ -204,8 +208,8 @@ export default function MyCalls() {
     const result = invoice.find((obj) => obj.id === id);
     setInvoiceId(id);
     try {
-      const { data } = await axios.post("/api/subscription", {
-        id: result?.paymentIntentId || "",
+      const { data } = await axios.post("/api/checkoutDetails", {
+        id: result?.checkoutId || "",
       });
       const variables = {
         id,
@@ -222,12 +226,14 @@ export default function MyCalls() {
 
       const options: ValuesToCompareProps = {
         calls: totalCalls,
-        limitCalls: result?.limitCalls || 0,
+        limitCalls: parseInt(data.product?.metadata?.call_limit) || 0,
         status: data.subscription.status || "incomplete",
       };
 
       setCompareValues(options);
+      setLoadingSub(false);
     } catch (error) {
+      setLoadingSub(false);
       let message = (error as Error).message;
       setMessageDialog(message);
       openError();
@@ -299,7 +305,7 @@ export default function MyCalls() {
                 <div className="w-1/4">
                   <Image
                     draggable={false}
-                    src={"/img/box-6.png"}
+                    src={"/img/empty_box.svg"}
                     width={600}
                     height={450}
                     alt="NK Info, sistemas, soluções em TI e desenvolvimento web."
@@ -335,7 +341,10 @@ export default function MyCalls() {
                             />
                           </div>
                           <span>
-                            Chamado do Pacote: {call.invoice.serviceName}
+                            Chamado do Pacote:{" "}
+                            {!call.invoice
+                              ? "Pacote cancelado"
+                              : call.invoice.serviceName}
                           </span>
                         </div>
                         <span
@@ -387,8 +396,8 @@ export default function MyCalls() {
         <Dialog.Portal>
           <Dialog.Overlay className="fixed top-0 bottom-0 left-0 right-0 bg-black bg-opacity-40 backdrop-blur-sm z-50" />
           <Dialog.Content className="fixed w-[80%] left-[10%] right-[10%] bg-white shadow-lg rounded-md top-10 md:top-[10%] z-50 max-h-[80vh] overflow-auto lg:w-[60%] lg:left-[20%] lg:right-[20%]">
-            <div className="flex justify-between items-center border-b px-5 py-3 sticky top-0 bg-white">
-              <Dialog.Title className="font-bold text-lg  ">
+            <div className="flex justify-between items-center border-b px-5 py-3 sticky top-0 bg-white z-50">
+              <Dialog.Title className="font-bold text-lg">
                 Novo Chamado
               </Dialog.Title>
               <Dialog.Close
@@ -399,7 +408,13 @@ export default function MyCalls() {
               </Dialog.Close>
             </div>
 
-            <div className="grid grid-cols-3 gap-3 px-5 pt-3">
+            <div className="grid grid-cols-3 gap-3 px-5 pt-3 relative">
+              {loadingSub && (
+                <div className="flex items-center flex-col justify-center absolute top-0 left-0 bottom-0 right-0 bg-white bg-opacity-80">
+                  <AiOutlineLoading3Quarters className="text-lg mb-2 animate-spin" />
+                  <span>Carregando informações...</span>
+                </div>
+              )}
               <div>
                 <label>Chamados</label>
                 <input
@@ -475,12 +490,12 @@ export default function MyCalls() {
                 </div>
                 <div>
                   <label>
-                    Descrição <span className="text-red-600">*</span>
+                    Descreva o problema <span className="text-red-600">*</span>
                   </label>
                   <textarea
                     name="description"
                     className="w-full px-3 py-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75 resize-none"
-                    placeholder="Descrição"
+                    placeholder="Descreva o problema"
                     rows={5}
                     value={formik.values.description}
                     onChange={formik.handleChange}
