@@ -1,3 +1,132 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  @apply bg-zinc-900;
+}
+
+.menu-items {
+  @apply text-sky-300 flex items-center gap-2 hover:underline;
+}
+
+.client-area-button {
+  @apply bg-sky-300 px-4 py-3 text-zinc-800 rounded-md flex items-center gap-2 hover:bg-sky-400 transition-all delay-75 active:bg-sky-300 w-fit lg:py-2 select-none outline-none focus:ring-2 focus:ring-sky-50;
+}
+
+.dropdown-content {
+  @apply bg-zinc-800 backdrop-blur-sm bg-opacity-90 rounded-md z-50 py-2 px-2 shadow-2xl border border-zinc-600 mt-1 min-w-[180px];
+}
+
+.dropdwon-items-blue {
+  @apply text-sky-300 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-sky-300 cursor-pointer hover:text-zinc-800 active:bg-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-50;
+}
+
+.dropdwon-items-red {
+  @apply text-red-300 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-red-300 cursor-pointer hover:text-zinc-800 active:bg-red-400 focus:outline-none focus:ring-1 focus:ring-red-50;
+}
+
+.divider-gradient {
+  @apply w-32 bg-gradient-to-r from-sky-100 to-sky-300 h-1 rounded-[50%];
+}
+
+.minimal-card {
+  @apply border rounded-md shadow-sm flex justify-between items-center flex-col bg-zinc-800 border-zinc-600;
+}
+
+.minimal-card-desc-text {
+  @apply border-t border-t-zinc-600 w-full p-1 text-center text-xs text-zinc-400;
+}
+
+.title {
+  @apply text-2xl md:text-3xl font-bold text-sky-300;
+}
+
+.input {
+  @apply w-full h-12 px-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-sky-300 transition-all delay-75 bg-zinc-800 border-zinc-600 text-zinc-300;
+}
+
+.textarea {
+  @apply w-full py-2 px-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-sky-300 transition-all delay-75 bg-zinc-800 border-zinc-600 text-zinc-300 resize-none;
+}
+
+.input-label {
+  @apply text-zinc-300;
+}
+
+.rounded-pin {
+  @apply bg-sky-300 w-16 h-16 rounded-full flex items-center justify-center text-3xl text-zinc-800 ring-4 ring-sky-50;
+}
+
+.buttom-xs {
+  @apply px-2 h-7 text-xs text-white rounded-md flex items-center justify-center gap-2 select-none font-semibold;
+}
+.buttom-sm {
+  @apply px-3 h-8 text-sm text-white justify-center rounded-md flex items-center gap-2 select-none font-semibold;
+}
+.buttom-md {
+  @apply px-4 h-10 text-white rounded-md flex justify-center items-center gap-2 select-none font-semibold;
+}
+.buttom-lg {
+  @apply px-5 h-12 text-lg text-white rounded-md flex justify-center items-center gap-2 select-none font-semibold;
+}
+.buttom-disabled {
+  @apply opacity-40 pointer-events-none select-none;
+}
+.buttom-full {
+  @apply w-full;
+}
+.buttom-fit {
+  @apply w-fit;
+}
+.icon-buttom-xs {
+  @apply w-7 h-7 rounded-full flex items-center justify-center;
+}
+
+.icon-buttom-sm {
+  @apply w-8 h-8 rounded-full flex items-center justify-center text-lg;
+}
+
+.icon-buttom-md {
+  @apply w-10 h-10 rounded-full flex items-center justify-center text-2xl;
+}
+
+.icon-buttom-lg {
+  @apply w-12 h-12 rounded-full flex items-center justify-center text-3xl;
+}
+
+.buttom-blue {
+  @apply bg-sky-300 text-zinc-800 hover:bg-sky-400 active:bg-sky-300 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:bg-sky-300 dark:text-zinc-800 dark:focus:ring-sky-100 dark:hover:bg-sky-400 dark:active:bg-sky-300;
+}
+
+.buttom-green {
+  @apply bg-green-300 text-zinc-800 hover:bg-green-400 active:bg-green-300 focus:outline-none focus:ring-1 focus:ring-green-500 dark:bg-green-300 dark:text-zinc-800 dark:focus:ring-green-100 dark:hover:bg-green-400 dark:active:bg-green-300;
+}
+
+.buttom-red {
+  @apply bg-red-300 text-zinc-800 hover:bg-red-400 active:bg-red-300 focus:outline-none focus:ring-1 focus:ring-red-500 dark:bg-red-300 dark:text-zinc-800 dark:focus:ring-red-100 dark:hover:bg-red-400 dark:active:bg-red-300;
+}
+
+.buttom-yellow {
+  @apply bg-yellow-300 text-zinc-800 hover:bg-yellow-400 active:bg-yellow-300 focus:outline-none focus:ring-1 focus:ring-yellow-500 dark:bg-yellow-300 dark:text-zinc-800 dark:focus:ring-yellow-100 dark:hover:bg-yellow-400 dark:active:bg-yellow-300;
+}
+
+.buttom-gray {
+  @apply bg-zinc-300 text-zinc-800 hover:bg-zinc-400 active:bg-zinc-300 focus:outline-none focus:ring-1 focus:ring-zinc-500 dark:bg-zinc-400 dark:text-zinc-800 dark:focus:ring-zinc-100 dark:hover:bg-zinc-400 dark:active:bg-zinc-300;
+}
+
+.buttom-blue-outline {
+  @apply border border-sky-700 text-sky-700 hover:bg-sky-50 active:bg-sky-100 dark:border-sky-300 dark:text-sky-300 dark:hover:bg-sky-300 dark:hover:bg-opacity-25 dark:active:bg-opacity-30 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:focus:ring-sky-100;
+}
+
+.buttom-green-outline {
+  @apply border border-green-700 text-green-700 hover:bg-green-50 active:bg-green-100 dark:border-green-300 dark:text-green-300 dark:hover:bg-green-300 dark:hover:bg-opacity-25 dark:active:bg-opacity-30 focus:outline-none focus:ring-1 focus:ring-green-500 dark:focus:ring-green-100;
+}
+
+.buttom-yellow-outline {
+  @apply border border-yellow-600 text-yellow-600 hover:bg-yellow-50 active:bg-yellow-100 dark:border-yellow-200 dark:text-yellow-200 dark:hover:bg-yellow-300 dark:hover:bg-opacity-25 dark:active:bg-opacity-30 focus:outline-none focus:ring-1 focus:ring-yellow-500 dark:focus:ring-yellow-100;
+}
+
+.buttom-red-outline {
+  @apply border border-red-700 text-red-700 hover:bg-red-50 active:bg-red-100 dark:border-red-300 dark:text-red-300 dark:hover:bg-red-300 dark:hover:bg-opacity-25 dark:active:bg-opacity-30 focus:outline-none focus:ring-1 focus:ring-red-500 dark:focus:ring-red-100;
+}

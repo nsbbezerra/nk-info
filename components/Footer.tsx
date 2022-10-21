@@ -11,7 +11,7 @@ import {
 export default function Footer() {
   return (
     <Fragment>
-      <footer className="bg-gray-900 w-full py-10 mt-16">
+      <footer className="bg-sky-300 bg-opacity-5 w-full py-10 mt-16">
         <div className="container mx-auto px-10 lg:px-20">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-3 lg:gap-20">
             <div className="flex flex-col justify-center gap-4">

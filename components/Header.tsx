@@ -71,50 +71,50 @@ export default function Header() {
   const NavMenu = () => (
     <div className="flex lg:items-center gap-7 flex-col lg:flex-row px-5 lg:px-0">
       <Link href={"/"} passHref>
-        <a className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-sky-700 font-semibold">
+        <a className="menu-items">
           <BiHome />
           Início
         </a>
       </Link>
 
       <Link passHref href={"#sobre"}>
-        <a className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-sky-700 ">
+        <a className="menu-items">
           <BiInfoSquare />
           Sobre Nós
         </a>
       </Link>
 
       <Link href={"/servicos"} passHref>
-        <a className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-sky-700 ">
+        <a className="menu-items">
           <BiCog />
           Serviços
         </a>
       </Link>
 
       <Link href={"#contato"} passHref>
-        <a className="flex cursor-pointer select-none items-center gap-1 transition-all delay-75 hover:text-blue-600 ">
+        <a className="menu-items">
           <BiPhone />
           Contato
         </a>
       </Link>
 
       <DropdownMenu.Root>
-        <DropdownMenu.Trigger className="bg-sky-700 px-4 py-3 text-white rounded-md flex items-center gap-2 hover:bg-sky-800 transition-all delay-75 active:bg-sky-700 w-fit lg:py-2 select-none">
+        <DropdownMenu.Trigger className="client-area-button">
           <BiUser />
           Área do Cliente
         </DropdownMenu.Trigger>
 
         <DropdownMenu.Portal>
-          <DropdownMenu.Content className="bg-white backdrop-blur-sm bg-opacity-90 rounded-md z-50 py-2 px-2 border shadow-lg mt-1 min-w-[180px]">
+          <DropdownMenu.Content className="dropdown-content">
             {clientState.id !== "" ? (
               <>
                 <div className="flex flex-col items-center justify-center">
-                  <BiUser className="rounded-full p-1 bg-gray-300 text-4xl" />
-                  <span className="text-gray-600 text-sm text-center mt-2">
+                  <BiUser className="rounded-full p-1 bg-sky-300 text-4xl text-zinc-800" />
+                  <span className="text-gray-100 text-sm text-center mt-2">
                     Olá, {clientState.name || ""}
                   </span>
                 </div>
-                <DropdownMenu.Separator className="border-gray-300 border-b my-2" />
+                <DropdownMenu.Separator className="border-zinc-600 border-b my-2" />
               </>
             ) : (
               ""
@@ -123,13 +123,13 @@ export default function Header() {
               {clientState.id === "" ? (
                 <>
                   <Link href="/cadastro" passHref>
-                    <DropdownMenu.Item className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                    <DropdownMenu.Item className="dropdwon-items-blue">
                       <BiSave />
                       Cadastre-se
                     </DropdownMenu.Item>
                   </Link>
                   <Link href="/login" passHref>
-                    <DropdownMenu.Item className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                    <DropdownMenu.Item className="dropdwon-items-blue">
                       <BiLogIn />
                       Login
                     </DropdownMenu.Item>
@@ -141,13 +141,13 @@ export default function Header() {
               {clientState.id !== "" ? (
                 <>
                   <Link href={`/meusdados/${clientState.id}`}>
-                    <DropdownMenu.Item className="text-gray-800 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-sky-700 cursor-pointer hover:text-white active:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                    <DropdownMenu.Item className="dropdwon-items-blue">
                       <BiListCheck />
                       Meus Dados
                     </DropdownMenu.Item>
                   </Link>
                   <DropdownMenu.Item
-                    className="text-red-600 py-1 px-2 rounded-md flex items-center gap-2 hover:bg-red-600 cursor-pointer hover:text-white active:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-400"
+                    className="dropdwon-items-red"
                     onClick={() => logout()}
                   >
                     <BiLogOut />
@@ -166,7 +166,7 @@ export default function Header() {
 
   return (
     <Fragment>
-      <header className="w-full h-16 border-b border-b-gray-50 flex items-center justify-center sticky top-0 z-40 bg-white backdrop-blur-sm bg-opacity-90 shadow-sm">
+      <header className="w-full h-16 flex items-center justify-center sticky top-0 z-40 bg-zinc-800 backdrop-blur-sm bg-opacity-90 shadow-md">
         <nav className="container mx-auto px-10 lg:px-20 flex items-center justify-between">
           <div className="w-16">
             <Image
@@ -186,7 +186,7 @@ export default function Header() {
 
           <div className="block lg:hidden">
             <button
-              className="text-3xl flex items-center justify-center bg-sky-700 rounded-md text-white p-1 hover:bg-sky-800 active:bg-sky-700"
+              className="text-3xl flex items-center justify-center bg-sky-300 rounded-md text-zinc-800 p-1 hover:bg-sky-400 active:bg-sky-300"
               onClick={() => setOpen(!open)}
             >
               <BiMenu />
@@ -200,8 +200,8 @@ export default function Header() {
           open ? "ml-0" : "-ml-[100%]"
         } right-0 left-0 bottom-0 w-full h-full z-50 transition-all delay-100`}
       >
-        <div className="h-full w-[70%] bg-white shadow-xl border-r">
-          <div className="flex justify-between h-14 border-b items-center px-5 mb-5">
+        <div className="h-full w-[70%] bg-zinc-800 shadow-xl border-r border-r-zinc-600">
+          <div className="flex justify-between h-14 border-b border-b-zinc-600 items-center px-5 mb-5 text-zinc-100">
             <span>MENU</span>
 
             <button
@@ -217,7 +217,7 @@ export default function Header() {
 
       {showScroll && (
         <button
-          className="fixed bottom-5 right-5 rounded-full h-14 w-14 flex items-center justify-center bg-sky-700 drop-shadow-lg z-50 text-white text-3xl bg-opacity-95 backdrop-blur-sm hover:bg-sky-800 active:bg-sky-700 transition-all delay-75"
+          className="fixed bottom-5 right-5 rounded-full h-14 w-14 flex items-center justify-center bg-sky-300 drop-shadow-lg z-50 text-zinc-800 text-3xl bg-opacity-95 backdrop-blur-sm hover:bg-sky-400 active:bg-sky-300 transition-all delay-75"
           onClick={scrollToTop}
         >
           <BiArrowToTop />

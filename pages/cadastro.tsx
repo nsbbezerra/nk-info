@@ -108,7 +108,7 @@ export default function Cadastro() {
     <Fragment>
       <HeadApp title="NK Informática | Sistemas Web, Gestão Comercial, Marketing Digital, Gestão de Redes Sociais" />
       <section className="grid grid-cols-1 lg:grid-cols-3 h-screen w-screen max-w-[100vw] overflow-x-hidden">
-        <article className="w-full bg-gradient-to-b from-blue-300 to-sky-100 rounded-br-[70px] lg:rounded-br-[150px] p-5 flex items-center justify-center">
+        <article className="w-full bg-sky-300 bg-opacity-5 rounded-br-[70px] lg:rounded-br-[150px] p-5 flex items-center justify-center">
           <div>
             <div className="container mx-auto flex flex-col items-center justify-center gap-3">
               <div className="w-1/2 md:w-72 lg:w-72">
@@ -118,10 +118,10 @@ export default function Cadastro() {
                   height={"100%"}
                 />
               </div>
-              <h1 className="text-sky-700 text-3xl font-bold text-center max-w-5xl">
+              <h1 className="text-sky-300 text-3xl font-bold text-center max-w-5xl">
                 Seja nosso cliente!
               </h1>
-              <p className="text-gray-800 text-center text-sm w-[70%]">
+              <p className="text-zinc-400 text-center text-sm w-[70%]">
                 Que bom que chegou até aqui, agora é só mais um passo até você
                 ter acesso aos melhores pacotes de serviços para você ou para o
                 seu negócio, cadastre-se e tenha acesso às melhores ferramentas
@@ -132,10 +132,10 @@ export default function Cadastro() {
         </article>
 
         <aside className="lg:col-span-2 p-5 md:p-7 flex justify-center items-center w-full h-full">
-          <div className="border rounded-md shadow-lg p-5 w-full">
+          <div className="border border-zinc-600 rounded-md shadow-lg p-5 w-full">
             <div className="flex items-center gap-5">
               <Link href="/" passHref>
-                <a className="flex items-center gap-2 text-sky-700 hover:underline mb-3 cursor-pointer w-fit">
+                <a className="flex items-center gap-2 text-sky-300 hover:underline mb-3 cursor-pointer w-fit">
                   <BiChevronLeft />
                   Voltar
                 </a>
@@ -150,16 +150,16 @@ export default function Cadastro() {
                 <ToggleGroup.Item
                   value="cpf"
                   className={`${
-                    registerMode === "cpf" ? "bg-sky-700" : "bg-sky-500"
-                  } text-white h-8 px-2 flex items-center border-r`}
+                    registerMode === "cpf" ? "bg-sky-300" : "bg-sky-50"
+                  } text-zinc-800 h-8 px-2 flex items-center border-r border-r-zinc-900`}
                 >
                   Pessoa Física
                 </ToggleGroup.Item>
                 <ToggleGroup.Item
                   value="cnpj"
                   className={`${
-                    registerMode === "cnpj" ? "bg-sky-700" : "bg-sky-500"
-                  } text-white h-8 px-2 flex items-center`}
+                    registerMode === "cnpj" ? "bg-sky-300" : "bg-sky-50"
+                  } text-zinc-800 h-8 px-2 flex items-center`}
                 >
                   Pessoa Jurídica
                 </ToggleGroup.Item>
@@ -168,18 +168,18 @@ export default function Cadastro() {
             <form onSubmit={formik.handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div className="md:col-span-2">
-                  <label>
-                    Nome <span className="text-red-600">*</span>
+                  <label className="input-label">
+                    Nome <span className="text-red-300">*</span>
                   </label>
                   <input
                     name="name"
-                    className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
+                    className="input"
                     placeholder="Nome"
                     value={formik.values.name}
                     onChange={formik.handleChange}
                   />
                   {formik.touched.name && Boolean(formik.errors.name) ? (
-                    <span className="text-sm text-red-600">
+                    <span className="text-sm text-red-300">
                       {formik.touched.name && formik.errors.name}
                     </span>
                   ) : (
@@ -187,9 +187,9 @@ export default function Cadastro() {
                   )}
                 </div>
                 <div>
-                  <label>
+                  <label className="input-label">
                     {registerMode === "cpf" ? "CPF" : "CNPJ"}{" "}
-                    <span className="text-red-600">*</span>
+                    <span className="text-red-300">*</span>
                   </label>
                   <ReactInputMask
                     mask={
@@ -198,14 +198,14 @@ export default function Cadastro() {
                         : "99.999.999/9999-99"
                     }
                     name="document"
-                    className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
+                    className="input"
                     placeholder={registerMode === "cpf" ? "CPF" : "CNPJ"}
                     value={formik.values.document}
                     onChange={formik.handleChange}
                   />
                   {formik.touched.document &&
                   Boolean(formik.errors.document) ? (
-                    <span className="text-sm text-red-600">
+                    <span className="text-sm text-red-300">
                       {formik.touched.document && formik.errors.document}
                     </span>
                   ) : (
@@ -221,12 +221,12 @@ export default function Cadastro() {
               >
                 {registerMode === "cnpj" && (
                   <div>
-                    <label>
-                      Nome Fantasia <span className="text-red-600">*</span>
+                    <label className="input-label">
+                      Nome Fantasia <span className="text-red-300">*</span>
                     </label>
                     <input
                       name="fantasyName"
-                      className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
+                      className="input"
                       placeholder="Email"
                       value={formik.values.fantasyName}
                       onChange={formik.handleChange}
@@ -234,17 +234,17 @@ export default function Cadastro() {
                   </div>
                 )}
                 <div>
-                  <label>Email</label>
+                  <label className="input-label">Email</label>
                   <input
                     name="email"
-                    className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
+                    className="input"
                     placeholder="Email"
                     type="email"
                     value={formik.values.email}
                     onChange={formik.handleChange}
                   />
                   {formik.touched.email && Boolean(formik.errors.email) ? (
-                    <span className="text-sm text-red-600">
+                    <span className="text-sm text-red-300">
                       {formik.touched.email && formik.errors.email}
                     </span>
                   ) : (
@@ -252,19 +252,19 @@ export default function Cadastro() {
                   )}
                 </div>
                 <div>
-                  <label>
-                    Telefone (Whatsapp) <span className="text-red-600">*</span>
+                  <label className="input-label">
+                    Telefone (Whatsapp) <span className="text-red-300">*</span>
                   </label>
                   <ReactInputMask
                     mask={"99 99999-9999"}
-                    className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
+                    className="input"
                     placeholder="Telefone"
                     name="phone"
                     value={formik.values.phone}
                     onChange={formik.handleChange}
                   />
                   {formik.touched.phone && Boolean(formik.errors.phone) ? (
-                    <span className="text-sm text-red-600">
+                    <span className="text-sm text-red-300">
                       {formik.touched.phone && formik.errors.phone}
                     </span>
                   ) : (
@@ -275,19 +275,19 @@ export default function Cadastro() {
 
               <div className="grid grid-cols-1 md:grid-cols-4 mt-3 gap-3">
                 <div className="md:col-span-3">
-                  <label>
-                    Rua / Avenida <span className="text-red-600">*</span>
+                  <label className="input-label">
+                    Rua / Avenida <span className="text-red-300">*</span>
                   </label>
                   <input
                     type="text"
-                    className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
+                    className="input"
                     placeholder="Rua / Avenida"
                     name="street"
                     value={formik.values.street}
                     onChange={formik.handleChange}
                   />
                   {formik.touched.street && Boolean(formik.errors.street) ? (
-                    <span className="text-sm text-red-600">
+                    <span className="text-sm text-red-300">
                       {formik.touched.street && formik.errors.street}
                     </span>
                   ) : (
@@ -295,19 +295,19 @@ export default function Cadastro() {
                   )}
                 </div>
                 <div>
-                  <label>
-                    Número <span className="text-red-600">*</span>
+                  <label className="input-label">
+                    Número <span className="text-red-300">*</span>
                   </label>
                   <input
                     type="text"
-                    className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
+                    className="input"
                     placeholder="Número"
                     name="number"
                     value={formik.values.number}
                     onChange={formik.handleChange}
                   />
                   {formik.touched.number && Boolean(formik.errors.number) ? (
-                    <span className="text-sm text-red-600">
+                    <span className="text-sm text-red-300">
                       {formik.touched.number && formik.errors.number}
                     </span>
                   ) : (
@@ -318,17 +318,17 @@ export default function Cadastro() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 mt-3 gap-3">
                 <div>
-                  <label>Complemento</label>
+                  <label className="input-label">Complemento</label>
                   <input
                     type="text"
-                    className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
+                    className="input"
                     placeholder="Complemento"
                     name="comp"
                     value={formik.values.comp}
                     onChange={formik.handleChange}
                   />
                   {formik.touched.comp && Boolean(formik.errors.comp) ? (
-                    <span className="text-sm text-red-600">
+                    <span className="text-sm text-red-300">
                       {formik.touched.comp && formik.errors.comp}
                     </span>
                   ) : (
@@ -336,12 +336,12 @@ export default function Cadastro() {
                   )}
                 </div>
                 <div>
-                  <label>
-                    Bairro <span className="text-red-600">*</span>
+                  <label className="input-label">
+                    Bairro <span className="text-red-300">*</span>
                   </label>
                   <input
                     type="text"
-                    className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
+                    className="input"
                     placeholder="Bairro"
                     name="district"
                     value={formik.values.district}
@@ -349,7 +349,7 @@ export default function Cadastro() {
                   />
                   {formik.touched.district &&
                   Boolean(formik.errors.district) ? (
-                    <span className="text-sm text-red-600">
+                    <span className="text-sm text-red-300">
                       {formik.touched.district && formik.errors.district}
                     </span>
                   ) : (
@@ -360,19 +360,19 @@ export default function Cadastro() {
 
               <div className="grid grid-cols-1 md:grid-cols-5 mt-3 gap-3 mb-5">
                 <div className="md:col-span-1">
-                  <label>
-                    CEP <span className="text-red-600">*</span>
+                  <label className="input-label">
+                    CEP <span className="text-red-300">*</span>
                   </label>
                   <ReactInputMask
                     mask={"99.999-999"}
-                    className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
+                    className="input"
                     placeholder="CEP"
                     name="cep"
                     value={formik.values.cep}
                     onChange={formik.handleChange}
                   />
                   {formik.touched.cep && Boolean(formik.errors.cep) ? (
-                    <span className="text-sm text-red-600">
+                    <span className="text-sm text-red-300">
                       {formik.touched.cep && formik.errors.cep}
                     </span>
                   ) : (
@@ -380,19 +380,19 @@ export default function Cadastro() {
                   )}
                 </div>
                 <div className="md:col-span-3">
-                  <label>
-                    Cidade <span className="text-red-600">*</span>
+                  <label className="input-label">
+                    Cidade <span className="text-red-300">*</span>
                   </label>
                   <input
                     type="text"
-                    className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
+                    className="input"
                     placeholder="Cidade"
                     value={formik.values.city}
                     onChange={formik.handleChange}
                     name="city"
                   />
                   {formik.touched.city && Boolean(formik.errors.city) ? (
-                    <span className="text-sm text-red-600">
+                    <span className="text-sm text-red-300">
                       {formik.touched.city && formik.errors.city}
                     </span>
                   ) : (
@@ -400,11 +400,11 @@ export default function Cadastro() {
                   )}
                 </div>
                 <div>
-                  <label>
-                    UF <span className="text-red-600">*</span>
+                  <label className="input-label">
+                    UF <span className="text-red-300">*</span>
                   </label>
                   <select
-                    className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75 bg-transparent"
+                    className="input bg-transparent"
                     placeholder="UF"
                     value={formik.values.state}
                     onChange={formik.handleChange}
@@ -439,7 +439,7 @@ export default function Cadastro() {
                     <option value="TO">TO</option>
                   </select>
                   {formik.touched.state && Boolean(formik.errors.state) ? (
-                    <span className="text-sm text-red-600">
+                    <span className="text-sm text-red-300">
                       {formik.touched.state && formik.errors.state}
                     </span>
                   ) : (
@@ -448,12 +448,8 @@ export default function Cadastro() {
                 </div>
               </div>
 
-              <Button
-                icon={<BiSave />}
-                buttonSize="lg"
-                type="submit"
-                isLoading={fetching}
-              >
+              <Button buttonSize="lg" type="submit" isLoading={fetching}>
+                <BiSave />
                 Cadastrar
               </Button>
             </form>
@@ -464,28 +460,28 @@ export default function Cadastro() {
       <AlertDialog.Root open={isDialogOpen}>
         <AlertDialog.Trigger asChild />
         <AlertDialog.Portal>
-          <AlertDialog.Overlay className="fixed top-0 bottom-0 left-0 right-0 bg-black bg-opacity-40 backdrop-blur-sm" />
-          <AlertDialog.Content className="fixed w-[80%] left-[10%] right-[10%] sm:w-[50%] sm:left-[25%] sm:right-[25%] md:w-[40%] md:left-[30%] md:right-[30%] lg:w-[30%] bg-white shadow-lg rounded-md top-[15%] z-50 lg:left-[35%] lg:right-[35%] flex items-center justify-center flex-col p-5 gap-2">
-            <AlertDialog.Title className="text-green-600 px-4 py-3 font-semibold text-4xl w-20 h-20 flex items-center justify-center bg-green-100 rounded-full">
+          <AlertDialog.Overlay className="fixed top-0 bottom-0 left-0 right-0 bg-black bg-opacity-70" />
+          <AlertDialog.Content className="fixed w-[80%] left-[10%] right-[10%] sm:w-[50%] sm:left-[25%] sm:right-[25%] md:w-[40%] md:left-[30%] md:right-[30%] lg:w-[30%] bg-zinc-800 border border-zinc-600 shadow-lg rounded-md top-[15%] z-50 lg:left-[35%] lg:right-[35%] flex items-center justify-center flex-col p-5 gap-2">
+            <AlertDialog.Title className="text-zinc-800 px-4 py-3 font-semibold text-4xl w-20 h-20 flex items-center justify-center bg-green-300 rounded-full">
               <BiCheck />
             </AlertDialog.Title>
-            <AlertDialog.Description className="text-green-600 text-2xl font-semibold">
+            <AlertDialog.Description className="text-green-300 text-2xl font-semibold">
               Sucesso
             </AlertDialog.Description>
-            <div className="text-center">
-              <span className="text-gray-700">
+            <div className="text-center mb-5">
+              <span className="text-gray-300">
                 Seu cadastro foi concluído com sucesso! Agora escolha uma opção
                 abaixo:
               </span>
             </div>
             <div className="flex items-center gap-3 w-full flex-col xl:flex-row">
               <Link href={"/"}>
-                <AlertDialog.Cancel className="bg-gray-200 hover:bg-gray-300 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 px-4 h-10 rounded-md flex justify-center items-center gap-2 transition-all delay-75 w-full">
+                <AlertDialog.Cancel className="buttom-md buttom-gray buttom-full">
                   <BiHome /> Ir para o início
                 </AlertDialog.Cancel>
               </Link>
               <Link href={redirect ? `/login?redirect=${redirect}` : "/login"}>
-                <AlertDialog.Action className="bg-blue-600 hover:bg-blue-700 active:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 px-4 h-10 text-white rounded-md flex justify-center items-center gap-2 transition-all delay-75 w-full">
+                <AlertDialog.Action className="buttom-md buttom-blue buttom-full">
                   <BiLogIn /> Fazer login
                 </AlertDialog.Action>
               </Link>
@@ -497,23 +493,23 @@ export default function Cadastro() {
       <AlertDialog.Root open={isDialogErrorOpen}>
         <AlertDialog.Trigger asChild />
         <AlertDialog.Portal>
-          <AlertDialog.Overlay className="fixed top-0 bottom-0 left-0 right-0 bg-black bg-opacity-40 backdrop-blur-sm" />
-          <AlertDialog.Content className="fixed w-[80%] left-[10%] right-[10%] sm:w-[50%] sm:left-[25%] sm:right-[25%] md:w-[40%] md:left-[30%] md:right-[30%] lg:w-[30%] bg-white shadow-lg rounded-md top-[15%] z-50 lg:left-[35%] lg:right-[35%] flex items-center justify-center flex-col p-5 gap-2">
-            <AlertDialog.Title className="text-red-600 px-4 py-3 font-semibold text-4xl w-20 h-20 flex items-center justify-center bg-red-100 rounded-full">
+          <AlertDialog.Overlay className="fixed top-0 bottom-0 left-0 right-0 bg-black bg-opacity-70" />
+          <AlertDialog.Content className="fixed w-[80%] left-[10%] right-[10%] sm:w-[50%] sm:left-[25%] sm:right-[25%] md:w-[40%] md:left-[30%] md:right-[30%] lg:w-[30%] bg-zinc-800 border border-zinc-600 shadow-lg rounded-md top-[15%] z-50 lg:left-[35%] lg:right-[35%] flex items-center justify-center flex-col p-5 gap-2">
+            <AlertDialog.Title className="text-zinc-800 px-4 py-3 font-semibold text-4xl w-20 h-20 flex items-center justify-center bg-red-300 rounded-full">
               <BiMessageAltError />
             </AlertDialog.Title>
-            <AlertDialog.Description className="text-red-600 text-2xl font-semibold">
+            <AlertDialog.Description className="text-red-300 text-2xl font-semibold">
               Ocorreu um erro
             </AlertDialog.Description>
-            <div className="text-center">
-              <span className="text-gray-700">
+            <div className="text-center mb-5">
+              <span className="text-gray-300">
                 Ops, lamentamos mais algo saiu mal no seu cadastro, tente
                 novamente!
               </span>
             </div>
             <div className="flex items-center w-full">
               <AlertDialog.Cancel
-                className="bg-red-600 hover:bg-red-700 active:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 px-4 h-10 rounded-md flex text-white justify-center items-center gap-2 transition-all delay-75 w-full"
+                className="buttom-md buttom-red buttom-full"
                 onClick={() => setIsDialogErrorOpen(false)}
               >
                 <BiX /> Fechar

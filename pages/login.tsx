@@ -77,7 +77,7 @@ export default function Login() {
     <Fragment>
       <HeadApp title="NK Informática | Sistemas Web, Gestão Comercial, Marketing Digital, Gestão de Redes Sociais" />
       <section className="grid grid-cols-1 lg:grid-cols-3 h-screen w-screen">
-        <article className="w-full bg-gradient-to-b from-blue-300 to-sky-100 rounded-br-[70px] lg:rounded-br-[150px] p-5 flex items-center justify-center">
+        <article className="w-full bg-gradient-to-b bg-sky-300 bg-opacity-5 rounded-br-[70px] lg:rounded-br-[150px] p-5 flex items-center justify-center shadow-xl">
           <div>
             <div className="container mx-auto flex flex-col items-center justify-center gap-3">
               <div className="w-1/2 md:w-72 lg:w-72">
@@ -87,10 +87,10 @@ export default function Login() {
                   height={"100%"}
                 />
               </div>
-              <h1 className="text-sky-700 text-3xl font-bold text-center max-w-5xl">
+              <h1 className="text-sky-300 text-3xl font-bold text-center max-w-5xl">
                 Bem vindo de volta!
               </h1>
-              <p className="text-gray-800 text-center text-sm w-[70%]">
+              <p className="text-zinc-400 text-center text-sm w-[70%]">
                 Entre com sua conta e tenha acesso aos seus planos contratados,
                 seus dados, mais também dê uma olhada nos nossos novos planos,
                 temos muita coisa preparada especialmente para você.
@@ -100,9 +100,9 @@ export default function Login() {
         </article>
 
         <aside className="p-10 flex items-center justify-center w-full h-full col-span-2">
-          <div className="w-full max-w-sm border rounded-md shadow-lg mx-auto p-5">
+          <div className="w-full max-w-sm border border-zinc-600 rounded-md shadow-xl mx-auto p-5">
             <Link href="/" passHref>
-              <a className="flex items-center gap-2 text-sky-700 hover:underline mb-3 cursor-pointer w-fit">
+              <a className="flex items-center gap-2 text-sky-300 hover:underline mb-3 cursor-pointer w-fit">
                 <BiChevronLeft />
                 Voltar
               </a>
@@ -116,16 +116,16 @@ export default function Login() {
               <ToggleGroup.Item
                 value="cpf"
                 className={`${
-                  registerMode === "cpf" ? "bg-sky-700" : "bg-sky-500"
-                } text-white h-8 px-2 flex items-center border-r`}
+                  registerMode === "cpf" ? "bg-sky-300" : "bg-sky-50"
+                } text-zinc-800 h-8 px-2 flex items-center border-r border-r-zinc-900`}
               >
                 Pessoa Física
               </ToggleGroup.Item>
               <ToggleGroup.Item
                 value="cnpj"
                 className={`${
-                  registerMode === "cnpj" ? "bg-sky-700" : "bg-sky-500"
-                } text-white h-8 px-2 flex items-center`}
+                  registerMode === "cnpj" ? "bg-sky-300" : "bg-sky-50"
+                } text-zinc-800 h-8 px-2 flex items-center`}
               >
                 Pessoa Jurídica
               </ToggleGroup.Item>
@@ -133,9 +133,9 @@ export default function Login() {
             <form onSubmit={formik.handleSubmit}>
               <div className="flex flex-col gap-2 mb-5">
                 <div className="w-full">
-                  <label>
+                  <label className="input-label">
                     {registerMode === "cpf" ? "CPF" : "CNPJ"}{" "}
-                    <span className="text-red-600">*</span>
+                    <span className="text-red-300">*</span>
                   </label>
                   <ReactInputMask
                     mask={
@@ -144,14 +144,14 @@ export default function Login() {
                         : "99.999.999/9999-99"
                     }
                     name="document"
-                    className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
+                    className="input"
                     placeholder={registerMode === "cpf" ? "CPF" : "CNPJ"}
                     value={formik.values.document}
                     onChange={formik.handleChange}
                   />
                   {formik.touched.document &&
                   Boolean(formik.errors.document) ? (
-                    <span className="text-sm text-red-600">
+                    <span className="text-sm text-red-300">
                       {formik.touched.document && formik.errors.document}
                     </span>
                   ) : (
@@ -160,12 +160,12 @@ export default function Login() {
                 </div>
 
                 <div className="w-full">
-                  <label>
-                    Telefone <span className="text-red-600">*</span>
+                  <label className="input-label">
+                    Telefone <span className="text-red-300">*</span>
                   </label>
                   <ReactInputMask
                     mask={"99 99999-9999"}
-                    className="w-full h-12 px-3 border rounded-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-300 transition-all delay-75"
+                    className="input"
                     placeholder="Telefone"
                     name="phone"
                     value={formik.values.phone}
@@ -182,19 +182,19 @@ export default function Login() {
               </div>
 
               <Button
-                icon={<BiLogIn />}
                 isFullSize
                 buttonSize="lg"
                 isLoading={formik.isSubmitting}
                 type="submit"
               >
+                <BiLogIn />
                 Entrar
               </Button>
             </form>
 
             <div className="flex items-center justify-center flex-col gap-1 mt-3">
               <Link href="/cadastro" passHref>
-                <a className="text-gray-600 hover:underline cursor-pointer">
+                <a className="text-gray-400 hover:underline cursor-pointer">
                   Não possui conta? Cadastre-se
                 </a>
               </Link>
@@ -206,16 +206,16 @@ export default function Login() {
       <AlertDialog.Root open={isDialogOpen}>
         <AlertDialog.Trigger asChild />
         <AlertDialog.Portal>
-          <AlertDialog.Overlay className="fixed top-0 bottom-0 left-0 right-0 bg-black bg-opacity-40 backdrop-blur-sm" />
-          <AlertDialog.Content className="fixed w-[80%] left-[10%] right-[10%] sm:w-[50%] sm:left-[25%] sm:right-[25%] md:w-[40%] md:left-[30%] md:right-[30%] lg:w-[30%] bg-white shadow-lg rounded-md top-[15%] z-50 lg:left-[35%] lg:right-[35%] flex items-center justify-center flex-col p-5 gap-2">
-            <AlertDialog.Title className="text-green-600 px-4 py-3 font-semibold text-4xl w-20 h-20 flex items-center justify-center bg-green-100 rounded-full">
+          <AlertDialog.Overlay className="fixed top-0 bottom-0 left-0 right-0 bg-black bg-opacity-70" />
+          <AlertDialog.Content className="fixed w-[80%] left-[10%] right-[10%] sm:w-[50%] sm:left-[25%] sm:right-[25%] md:w-[40%] md:left-[30%] md:right-[30%] lg:w-[30%] bg-zinc-800 border border-zinc-600 shadow-lg rounded-md top-[15%] z-50 lg:left-[35%] lg:right-[35%] flex items-center justify-center flex-col p-5 gap-2">
+            <AlertDialog.Title className="text-zinc-800 px-4 py-3 font-semibold text-4xl w-20 h-20 flex items-center justify-center bg-green-300 rounded-full">
               <BiCheck />
             </AlertDialog.Title>
-            <AlertDialog.Description className="text-green-600 text-2xl font-semibold">
+            <AlertDialog.Description className="text-green-300 text-2xl font-semibold">
               Sucesso
             </AlertDialog.Description>
             <div className="text-center">
-              <span className="text-gray-700">
+              <span className="text-gray-400">
                 Login efetuado com sucesso, aproveite ao máximo!
               </span>
             </div>
@@ -226,22 +226,22 @@ export default function Login() {
       <AlertDialog.Root open={isDialogErrorOpen}>
         <AlertDialog.Trigger asChild />
         <AlertDialog.Portal>
-          <AlertDialog.Overlay className="fixed top-0 bottom-0 left-0 right-0 bg-black bg-opacity-40 backdrop-blur-sm" />
-          <AlertDialog.Content className="fixed w-[80%] left-[10%] right-[10%] sm:w-[50%] sm:left-[25%] sm:right-[25%] md:w-[40%] md:left-[30%] md:right-[30%] lg:w-[30%] bg-white shadow-lg rounded-md top-[15%] z-50 lg:left-[35%] lg:right-[35%] flex items-center justify-center flex-col p-5 gap-2">
-            <AlertDialog.Title className="text-red-600 px-4 py-3 font-semibold text-4xl w-20 h-20 flex items-center justify-center bg-red-100 rounded-full">
+          <AlertDialog.Overlay className="fixed top-0 bottom-0 left-0 right-0 bg-black bg-opacity-70" />
+          <AlertDialog.Content className="fixed w-[80%] left-[10%] right-[10%] sm:w-[50%] sm:left-[25%] sm:right-[25%] md:w-[40%] md:left-[30%] md:right-[30%] lg:w-[30%] bg-zinc-800 border border-zinc-600 shadow-lg rounded-md top-[15%] z-50 lg:left-[35%] lg:right-[35%] flex items-center justify-center flex-col p-5 gap-2">
+            <AlertDialog.Title className="text-zinc-800 px-4 py-3 font-semibold text-4xl w-20 h-20 flex items-center justify-center bg-red-300 rounded-full">
               <BiMessageAltError />
             </AlertDialog.Title>
-            <AlertDialog.Description className="text-red-600 text-2xl font-semibold">
+            <AlertDialog.Description className="text-red-300 text-2xl font-semibold">
               Ocorreu um erro
             </AlertDialog.Description>
-            <div className="text-center">
-              <span className="text-gray-700">
+            <div className="text-center mb-5">
+              <span className="text-gray-400">
                 Cliente não encontrado, por favor tente novamente.
               </span>
             </div>
             <div className="flex items-center w-full">
               <AlertDialog.Cancel
-                className="bg-red-600 hover:bg-red-700 active:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 px-4 h-10 rounded-md flex text-white justify-center items-center gap-2 transition-all delay-75 w-full"
+                className="buttom-md buttom-red buttom-full"
                 onClick={() => setIsDialogErrorOpen(false)}
               >
                 <BiX /> Fechar
