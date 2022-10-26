@@ -169,10 +169,10 @@ export default function Header() {
   return (
     <Fragment>
       <header
-        className={`transition-all delay-200 w-full flex items-center justify-center fixed top-0 z-40 bg-zinc-800 ${
+        className={`transition-all delay-100 w-full flex items-center justify-center fixed top-0 backdrop-blur-sm z-40 bg-zinc-800 ${
           showTopBar
-            ? "bg-opacity-90 shadow-lg backdrop-blur-sm h-16"
-            : "bg-opacity-0 shadow-none backdrop-blur-0 h-32"
+            ? "bg-opacity-90 shadow-lg h-16"
+            : "bg-opacity-0 shadow-none h-24"
         }`}
       >
         <nav className="container mx-auto px-10 lg:px-20 flex items-center justify-between">
@@ -208,8 +208,8 @@ export default function Header() {
           open ? "ml-0" : "-ml-[100%]"
         } right-0 left-0 bottom-0 w-full h-full z-50 transition-all delay-100`}
       >
-        <div className="h-full w-[70%] bg-zinc-800 shadow-xl border-r border-r-zinc-600">
-          <div className="flex justify-between h-14 border-b border-b-zinc-600 items-center px-5 mb-5 text-zinc-100">
+        <div className="h-full w-[70%] bg-zinc-800 backdrop-blur-sm bg-opacity-95 shadow-xl border-r border-r-zinc-600">
+          <div className="flex justify-between h-12 bg-sky-300 items-center px-5 mb-5 text-zinc-800">
             <span>MENU</span>
 
             <button

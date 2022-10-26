@@ -12,7 +12,7 @@ module.exports = {
     },
     extend: {},
     backgroundImage: {
-      backgroundBulbs: "url('../public/img/bulbs.jpg')",
+      backgroundInfo: "url('../public/img/soft.jpg')",
     },
   },
   plugins: [],
