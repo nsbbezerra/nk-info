@@ -27,7 +27,7 @@ body {
 }
 
 .divider-gradient {
-  @apply w-32 bg-gradient-to-r from-sky-100 to-sky-300 h-1 rounded-[50%];
+  @apply w-32 bg-sky-300 h-1 rounded-[50%];
 }
 
 .minimal-card {

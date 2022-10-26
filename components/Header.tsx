@@ -25,6 +25,7 @@ export default function Header() {
   const [showScroll, setShowScroll] = useState<boolean>(false);
   const { state: clientState, setState: setClientState } =
     useContext(ClientContext);
+  const [showTopBar, setShowTopBar] = useState<boolean>(false);
 
   useEffect(() => {
     const client = localStorage.getItem("client");
@@ -35,6 +36,7 @@ export default function Header() {
   }, []);
 
   const checkScroll = () => {
+    window.pageYOffset > 85 ? setShowTopBar(true) : setShowTopBar(false);
     if (!showScroll && window.pageYOffset > 400) {
       setShowScroll(true);
     } else if (showScroll && window.pageYOffset <= 400) {
@@ -166,7 +168,13 @@ export default function Header() {
 
   return (
     <Fragment>
-      <header className="w-full h-16 flex items-center justify-center sticky top-0 z-40 bg-zinc-800 backdrop-blur-sm bg-opacity-90 shadow-md">
+      <header
+        className={`transition-all delay-200 w-full flex items-center justify-center fixed top-0 z-40 bg-zinc-800 ${
+          showTopBar
+            ? "bg-opacity-90 shadow-lg backdrop-blur-sm h-16"
+            : "bg-opacity-0 shadow-none backdrop-blur-0 h-32"
+        }`}
+      >
         <nav className="container mx-auto px-10 lg:px-20 flex items-center justify-between">
           <div className="w-16">
             <Image

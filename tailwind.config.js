@@ -11,6 +11,9 @@ module.exports = {
       serif: ["Fira Sans", "serif"],
     },
     extend: {},
+    backgroundImage: {
+      backgroundBulbs: "url('../public/img/bulbs.jpg')",
+    },
   },
   plugins: [],
 };
