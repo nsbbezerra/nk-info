@@ -13,6 +13,7 @@ module.exports = {
     extend: {},
     backgroundImage: {
       backgroundInfo: "url('../public/img/soft.jpg')",
+      backgroundTshirt: "url('../public/img/background.jpg')",
     },
   },
   plugins: [],
