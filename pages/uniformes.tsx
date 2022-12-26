@@ -8,7 +8,7 @@ import HeadApp from "../components/Head";
 export default function Tshirts() {
   return (
     <Fragment>
-      <HeadApp title="NK Informática | Sistemas Web, Gestão Comercial, Marketing Digital, Gestão de Redes Sociais" />
+      <HeadApp title="Sistema automatizado para vendedores de uniformes personalizados" />
       <section className="w-screen h-screen bg-backgroundTshirt bg-cover bg-center overflow-auto p-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 container mx-auto max-w-6xl h-full items-center gap-5">
           <div className="flex flex-col justify-center items-center gap-5">
@@ -79,14 +79,14 @@ export default function Tshirts() {
                   R$ 1.000,00
                 </span>
               </div>
+              <span>Ou em 5x sem juros no cartão</span>
 
               <span className="flex items-center gap-2 text-sm font-normal text-center">
                 <BiCheck /> Domínio por 1 ano grátis - Após 1 ano: R$ 40,00 por
                 ano.
               </span>
               <span className="flex items-center gap-2 text-sm font-normal text-center">
-                <BiCheck /> Servidor (VPS) grátis por 1 mes - Após 1 mes: R$
-                45,00 por mês
+                <BiCheck /> Servidor (VPS) grátis.
               </span>
               <span className="flex items-center gap-2 text-sm font-normal text-center">
                 <BiCheck /> Assitência técnica no sistema e servidor sem custos
