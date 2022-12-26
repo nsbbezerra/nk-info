@@ -92,6 +92,9 @@ export default function Tshirts() {
                 <BiCheck /> Assitência técnica no sistema e servidor sem custos
                 adicionais a qualquer hora.
               </span>
+              <span className="flex items-center gap-2 text-sm font-normal text-center">
+                <BiCheck /> Sistema de pagamentos automatizados.
+              </span>
             </div>
 
             <span className="text-center text-sm mt-3">
